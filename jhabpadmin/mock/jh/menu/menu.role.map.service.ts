@@ -1,7 +1,16 @@
 import { Request, Response } from 'express';
 
+const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
+
 export default {
   'GET /jhmenu/api/v1/MenuRoleMap/CurrentUserNavMenus': async (req: Request, res: Response) => {
+    // await waitTime(3000);
     res.send([
       {
         path: '',

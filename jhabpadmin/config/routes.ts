@@ -1,6 +1,8 @@
 ﻿export default [
   {
     path: '/user',
+    hideInMenu: true,
+    hideChildrenInMenu: true,
     layout: false,
     routes: [
       {
@@ -20,12 +22,16 @@
   },
   {
     path: '/welcome',
+    hideInMenu: true,
+    hideChildrenInMenu: true,
     name: 'welcome',
     icon: 'smile',
     component: './Welcome',
   },
   {
     path: '/admin',
+    hideInMenu: true,
+    hideChildrenInMenu: true,
     name: 'admin',
     icon: 'crown',
     access: 'canAdmin',
@@ -44,6 +50,8 @@
   },
   {
     name: 'list.table-list',
+    hideInMenu: true,
+    hideChildrenInMenu: true,
     icon: 'table',
     path: '/list',
     component: './TableList',
