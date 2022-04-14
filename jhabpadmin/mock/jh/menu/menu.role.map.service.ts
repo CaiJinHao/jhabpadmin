@@ -6,12 +6,12 @@ export default {
       {
         path: '',
         name: '云数据中心',
-        icon: 'fa fa-bars',
+        icon: 'HeartOutlined',
         routes: [
           {
             path: '/main/view/equipmentgroup/index.html',
             name: '你的菜单',
-            icon: 'fa fa-bars',
+            icon: '',
             routes: [],
             code: 'A0101',
             parentCode: 'A01',
@@ -25,12 +25,12 @@ export default {
       {
         path: '',
         name: '系统设置',
-        icon: 'fa fa-bars',
+        icon: 'TableOutlined',
         routes: [
           {
             path: '/main/view/menu/index.html',
             name: '菜单管理',
-            icon: 'fa fa-bars',
+            icon: '',
             routes: [],
             code: 'A0201',
             parentCode: 'A02',
@@ -39,7 +39,7 @@ export default {
           {
             path: '/main/view/rolemenuand/index.html',
             name: '菜单权限管理',
-            icon: 'fa fa-bars',
+            icon: '',
             routes: [],
             code: 'A0202',
             parentCode: 'A02',
@@ -48,7 +48,7 @@ export default {
           {
             path: '/main/view/roleinterfaceand/index.html',
             name: '接口权限管理',
-            icon: 'fa fa-bars',
+            icon: '',
             routes: [],
             code: 'A0203',
             parentCode: 'A02',
@@ -57,7 +57,7 @@ export default {
           {
             path: '/main/view/user/index.html',
             name: '用户管理',
-            icon: 'fa fa-bars',
+            icon: '',
             routes: [],
             code: 'A0204',
             parentCode: 'A02',
@@ -66,7 +66,7 @@ export default {
           {
             path: '/main/view/organizationunit/index.html',
             name: '组织管理',
-            icon: 'fa fa-bars',
+            icon: '',
             routes: [],
             code: 'A0205',
             parentCode: 'A02',
@@ -75,7 +75,7 @@ export default {
           {
             path: '/main/view/auditLogging/index.html',
             name: '系统审计日志',
-            icon: 'fa fa-bars',
+            icon: '',
             routes: [],
             code: 'A0206',
             parentCode: 'A02',
