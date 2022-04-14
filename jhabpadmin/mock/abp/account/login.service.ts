@@ -22,4 +22,8 @@ export default {
       currentAuthority: 'guest',
     });
   },
+
+  'GET /identityapi/account/logout': async (req: Request, res: Response) => {
+    res.send({ data: {}, success: true });
+  },
 };
