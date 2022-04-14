@@ -6,12 +6,19 @@ import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 // import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { currentUser as queryCurrentUser } from './services/abp/identity/identityuser.service';
+import { currentUser as queryCurrentUser } from '@/services/abp/identity/identityuser.service';
+import { currentUserNavMenus as queryCurrentUserNavMenus } from '@/services/jhabp/menu/menu.role.map.service';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+
+const getGlobalLoginPath = () => {
+  const globalLoginPath = 'https://localhost:6201/Account/Login?ReturnUrlHash=';
+  const origin = window.origin;
+  return `${globalLoginPath}${origin}/welcome`;
+};
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -32,7 +39,8 @@ export async function getInitialState(): Promise<{
       const user = await queryCurrentUser();
       return user;
     } catch (error) {
-      history.push(loginPath);
+      // history.push(loginPath);
+      window.location.href = getGlobalLoginPath();
     }
     return undefined;
   };
@@ -103,6 +111,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
           )}
         </>
       );
+    },
+    menu: {
+      locale: false,
+      request: async () => {
+        return await queryCurrentUserNavMenus();
+      },
     },
     ...initialState?.settings,
   };

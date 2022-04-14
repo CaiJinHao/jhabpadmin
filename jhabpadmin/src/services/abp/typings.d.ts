@@ -45,5 +45,6 @@ declare namespace API {
     tenantId: string;
     organizationUnitIds: string[];
     roleIds: string[];
+    avatar?: string;
   };
 }

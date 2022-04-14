@@ -7,7 +7,7 @@ import {
   WeiboCircleOutlined,
 } from '@ant-design/icons';
 import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProFormCaptcha, ProFormCheckbox, ProFormText, LoginForm } from '@ant-design/pro-form';
 import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
@@ -56,7 +56,9 @@ const Login: React.FC = () => {
     }
   };
 
-  fetchUserInfo(); //检测是否已经登录，登录自动跳转
+  useEffect(() => {
+    fetchUserInfo(); //检测是否已经登录，登录自动跳转
+  }, []);
 
   const handleSubmit = async (values: API.LoginParams) => {
     try {
