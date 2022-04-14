@@ -61,6 +61,13 @@
     redirect: '/welcome',
   },
   {
+    path: '/menu',
+    name: 'menu',
+    icon: 'table',
+    component: './menu',
+    hideInMenu: true,
+  },
+  {
     component: './404',
   },
 ];

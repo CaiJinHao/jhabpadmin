@@ -7,7 +7,7 @@ const createAntdIcon = (iconName: string) => {
   return React.createElement(IconMap[iconName]);
 };
 
-const replaceMenuIcon = (menus: JhAPI.CurrentUserNavMenus[]): JhAPI.CurrentUserNavMenus[] => {
+const replaceMenuIcon = (menus: API.CurrentUserNavMenus[]): API.CurrentUserNavMenus[] => {
   if (menus.length > 0) {
     return menus.map(({ icon, routes, ...item }) => ({
       ...item,
@@ -19,8 +19,8 @@ const replaceMenuIcon = (menus: JhAPI.CurrentUserNavMenus[]): JhAPI.CurrentUserN
   }
 };
 
-export const currentUserNavMenus = async (): Promise<JhAPI.CurrentUserNavMenus[]> => {
-  const data = await request<JhAPI.CurrentUserNavMenus[]>(
+export const currentUserNavMenus = async (): Promise<API.CurrentUserNavMenus[]> => {
+  const data = await request<API.CurrentUserNavMenus[]>(
     '/jhmenu/api/v1/MenuRoleMap/CurrentUserNavMenus',
     { method: 'GET' },
   );

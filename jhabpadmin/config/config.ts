@@ -67,15 +67,10 @@ export default defineConfig({
     // },
     // {
     //   requestLibPath: "import { request } from 'umi'",
-    //   schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
-    //   projectName: 'swagger',
+    //   schemaPath: 'https://localhost:6201/swagger/v1/swagger.json',
+    //   projectName: 'jhIdentity',
+    //   mock: false,
     // },
-    {
-      requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'https://localhost:6201/swagger/v1/swagger.json',
-      projectName: 'jhIdentity',
-      mock: false,
-    },
   ],
   nodeModulesTransform: { type: 'none' },
   mfsu: {},

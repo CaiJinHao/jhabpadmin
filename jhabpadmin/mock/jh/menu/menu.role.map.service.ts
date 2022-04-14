@@ -37,7 +37,7 @@ export default {
         icon: 'TableOutlined',
         routes: [
           {
-            path: '/main/view/menu/index.html',
+            path: '/menu',
             name: '菜单管理',
             icon: '',
             routes: [],
