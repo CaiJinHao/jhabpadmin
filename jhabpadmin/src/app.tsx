@@ -10,6 +10,7 @@ import { currentUser as queryCurrentUser } from '@/services/abp/identity/identit
 import { currentUserNavMenus as queryCurrentUserNavMenus } from '@/services/jhabp/menu/menu.role.map.service';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
+import { RequestConfig } from 'umi';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -120,4 +121,24 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     ...initialState?.settings,
   };
+};
+
+/** ProTable 分页处理 */
+const proTableRequestInterceptor = (url: any, options: any) => {
+  //@ts-ignore
+  const { current, pageSize } = options.params;
+  if (current) {
+    const skipCount = (current - 1) * pageSize;
+    Object.assign(options.params, { maxResultCount: pageSize, skipCount });
+    delete options.params.current;
+    delete options.params.pageSize;
+  }
+  return {
+    url: url,
+    options: options,
+  };
+};
+
+export const request: RequestConfig = {
+  requestInterceptors: [proTableRequestInterceptor],
 };

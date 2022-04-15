@@ -2,98 +2,65 @@ import { Button, Tooltip } from 'antd';
 import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
+import { useState } from 'react';
+import { connect } from 'umi';
+import { getListMenu } from '@/services/jhabp/menu/menu.service';
 
-const valueEnum = {
-  0: 'close',
-  1: 'running',
-  2: 'online',
-  3: 'error',
-};
-
-export type TableListItem = {
-  key: number;
-  name: string;
-  containers: number;
-  creator: string;
-  status: string;
-  createdAt: number;
-  memo: string;
-};
-const tableListDataSource: TableListItem[] = [];
-
-const creators = ['付小小', '曲丽丽', '林东东', '陈帅帅', '兼某某'];
-
-for (let i = 0; i < 5; i += 1) {
-  tableListDataSource.push({
-    key: i,
-    name: 'AppName',
-    containers: Math.floor(Math.random() * 20),
-    creator: creators[Math.floor(Math.random() * creators.length)],
-    status: valueEnum[Math.floor(Math.random() * 10) % 4],
-    createdAt: Date.now() - Math.floor(Math.random() * 100000),
-    memo: i % 2 === 1 ? '很长很长很长很长很长很长很长的文字要展示但是要留下尾巴' : '简短备注文案',
-  });
-}
-
-const columns: ProColumns<TableListItem>[] = [
+const columns: ProColumns<API.MenuDto>[] = [
   {
-    title: '应用名称',
-    width: 80,
-    dataIndex: 'name',
-    render: (_) => <a>{_}</a>,
+    dataIndex: 'index',
+    valueType: 'indexBorder',
+    width: 48,
   },
   {
-    title: '容器数量',
-    dataIndex: 'containers',
-    align: 'right',
-    sorter: (a, b) => a.containers - b.containers,
+    title: '菜单编号',
+    dataIndex: 'menuCode',
   },
   {
-    title: '状态',
-    width: 80,
-    dataIndex: 'status',
-    initialValue: 'all',
-    valueEnum: {
-      all: { text: '全部', status: 'Default' },
-      close: { text: '关闭', status: 'Default' },
-      running: { text: '运行中', status: 'Processing' },
-      online: { text: '已上线', status: 'Success' },
-      error: { text: '异常', status: 'Error' },
-    },
+    title: '菜单名称',
+    dataIndex: 'menuName',
   },
   {
-    title: '创建者',
-    width: 80,
-    dataIndex: 'creator',
-    valueEnum: {
-      all: { text: '全部' },
-      付小小: { text: '付小小' },
-      曲丽丽: { text: '曲丽丽' },
-      林东东: { text: '林东东' },
-      陈帅帅: { text: '陈帅帅' },
-      兼某某: { text: '兼某某' },
-    },
+    title: '图标',
+    dataIndex: 'menuIcon',
+    search: false,
   },
   {
-    title: (
-      <>
-        创建时间
-        <Tooltip placement="top" title="这是一段描述">
-          <QuestionCircleOutlined style={{ marginLeft: 4 }} />
-        </Tooltip>
-      </>
-    ),
+    title: '排序',
+    dataIndex: 'menuSort',
+    search: false,
+  },
+  {
+    title: '上级菜单编号',
+    dataIndex: 'menuParentCode',
+  },
+  {
+    title: '菜单路由',
+    dataIndex: 'menuUrl',
+    width: 200,
+    search: false,
+  },
+  {
+    title: '菜单所属平台',
+    dataIndex: 'menuPlatform',
+  },
+  {
+    title: '是否可用',
+    dataIndex: 'isDeleted',
+  },
+  {
+    title: '创建时间',
     width: 140,
-    key: 'since',
-    dataIndex: 'createdAt',
+    dataIndex: 'creationTime',
     valueType: 'date',
-    sorter: (a, b) => a.createdAt - b.createdAt,
+    search: false,
   },
   {
     title: '备注',
-    dataIndex: 'memo',
+    dataIndex: 'menuDescription',
     ellipsis: true,
     copyable: true,
+    search: false,
   },
   {
     title: '操作',
@@ -115,28 +82,38 @@ const columns: ProColumns<TableListItem>[] = [
   },
 ];
 
+//@ts-ignore
 const MenuList = () => {
+  const [totalPage, setTotalPage] = useState(0);
+
+  //@ts-ignore
+  const getTableDataSource = async (params, sorter, filter) => {
+    // 表单搜索项会从 params 传入，传递给后端接口。
+    console.log(params);
+    console.log(sorter);
+    console.log(filter);
+    const menusResponse = await getListMenu(params);
+    setTotalPage(menusResponse.totalCount as number);
+    return menusResponse.items;
+  };
+
   return (
-    <ProTable<TableListItem>
+    <ProTable
+      headerTitle="菜单列表"
       columns={columns}
-      request={(params, sorter, filter) => {
-        // 表单搜索项会从 params 传入，传递给后端接口。
-        console.log(params, sorter, filter);
+      request={async (params, sorter, filter) => {
+        const dataSource = await getTableDataSource(params, sorter, filter);
         return Promise.resolve({
-          data: tableListDataSource,
+          data: dataSource,
           success: true,
         });
       }}
-      rowKey="key"
+      rowKey="id"
       pagination={{
-        showQuickJumper: true,
-      }}
-      search={{
-        optionRender: false,
-        collapsed: false,
+        pageSize: 10,
+        total: totalPage,
       }}
       dateFormatter="string"
-      headerTitle="表格标题"
       toolBarRender={() => [
         <Button key="show">查看日志</Button>,
         <Button key="out">
@@ -151,4 +128,5 @@ const MenuList = () => {
   );
 };
 
-export default MenuList;
+//@ts-ignore
+export default connect(({ MenuListModel }) => ({ MenuListModel }))(MenuList);

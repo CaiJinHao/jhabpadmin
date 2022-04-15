@@ -15,6 +15,7 @@ export default defineConfig({
   hash: true,
   antd: {},
   dva: {
+    immer: true,
     hmr: true,
   },
   layout: {
