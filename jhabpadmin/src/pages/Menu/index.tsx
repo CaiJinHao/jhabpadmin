@@ -1,8 +1,13 @@
 import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
+import MenuList from './components/List/index';
 
-const MenuList = () => {
-  return <PageContainer>菜单列表</PageContainer>;
+const MenuMgr = () => {
+  return (
+    <PageContainer>
+      <MenuList />
+    </PageContainer>
+  );
 };
 
-export default MenuList;
+export default MenuMgr;
