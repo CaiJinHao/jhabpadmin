@@ -41,10 +41,6 @@ const columns: ProColumns<API.MenuDto>[] = [
     search: false,
   },
   {
-    title: '菜单所属平台',
-    dataIndex: 'menuPlatform',
-  },
-  {
     title: '是否可用',
     dataIndex: 'isDeleted',
   },
@@ -68,9 +64,11 @@ const columns: ProColumns<API.MenuDto>[] = [
     key: 'option',
     valueType: 'option',
     render: () => [
-      <a key="link">链路</a>,
-      <a key="link2">报警</a>,
-      <a key="link3">监控</a>,
+      <a key="link">编辑</a>,
+      <a key="link2">删除</a>,
+      <a key="link3">详情</a>,
+      <a key="link3">禁用</a>,
+      <a key="link3">恢复</a>,
       <TableDropdown
         key="actionGroup"
         menus={[
