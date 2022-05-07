@@ -77,4 +77,5 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
+  mock: false,
 });
