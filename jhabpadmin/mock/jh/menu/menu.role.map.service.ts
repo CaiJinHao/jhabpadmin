@@ -10,7 +10,7 @@ const waitTime = (time: number = 100) => {
 
 export default {
   'GET /jhmenu/api/v1/MenuRoleMap/CurrentUserNavMenus': async (req: Request, res: Response) => {
-    // await waitTime(3000);
+    await waitTime(1000);
     res.send([
       {
         path: '',
@@ -18,8 +18,8 @@ export default {
         icon: 'HeartOutlined',
         routes: [
           {
-            path: '/main/view/equipmentgroup/index.html',
-            name: '你的菜单',
+            path: '/welcome',
+            name: '欢迎',
             icon: '',
             routes: [],
             code: 'A0101',
@@ -34,7 +34,7 @@ export default {
       {
         path: '',
         name: '系统设置',
-        icon: 'TableOutlined',
+        icon: 'SettingOutlined',
         routes: [
           {
             path: '/menu',
@@ -46,7 +46,7 @@ export default {
             sort: 1,
           },
           {
-            path: '/main/view/rolemenuand/index.html',
+            path: '/permission/menu',
             name: '菜单权限管理',
             icon: '',
             routes: [],
@@ -55,7 +55,7 @@ export default {
             sort: 2,
           },
           {
-            path: '/main/view/roleinterfaceand/index.html',
+            path: '/permission/interface',
             name: '接口权限管理',
             icon: '',
             routes: [],
@@ -64,7 +64,7 @@ export default {
             sort: 3,
           },
           {
-            path: '/main/view/user/index.html',
+            path: '/user',
             name: '用户管理',
             icon: '',
             routes: [],
@@ -73,7 +73,7 @@ export default {
             sort: 4,
           },
           {
-            path: '/main/view/organizationunit/index.html',
+            path: '/organization',
             name: '组织管理',
             icon: '',
             routes: [],
@@ -82,7 +82,7 @@ export default {
             sort: 5,
           },
           {
-            path: '/main/view/auditLogging/index.html',
+            path: '/auditLogging',
             name: '系统审计日志',
             icon: '',
             routes: [],

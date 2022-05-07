@@ -3,7 +3,6 @@ import { request } from 'umi';
 import * as IconMap from '@ant-design/icons';
 
 const createAntdIcon = (iconName: string) => {
-  console.log(iconName);
   return React.createElement(IconMap[iconName]);
 };
 
@@ -19,10 +18,12 @@ const replaceMenuIcon = (menus: API.CurrentUserNavMenus[]): API.CurrentUserNavMe
   }
 };
 
+/**菜单必须时 antd得菜单 图标不一样 */
 export const currentUserNavMenus = async (): Promise<API.CurrentUserNavMenus[]> => {
   const data = await request<API.CurrentUserNavMenus[]>(
     '/jhmenu/api/v1/MenuRoleMap/CurrentUserNavMenus',
     { method: 'GET' },
   );
+  console.log(data);
   return replaceMenuIcon(data);
 };
