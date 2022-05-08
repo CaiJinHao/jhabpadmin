@@ -76,8 +76,8 @@ const columns: ProColumns<API.MenuDto>[] = [
       <a key="link">编辑</a>,
       <a key="link2">删除</a>,
       <a key="link3">详情</a>,
-      <a key="link3">禁用</a>,
-      <a key="link3">恢复</a>,
+      <a key="link4">禁用</a>,
+      <a key="link5">恢复</a>,
       <TableDropdown
         key="actionGroup"
         menus={[
