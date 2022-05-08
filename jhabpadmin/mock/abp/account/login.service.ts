@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 export default {
-  'POST /identityapi/account/login': async (req: Request, res: Response) => {
+  'POST /identity/api/account/login': async (req: Request, res: Response) => {
     const { password, userNameOrEmailAddress, rememberMe, type } = req.body;
     if (password === 'KimHo@123' && userNameOrEmailAddress === 'admin') {
       res.send({
@@ -23,7 +23,7 @@ export default {
     });
   },
 
-  'GET /identityapi/account/logout': async (req: Request, res: Response) => {
+  'GET /identity/api/account/logout': async (req: Request, res: Response) => {
     res.send({ data: {}, success: true });
   },
 };

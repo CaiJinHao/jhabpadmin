@@ -21,7 +21,7 @@ const replaceMenuIcon = (menus: API.CurrentUserNavMenus[]): API.CurrentUserNavMe
 /**菜单必须时 antd得菜单 图标不一样 */
 export const currentUserNavMenus = async (): Promise<API.CurrentUserNavMenus[]> => {
   const data = await request<API.CurrentUserNavMenus[]>(
-    '/jhmenu/api/v1/MenuRoleMap/CurrentUserNavMenus',
+    `${Menu_API}/api/v1/MenuRoleMap/CurrentUserNavMenus`,
     { method: 'GET' },
   );
   console.log(data);

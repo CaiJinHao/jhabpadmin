@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 export default {
-  'GET /identityapi/v1/IdentityUser/info': async (req: Request, res: Response) => {
+  'GET /identity/api/v1/IdentityUser/info': async (req: Request, res: Response) => {
     res.send({
       userName: 'admin',
       normalizedUserName: 'ADMIN',

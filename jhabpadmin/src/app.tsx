@@ -16,9 +16,9 @@ const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
 const getGlobalLoginPath = () => {
-  const globalLoginPath = 'https://localhost:6201/Account/Login?ReturnUrlHash=';
+  const globalLoginPath = 'https://localhost:6201/Account/Login';
   const origin = window.origin;
-  return `${globalLoginPath}${origin}/welcome`;
+  return `${globalLoginPath}?returnUrl=${origin}&ReturnUrlHash=/welcome`;
 };
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -40,8 +40,9 @@ export async function getInitialState(): Promise<{
       const user = await queryCurrentUser();
       return user;
     } catch (error) {
-      // history.push(loginPath);
-      window.location.href = getGlobalLoginPath();
+      console.log(error);
+      history.push(loginPath);
+      // window.location.href = getGlobalLoginPath();
     }
     return undefined;
   };
