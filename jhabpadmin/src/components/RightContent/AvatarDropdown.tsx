@@ -6,7 +6,7 @@ import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 // import { outLogin } from '@/services/ant-design-pro/api';
-import { logout } from '@/services/abp/account/login.service';
+import { logout } from '@/services/jhabp/account/login.service';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 
 export type GlobalHeaderRightProps = {

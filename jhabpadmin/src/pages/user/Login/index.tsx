@@ -13,7 +13,7 @@ import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 
-import { login } from '@/services/abp/account/login.service';
+import { login } from '@/services/jhabp/account/login.service';
 
 import styles from './index.less';
 

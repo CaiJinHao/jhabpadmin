@@ -6,7 +6,7 @@ import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 // import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { currentUser as queryCurrentUser } from '@/services/abp/identity/identityuser.service';
+import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/identityuser.service';
 import { currentUserNavMenus as queryCurrentUserNavMenus } from '@/services/jhabp/menu/menu.role.map.service';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';

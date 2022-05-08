@@ -52,7 +52,6 @@ const columns: ProColumns<API.MenuDto>[] = [
     title: '是否可用',
     dataIndex: 'isDeleted',
     valueType: 'select',
-    request: request,
   },
   {
     title: '创建时间',
