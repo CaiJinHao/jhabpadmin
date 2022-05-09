@@ -1,10 +1,10 @@
-import { Button, Tooltip } from 'antd';
+import { Button, Switch } from 'antd';
 import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import { useState } from 'react';
 import { connect } from 'umi';
-import { getListMenu } from '@/services/jhabp/menu/menu.service';
+import { getListMenu, deleteMenuByid, recoverMenu } from '@/services/jhabp/menu/menu.service';
 import { getYesOrNo } from '@/services/jhabp/app.enums';
 
 const columns: ProColumns<API.MenuDto>[] = [
@@ -45,6 +45,27 @@ const columns: ProColumns<API.MenuDto>[] = [
     title: '是否可用',
     dataIndex: 'isDeleted',
     search: false,
+    render: (text, record, index, action) => {
+      console.log(text);
+      console.log(record);
+      console.log(index);
+      console.log(action);
+      return (
+        <Switch
+          checkedChildren="已启用"
+          unCheckedChildren="已禁用"
+          checked={!record.isDeleted}
+          onChange={async () => {
+            if (record.isDeleted) {
+              await recoverMenu(record.id);
+            } else {
+              await deleteMenuByid(record.id);
+            }
+            action?.reload();
+          }}
+        />
+      );
+    },
   },
   {
     title: '创建时间',
