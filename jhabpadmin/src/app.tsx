@@ -126,9 +126,16 @@ const proTableRequestInterceptor = (url: any, options: any) => {
     delete options.params.current;
     delete options.params.pageSize;
   }
+  console.log(options);
+
   return {
     url: url,
-    options: options,
+    options: {
+      ...options,
+      headers: {
+        Authorization: `bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkQ1OUYzMzFCNTk2Qjk3ODAxQzE4NENEODQ3RjY4MzlBIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2NTIwNzczNDYsImV4cCI6MTY4MzYxMzM0NiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NjIwMSIsImF1ZCI6IldlYkFwcFlvdXJOYW1lIiwiY2xpZW50X2lkIjoiV2ViQXBwWW91ck5hbWVfQXBwIiwic3ViIjoiM2EwM2IwMmQtNzAwMC0wYmFkLTMwOTktNTM2NGI1MDZhM2I1IiwiYXV0aF90aW1lIjoxNjUyMDc3MzQ2LCJpZHAiOiJsb2NhbCIsInJvbGUiOiJhZG1pbiIsInBob25lX251bWJlcl92ZXJpZmllZCI6IkZhbHNlIiwiZW1haWwiOiI1MzEwMDM1MzlAcXEuY29tIiwiZW1haWxfdmVyaWZpZWQiOiJGYWxzZSIsIm5hbWUiOiJhZG1pbiIsImlhdCI6MTY1MjA3NzM0Niwic2NvcGUiOlsiYWRkcmVzcyIsImVtYWlsIiwib3BlbmlkIiwicGhvbmUiLCJwcm9maWxlIiwicm9sZSIsIldlYkFwcFlvdXJOYW1lIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.VoqEpu7J2bGRdAvlybm5jfK0CRopUAutKApjTukj18nxOd3xNMvmKEOodEa9aNo4CWIZFJGbXr3Kdz3-rS1NjBvn0u7OTZld5DUvs767GEVaOtQu5_2FIDiLSS6It1KICSUlmpu4ktsmrbzr6hpZkqMcpOEqJ0A3E2iwAVlo7aw7t-XYnDVDNXxlklsxDn-CGfmV1M9hjRba7pDt656FQsNKRjaZCBEZiCqxiwV2mpooO9CApi_FykmhPAVOnKsC-zl9OyY39Z31v59UGwXh3vZTRBiDz0CtY5wCLAt1aFH8XraRYrqFqnf7nAx8eJvif6TBEDklOxxar95cAaQF0A`,
+      },
+    },
   };
 };
 

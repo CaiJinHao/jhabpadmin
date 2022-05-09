@@ -14,8 +14,8 @@ export const deleteMenuBykeys = async (keys: string[]): Promise<void> => {
   });
 };
 
-export const deleteMenuByid = async (id: string) => {
-  return await request(`${Menu_API}/api/v1/Menu/${id}`, {
+export const deleteMenuByid = async (id: string): Promise<void> => {
+  return await request<void>(`${Menu_API}/api/v1/Menu/${id}`, {
     method: 'DELETE',
   });
 };
