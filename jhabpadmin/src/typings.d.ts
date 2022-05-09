@@ -23,6 +23,11 @@ declare let ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: 'site' | undefine
 
 declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
 
+/**global  */
 declare const HOST_API: string;
 declare const Identity_API: string;
 declare const Menu_API: string;
+/** antd登录地址 */
+declare const LOGIN_PATH: string;
+/**授权登录地址 */
+declare const Authorize_Login_Path: string;

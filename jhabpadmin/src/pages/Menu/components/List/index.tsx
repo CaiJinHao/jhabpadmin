@@ -5,15 +5,8 @@ import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import { useState } from 'react';
 import { connect } from 'umi';
 import { getListMenu } from '@/services/jhabp/menu/menu.service';
-const request = async (params) => {
-  console.log(params);
-  return [
-    { label: params.text, value: 'all' },
-    { label: '未解决', value: 'open' },
-    { label: '已解决', value: 'closed' },
-    { label: '解决中', value: 'processing' },
-  ];
-};
+import { getYesOrNo } from '@/services/jhabp/app.enums';
+
 const columns: ProColumns<API.MenuDto>[] = [
   {
     dataIndex: 'index',
@@ -52,6 +45,7 @@ const columns: ProColumns<API.MenuDto>[] = [
     title: '是否可用',
     dataIndex: 'isDeleted',
     valueType: 'select',
+    request: getYesOrNo,
   },
   {
     title: '创建时间',

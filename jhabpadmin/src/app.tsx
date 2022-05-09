@@ -5,7 +5,6 @@ import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-// import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/identityuser.service';
 import { currentUserNavMenus as queryCurrentUserNavMenus } from '@/services/jhabp/menu/menu.role.map.service';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
@@ -13,13 +12,6 @@ import defaultSettings from '../config/defaultSettings';
 import { RequestConfig } from 'umi';
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
-
-const getGlobalLoginPath = () => {
-  const globalLoginPath = 'https://localhost:6201/Account/Login';
-  const origin = window.origin;
-  return `${globalLoginPath}?returnUrl=${origin}&ReturnUrlHash=/welcome`;
-};
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -40,14 +32,13 @@ export async function getInitialState(): Promise<{
       const user = await queryCurrentUser();
       return user;
     } catch (error) {
-      console.log(error);
-      history.push(loginPath);
-      // window.location.href = getGlobalLoginPath();
+      // history.push(LOGIN_PATH);
+      window.location.href = Authorize_Login_Path;
     }
     return undefined;
   };
   // 如果不是登录页面，执行
-  if (history.location.pathname !== loginPath) {
+  if (history.location.pathname !== LOGIN_PATH) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -73,8 +64,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
+      if (!initialState?.currentUser && location.pathname !== LOGIN_PATH) {
+        // history.push(LOGIN_PATH);
+        window.location.href = Authorize_Login_Path;
       }
     },
     links: isDev

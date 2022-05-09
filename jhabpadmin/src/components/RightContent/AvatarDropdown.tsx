@@ -21,13 +21,14 @@ const loginOut = async () => {
   const { query = {}, search, pathname } = history.location;
   const { redirect } = query;
   // Note: There may be security issues, please note
-  if (window.location.pathname !== '/user/login' && !redirect) {
-    history.replace({
-      pathname: '/user/login',
-      search: stringify({
-        redirect: pathname + search,
-      }),
-    });
+  if (window.location.pathname !== LOGIN_PATH && !redirect) {
+    window.location.href = Authorize_Login_Path;
+    // history.replace({
+    //   pathname: LOGIN_PATH,
+    //   search: stringify({
+    //     redirect: pathname + search,
+    //   }),
+    // });
   }
 };
 
