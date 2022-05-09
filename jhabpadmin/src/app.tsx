@@ -44,7 +44,7 @@ export async function getInitialState(): Promise<{
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
-      ...currentUser,
+      currentUser,
       settings: defaultSettings,
     };
   }
@@ -131,7 +131,7 @@ const proTableRequestInterceptor = (url: any, options: any) => {
   const authorizationInfoJson = sessionStorage.getItem(authorizationInfoStorageKey);
   if (authorizationInfoJson) {
     const authorizationInfo = JSON.parse(authorizationInfoJson);
-    console.log(authorizationInfo);
+    //TODO:判断是否过期
     return {
       url: url,
       options: {
