@@ -44,8 +44,7 @@ const columns: ProColumns<API.MenuDto>[] = [
   {
     title: '是否可用',
     dataIndex: 'isDeleted',
-    valueType: 'select',
-    request: getYesOrNo,
+    search: false,
   },
   {
     title: '创建时间',
@@ -80,6 +79,13 @@ const columns: ProColumns<API.MenuDto>[] = [
         ]}
       />,
     ],
+  },
+  {
+    title: '是否禁用',
+    dataIndex: 'deleted',
+    hideInTable: true,
+    valueType: 'select',
+    request: getYesOrNo,
   },
 ];
 
