@@ -5,13 +5,15 @@ import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/identityuser.service';
 import { currentUserNavMenus as queryCurrentUserNavMenus } from '@/services/jhabp/menu/menu.role.map.service';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
 import { RequestConfig } from 'umi';
+import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/identityuser.service';
+import { getUser, login } from '@/services/jhabp/auth.service';
 
 const isDev = process.env.NODE_ENV === 'development';
+const authorizationInfoStorageKey = 'AUTHORIZATIONINFO';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -28,21 +30,21 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    try {
-      const user = await queryCurrentUser();
-      return user;
-    } catch (error) {
-      // history.push(LOGIN_PATH);
-      window.location.href = Authorize_Login_Path;
+    const authorizationInfo = await getUser();
+    if (authorizationInfo) {
+      sessionStorage.setItem(authorizationInfoStorageKey, JSON.stringify(authorizationInfo));
+      return await queryCurrentUser();
+    } else {
+      await login();
+      return undefined;
     }
-    return undefined;
   };
   // 如果不是登录页面，执行
   if (history.location.pathname !== LOGIN_PATH) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
-      currentUser,
+      ...currentUser,
       settings: defaultSettings,
     };
   }
@@ -66,7 +68,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== LOGIN_PATH) {
         // history.push(LOGIN_PATH);
-        window.location.href = Authorize_Login_Path;
+        // window.location.href = Authorize_Login_Path;
       }
     },
     links: isDev
@@ -126,17 +128,24 @@ const proTableRequestInterceptor = (url: any, options: any) => {
     delete options.params.current;
     delete options.params.pageSize;
   }
-  console.log(options);
-
-  return {
-    url: url,
-    options: {
-      ...options,
-      headers: {
-        Authorization: `bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkQ1OUYzMzFCNTk2Qjk3ODAxQzE4NENEODQ3RjY4MzlBIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2NTIwNzczNDYsImV4cCI6MTY4MzYxMzM0NiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NjIwMSIsImF1ZCI6IldlYkFwcFlvdXJOYW1lIiwiY2xpZW50X2lkIjoiV2ViQXBwWW91ck5hbWVfQXBwIiwic3ViIjoiM2EwM2IwMmQtNzAwMC0wYmFkLTMwOTktNTM2NGI1MDZhM2I1IiwiYXV0aF90aW1lIjoxNjUyMDc3MzQ2LCJpZHAiOiJsb2NhbCIsInJvbGUiOiJhZG1pbiIsInBob25lX251bWJlcl92ZXJpZmllZCI6IkZhbHNlIiwiZW1haWwiOiI1MzEwMDM1MzlAcXEuY29tIiwiZW1haWxfdmVyaWZpZWQiOiJGYWxzZSIsIm5hbWUiOiJhZG1pbiIsImlhdCI6MTY1MjA3NzM0Niwic2NvcGUiOlsiYWRkcmVzcyIsImVtYWlsIiwib3BlbmlkIiwicGhvbmUiLCJwcm9maWxlIiwicm9sZSIsIldlYkFwcFlvdXJOYW1lIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.VoqEpu7J2bGRdAvlybm5jfK0CRopUAutKApjTukj18nxOd3xNMvmKEOodEa9aNo4CWIZFJGbXr3Kdz3-rS1NjBvn0u7OTZld5DUvs767GEVaOtQu5_2FIDiLSS6It1KICSUlmpu4ktsmrbzr6hpZkqMcpOEqJ0A3E2iwAVlo7aw7t-XYnDVDNXxlklsxDn-CGfmV1M9hjRba7pDt656FQsNKRjaZCBEZiCqxiwV2mpooO9CApi_FykmhPAVOnKsC-zl9OyY39Z31v59UGwXh3vZTRBiDz0CtY5wCLAt1aFH8XraRYrqFqnf7nAx8eJvif6TBEDklOxxar95cAaQF0A`,
+  const authorizationInfoJson = sessionStorage.getItem(authorizationInfoStorageKey);
+  if (authorizationInfoJson) {
+    const authorizationInfo = JSON.parse(authorizationInfoJson);
+    console.log(authorizationInfo);
+    return {
+      url: url,
+      options: {
+        ...options,
+        headers: {
+          Authorization: `${authorizationInfo.token_type} ${authorizationInfo.access_token}`,
+        },
       },
-    },
-  };
+    };
+  } else {
+    login();
+    throw 'login';
+    // return {};
+  }
 };
 
 export const request: RequestConfig = {
