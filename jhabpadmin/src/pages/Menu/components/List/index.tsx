@@ -1,12 +1,11 @@
 import { Button, Switch, Table } from 'antd';
-import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, UndoOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { connect } from 'umi';
 import { getListMenu, deleteMenuByid, recoverMenu } from '@/services/jhabp/menu/menu.service';
 import { getYesOrNo } from '@/services/jhabp/app.enums';
-import { ProFormInstance } from '@ant-design/pro-form';
 
 //@ts-ignore
 const MenuList = () => {
@@ -76,20 +75,7 @@ const MenuList = () => {
       width: 180,
       key: 'option',
       valueType: 'option',
-      render: () => [
-        <a key="link">编辑</a>,
-        <a key="link2">删除</a>,
-        <a key="link3">详情</a>,
-        <a key="link4">禁用</a>,
-        <a key="link5">恢复</a>,
-        <TableDropdown
-          key="actionGroup"
-          menus={[
-            { key: 'copy', name: '复制' },
-            { key: 'delete', name: '删除' },
-          ]}
-        />,
-      ],
+      render: () => [<a key="edit">编辑</a>, <a key="detail">详情</a>],
     },
     {
       title: '是否禁用',
@@ -151,12 +137,19 @@ const MenuList = () => {
       dateFormatter="string"
       toolBarRender={() => [
         <Button type="primary" key="create" shape="round" onClick={create}>
+          <PlusOutlined />
           创建
         </Button>,
+        <Button type="default" key="recover_keys" shape="round" onClick={deleteByKeys}>
+          <UndoOutlined />
+          批量启用
+        </Button>,
         <Button type="default" key="delete_keys" shape="round" danger={true} onClick={deleteByKeys}>
+          <DeleteOutlined />
           批量禁用
         </Button>,
       ]}
+      search={{ labelWidth: 100, span: 6 }}
     />
   );
 };
