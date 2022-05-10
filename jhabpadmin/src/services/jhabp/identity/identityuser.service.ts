@@ -6,6 +6,5 @@ export const currentUser = async (): Promise<API.IdentityUser> => {
   });
   userInfo.avatar =
     'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png';
-  console.log(userInfo);
   return userInfo;
 };

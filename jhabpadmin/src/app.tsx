@@ -10,10 +10,9 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
 import { RequestConfig } from 'umi';
 import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/identityuser.service';
-import { getUser, login } from '@/services/jhabp/auth.service';
+import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 
 const isDev = process.env.NODE_ENV === 'development';
-const authorizationInfoStorageKey = 'AUTHORIZATIONINFO';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -32,7 +31,6 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     const authorizationInfo = await getUser();
     if (authorizationInfo) {
-      sessionStorage.setItem(authorizationInfoStorageKey, JSON.stringify(authorizationInfo));
       return await queryCurrentUser();
     } else {
       await login();
@@ -65,6 +63,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
+      console.log(location);
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== LOGIN_PATH) {
         // history.push(LOGIN_PATH);
@@ -128,24 +127,16 @@ const proTableRequestInterceptor = (url: any, options: any) => {
     delete options.params.current;
     delete options.params.pageSize;
   }
-  const authorizationInfoJson = sessionStorage.getItem(authorizationInfoStorageKey);
-  if (authorizationInfoJson) {
-    const authorizationInfo = JSON.parse(authorizationInfoJson);
-    //TODO:判断是否过期
-    return {
-      url: url,
-      options: {
-        ...options,
-        headers: {
-          Authorization: `${authorizationInfo.token_type} ${authorizationInfo.access_token}`,
-        },
-      },
-    };
-  } else {
-    login();
-    throw 'login';
-    // return {};
-  }
+  // const authorizationInfo = getToken();
+  return {
+    url: url,
+    options: {
+      ...options,
+      // headers: {
+      //   Authorization: `${authorizationInfo.token_type} ${authorizationInfo.access_token}`,
+      // },
+    },
+  };
 };
 
 export const request: RequestConfig = {

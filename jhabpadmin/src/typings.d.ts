@@ -31,3 +31,4 @@ declare const Menu_API: string;
 declare const LOGIN_PATH: string;
 /**授权登录地址 */
 declare const Authorize_Login_Path: string;
+declare const AuthorizationInfoStorageKey: string;

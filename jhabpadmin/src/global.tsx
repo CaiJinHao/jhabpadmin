@@ -99,3 +99,5 @@ window['LOGIN_PATH'] = '/user/login';
 window[
   'Authorize_Login_Path'
 ] = `https://localhost:6201/Account/Login?returnUrl=${window.origin}&ReturnUrlHash=/welcome`;
+
+window['AuthorizationInfoStorageKey'] = 'AUTHORIZATIONINFO';
