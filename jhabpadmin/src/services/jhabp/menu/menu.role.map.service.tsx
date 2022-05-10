@@ -24,6 +24,5 @@ export const currentUserNavMenus = async (): Promise<API.CurrentUserNavMenus[]> 
     `${Menu_API}/api/v1/MenuRoleMap/CurrentUserNavMenus`,
     { method: 'GET' },
   );
-  console.log(data);
   return replaceMenuIcon(data);
 };

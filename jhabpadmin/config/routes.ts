@@ -65,7 +65,7 @@
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/menu',
   },
   {
     component: './404',

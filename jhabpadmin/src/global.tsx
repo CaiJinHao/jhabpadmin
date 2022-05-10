@@ -98,6 +98,6 @@ window['Menu_API'] = '/menu';
 window['LOGIN_PATH'] = '/user/login';
 window[
   'Authorize_Login_Path'
-] = `https://localhost:6201/Account/Login?returnUrl=${window.origin}&ReturnUrlHash=/welcome`;
+] = `https://localhost:6201/Account/Login?returnUrl=${window.origin}&ReturnUrlHash=/menu`;
 
 window['AuthorizationInfoStorageKey'] = 'AUTHORIZATIONINFO';

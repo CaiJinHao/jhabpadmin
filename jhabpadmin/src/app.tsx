@@ -34,7 +34,7 @@ export async function getInitialState(): Promise<{
     } catch (error) {
       console.log(error);
       window.location.href = Authorize_Login_Path; //这种跳转得方式必须是同源
-      return;
+      return undefined;
     }
     // const authorizationInfo = await getUser();
     // if (authorizationInfo) {
