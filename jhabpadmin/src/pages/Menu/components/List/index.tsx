@@ -1,4 +1,4 @@
-import { Button, Switch } from 'antd';
+import { Button, Switch, Table } from 'antd';
 import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
@@ -11,13 +11,9 @@ import { ProFormInstance } from '@ant-design/pro-form';
 //@ts-ignore
 const MenuList = () => {
   const [totalPage, setTotalPage] = useState(0);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const columns: ProColumns<API.MenuDto>[] = [
-    {
-      dataIndex: 'index',
-      valueType: 'indexBorder',
-      width: 48,
-    },
     {
       title: '菜单编号',
       dataIndex: 'menuCode',
@@ -121,20 +117,32 @@ const MenuList = () => {
     console.log(filter);
     const menusResponse = await getListMenu(params);
     setTotalPage(menusResponse.totalCount);
-    return menusResponse.items;
+    return {
+      data: menusResponse.items,
+      success: true,
+    };
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (srk: any) => setSelectedRowKeys(srk),
+    selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
+  };
+
+  const deleteByKeys = () => {
+    console.log('deleteByKeys');
+    console.log(selectedRowKeys);
+  };
+
+  const create = () => {
+    console.log('create');
   };
 
   return (
-    <ProTable
-      headerTitle="菜单列表"
+    <ProTable<API.MenuDto>
       columns={columns}
-      request={async (params, sorter, filter) => {
-        const dataSource = await getTableDataSource(params, sorter, filter);
-        return Promise.resolve({
-          data: dataSource,
-          success: true,
-        });
-      }}
+      rowSelection={rowSelection}
+      request={(params, sorter, filter) => getTableDataSource(params, sorter, filter)}
       rowKey="id"
       pagination={{
         pageSize: 10,
@@ -142,13 +150,11 @@ const MenuList = () => {
       }}
       dateFormatter="string"
       toolBarRender={() => [
-        <Button key="show">查看日志</Button>,
-        <Button key="out">
-          导出数据
-          <DownOutlined />
+        <Button type="primary" key="create" shape="round" onClick={create}>
+          创建
         </Button>,
-        <Button type="primary" key="primary">
-          创建应用
+        <Button type="default" key="delete_keys" shape="round" danger={true} onClick={deleteByKeys}>
+          批量禁用
         </Button>,
       ]}
     />
