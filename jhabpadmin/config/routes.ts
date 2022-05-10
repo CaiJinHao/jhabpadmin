@@ -57,15 +57,15 @@
     component: './TableList',
   },
   {
-    path: '/',
-    redirect: '/welcome',
-  },
-  {
     path: '/menu',
     name: 'menu',
     icon: 'table',
     component: './menu',
     hideInMenu: true,
+  },
+  {
+    path: '/',
+    redirect: '/welcome',
   },
   {
     component: './404',

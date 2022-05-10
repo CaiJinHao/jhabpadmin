@@ -7,6 +7,14 @@ import { connect } from 'umi';
 import { getListMenu, deleteMenuByid, recoverMenu } from '@/services/jhabp/menu/menu.service';
 import { getYesOrNo } from '@/services/jhabp/app.enums';
 
+const handlerIsDeleted = async (record: any) => {
+  if (record.isDeleted) {
+    await recoverMenu(record.id);
+  } else {
+    await deleteMenuByid(record.id);
+  }
+};
+
 const columns: ProColumns<API.MenuDto>[] = [
   {
     dataIndex: 'index',
@@ -46,22 +54,15 @@ const columns: ProColumns<API.MenuDto>[] = [
     dataIndex: 'isDeleted',
     search: false,
     render: (text, record, index, action) => {
-      console.log(text);
-      console.log(record);
-      console.log(index);
-      console.log(action);
       return (
         <Switch
           checkedChildren="已启用"
           unCheckedChildren="已禁用"
           checked={!record.isDeleted}
-          onChange={async () => {
-            if (record.isDeleted) {
-              await recoverMenu(record.id);
-            } else {
-              await deleteMenuByid(record.id);
-            }
-            action?.reload();
+          onChange={() => {
+            handlerIsDeleted(record).then(() => {
+              action?.reload();
+            });
           }}
         />
       );
