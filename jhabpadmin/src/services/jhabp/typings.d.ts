@@ -53,7 +53,7 @@ declare namespace API {
     constructor(initialValues?: Partial<ListResultDto<T>>);
   }
   export declare class PagedResultDto<T> extends ListResultDto<T> {
-    totalCount?: number;
+    totalCount: number;
     constructor(initialValues?: Partial<PagedResultDto<T>>);
   }
   export declare class LimitedResultRequestDto {

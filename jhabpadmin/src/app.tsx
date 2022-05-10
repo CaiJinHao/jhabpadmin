@@ -29,13 +29,15 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
+    //同源方式
     try {
       return await queryCurrentUser();
     } catch (error) {
       console.log(error);
-      window.location.href = Authorize_Login_Path; //这种跳转得方式必须是同源
+      window.location.href = Authorize_Login_Path;
       return undefined;
     }
+    //非同源方式、需要携带accesstoken
     // const authorizationInfo = await getUser();
     // if (authorizationInfo) {
     //   return await queryCurrentUser();

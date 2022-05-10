@@ -69,7 +69,6 @@ const Login: React.FC = () => {
         rememberMe: values.autoLogin,
         type: type,
       });
-      console.log(loginRes);
       if (loginRes.result === 1) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
