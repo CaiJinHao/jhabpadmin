@@ -16,6 +16,7 @@ const MenuList = () => {
     {
       title: '菜单编号',
       dataIndex: 'menuCode',
+      sorter: true,
     },
     {
       title: '菜单名称',
@@ -27,13 +28,20 @@ const MenuList = () => {
       search: false,
     },
     {
-      title: '排序',
+      title: '序号',
       dataIndex: 'menuSort',
       search: false,
+      sorter: true,
     },
     {
       title: '上级菜单编号',
       dataIndex: 'menuParentCode',
+      filters: [
+        { text: 'A01', value: 'A01' },
+        { text: 'A02', value: 'A02' },
+      ],
+      filterSearch: true,
+      // onFilter: (value, record) => record.menuParentCode.includes(value),
     },
     {
       title: '菜单路由',
@@ -62,6 +70,7 @@ const MenuList = () => {
       dataIndex: 'creationTime',
       valueType: 'date',
       search: false,
+      sorter: true,
     },
     {
       title: '备注',
@@ -101,7 +110,15 @@ const MenuList = () => {
     console.log(params);
     console.log(sorter);
     console.log(filter);
-    const menusResponse = await getListMenu(params);
+    const sortings = [];
+    for (const key in sorter) {
+      if (Object.prototype.hasOwnProperty.call(sorter, key)) {
+        const val = sorter[key] as string;
+        sortings.push(`${key} ${val.replace('end', '')}`);
+      }
+    }
+    const inputParams = { ...params, sorting: sortings.join(',') };
+    const menusResponse = await getListMenu(inputParams);
     setTotalPage(menusResponse.totalCount);
     return {
       data: menusResponse.items,

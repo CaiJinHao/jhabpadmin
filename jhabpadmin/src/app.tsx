@@ -136,6 +136,7 @@ const proTableRequestInterceptor = (url: any, options: any) => {
     delete options.params.current;
     delete options.params.pageSize;
   }
+  console.log(options);
   // const authorizationInfo = getToken();
   return {
     url: url,
