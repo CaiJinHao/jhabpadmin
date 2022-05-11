@@ -1,17 +1,19 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { SettingDrawer } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import type { RunTimeLayoutConfig } from 'umi';
+import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
+import { getLocale, addLocale } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { currentUserNavMenus as queryCurrentUserNavMenus } from '@/services/jhabp/menu/menu.role.map.service';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
-import { RequestConfig } from 'umi';
+import type { Context, OnionMiddleware, RequestInterceptor, RequestOptionsInit } from 'umi-request';
 import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/identityuser.service';
-import { getUser, login, getToken } from '@/services/jhabp/auth.service';
-
+import { getApplicationConfiguration } from './services/jhabp/abp.service';
+import Cookies from 'universal-cookie';
+import type { InitialStateType } from './model';
+// import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 const isDev = process.env.NODE_ENV === 'development';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -22,12 +24,19 @@ export const initialStateConfig = {
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
-export async function getInitialState(): Promise<{
-  settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
-  loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
-}> {
+export async function getInitialState(): Promise<InitialStateType> {
+  const applicationConfiguration = await getApplicationConfiguration();
+  /** 添加后端本地化文本 */
+  const appendLocalization = async () => {
+    const currentLocale = getLocale() as string;
+    for (const key in new Object(applicationConfiguration.localization.values)) {
+      addLocale(currentLocale, applicationConfiguration.localization.values[key], {
+        momentLocale: currentLocale,
+        antd: currentLocale.replace('-', ''),
+      });
+    }
+  };
+  await appendLocalization();
   const fetchUserInfo = async () => {
     //同源方式
     try {
@@ -50,12 +59,14 @@ export async function getInitialState(): Promise<{
   if (history.location.pathname !== LOGIN_PATH) {
     const currentUser = await fetchUserInfo();
     return {
+      applicationConfiguration,
       fetchUserInfo,
       currentUser,
       settings: defaultSettings,
     };
   }
   return {
+    applicationConfiguration,
     fetchUserInfo,
     settings: defaultSettings,
   };
@@ -64,6 +75,7 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    locale: 'zh-CN',
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
@@ -91,7 +103,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
           </Link>,
         ]
       : [],
-    menuHeaderRender: undefined,
+    // menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
@@ -106,7 +118,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
               enableDarkTheme
               settings={initialState?.settings}
               onSettingChange={(settings: any) => {
-                setInitialState((preInitialState) => ({
+                setInitialState((preInitialState: any) => ({
                   ...preInitialState,
                   settings,
                 }));
@@ -149,6 +161,33 @@ const proTableRequestInterceptor = (url: any, options: any) => {
   };
 };
 
+const xsrfAppendRequestInterceptor: RequestInterceptor = (
+  url: string,
+  options: RequestOptionsInit,
+) => {
+  const cookie = new Cookies();
+  console.log(cookie);
+  return {
+    url,
+    options: {
+      ...options,
+      headers: {
+        RequestVerificationToken: cookie.get('XSRF-TOKEN'),
+      },
+    },
+  };
+};
+
+const requestMiddleware: OnionMiddleware = async (ctx: Context, next: () => void) => {
+  const { req } = ctx;
+  console.log(req);
+  await next();
+  const { res } = ctx;
+  console.log(res);
+};
+
+//先走拦截器、后走中间件
 export const request: RequestConfig = {
-  requestInterceptors: [proTableRequestInterceptor],
+  requestInterceptors: [proTableRequestInterceptor, xsrfAppendRequestInterceptor],
+  middlewares: [requestMiddleware],
 };
