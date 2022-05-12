@@ -5,6 +5,7 @@ import { useModel, SelectLang } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
+import { getLocale, setLocale } from 'umi';
 
 export type SiderTheme = 'light' | 'dark';
 
@@ -21,6 +22,16 @@ const GlobalHeaderRight: React.FC = () => {
   if ((navTheme === 'dark' && layout === 'top') || layout === 'mix') {
     className = `${styles.right}  ${styles.dark}`;
   }
+
+  const changeLang = ({ key }: any): void => {
+    setLocale(key, true);
+  };
+
+  const getLocalData = (defaultLangUConfig: any[]): any[] => {
+    console.log(defaultLangUConfig);
+    return defaultLangUConfig;
+  };
+
   return (
     <Space className={className}>
       <HeaderSearch
@@ -56,7 +67,11 @@ const GlobalHeaderRight: React.FC = () => {
         <QuestionCircleOutlined />
       </span>
       <Avatar />
-      <SelectLang className={styles.action} />
+      <SelectLang
+        className={styles.action}
+        onItemClick={changeLang}
+        postLocalesData={getLocalData}
+      />
     </Space>
   );
 };
