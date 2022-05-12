@@ -26,13 +26,13 @@ export const initialStateConfig = {
  * */
 export async function getInitialState(): Promise<InitialStateType> {
   const applicationConfiguration = await getApplicationConfiguration();
-  /** 添加后端本地化文本 */
+  /* TODO:添加后端本地化文本 ，本地化文本对应需要和后台对应*/
   const appendLocalization = async () => {
     const currentLocale = getLocale() as string;
     for (const key in new Object(applicationConfiguration.localization.values)) {
       addLocale(currentLocale, applicationConfiguration.localization.values[key], {
-        momentLocale: currentLocale,
-        antd: currentLocale.replace('-', ''),
+        momentLocale: 'zh-cn',
+        antd: 'zhCN',
       });
     }
   };
