@@ -6,6 +6,7 @@ import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 import { getLocale, setLocale } from 'umi';
+import { switchLanguage } from '@/services/jhabp/abp.service';
 
 export type SiderTheme = 'light' | 'dark';
 
@@ -23,12 +24,29 @@ const GlobalHeaderRight: React.FC = () => {
     className = `${styles.right}  ${styles.dark}`;
   }
 
-  const changeLang = ({ key }: any): void => {
+  const changeLang = async ({ key }: any): void => {
+    let adminlanguage = key as string; //后台所对应的语言
+    switch (key) {
+      case 'zh-CN':
+        {
+          console.log('中文(简体)');
+          adminlanguage = 'zh-Hans';
+        }
+        break;
+      case 'zh-TS':
+        {
+          console.log('中文(繁体)');
+          adminlanguage = 'zh-Hant';
+        }
+        break;
+    }
+    console.log(adminlanguage);
+    await switchLanguage(adminlanguage);
     setLocale(key, true);
   };
 
   const getLocalData = (defaultLangUConfig: any[]): any[] => {
-    console.log(defaultLangUConfig);
+    //TODO:需要添加新的需要的时候，在locales文件夹中添加文件，并在这里添加语言列表
     return defaultLangUConfig;
   };
 

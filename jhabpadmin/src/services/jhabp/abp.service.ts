@@ -11,3 +11,9 @@ export const getApplicationConfiguration = async (): Promise<ApplicationConfigur
     `${Identity_API}/api/abp/application-configuration`,
   );
 };
+
+export const switchLanguage = async (language: string) => {
+  return await request(
+    `${Identity_API}/Abp/Languages/Switch?culture=${language}&uiCulture=${language}&returnUrl=`,
+  );
+};
