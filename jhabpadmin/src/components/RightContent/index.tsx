@@ -1,11 +1,10 @@
 import { Space } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { useModel, SelectLang } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
-import { getLocale, setLocale } from 'umi';
+import { getLocale, setLocale, useModel, SelectLang } from 'umi';
 import { switchLanguage } from '@/services/jhabp/abp.service';
 
 export type SiderTheme = 'light' | 'dark';
@@ -24,24 +23,8 @@ const GlobalHeaderRight: React.FC = () => {
     className = `${styles.right}  ${styles.dark}`;
   }
 
-  const changeLang = async ({ key }: any): void => {
-    let adminlanguage = key as string; //后台所对应的语言
-    switch (key) {
-      case 'zh-CN':
-        {
-          console.log('中文(简体)');
-          adminlanguage = 'zh-Hans';
-        }
-        break;
-      case 'zh-TS':
-        {
-          console.log('中文(繁体)');
-          adminlanguage = 'zh-Hant';
-        }
-        break;
-    }
-    console.log(adminlanguage);
-    await switchLanguage(adminlanguage);
+  const changeLang = async ({ key }: any) => {
+    await switchLanguage(key);
     setLocale(key, true);
   };
 

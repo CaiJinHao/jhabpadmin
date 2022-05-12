@@ -1,8 +1,7 @@
 import { SettingDrawer } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
-import { getLocale, addLocale } from 'umi';
-import { history, Link } from 'umi';
+import { getLocale, addLocale, setLocale, history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { currentUserNavMenus as queryCurrentUserNavMenus } from '@/services/jhabp/menu/menu.role.map.service';
@@ -13,6 +12,9 @@ import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/ident
 import { getApplicationConfiguration } from './services/jhabp/abp.service';
 import Cookies from 'universal-cookie';
 import type { InitialStateType } from './model';
+import type { ApplicationConfigurationDto } from '@/lib/abp/asp-net-core/mvc/application-configurations/models';
+import { switchLanguage } from '@/services/jhabp/abp.service';
+
 // import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -22,18 +24,32 @@ export const initialStateConfig = {
 };
 
 /**
- 语言的设置，取决于浏览器设置=>语言=》第一顺序位=》中文(简体)
- Accept-Language: zh-CN,zh;q=0.9
- */
-
-/**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<InitialStateType> {
-  const applicationConfiguration = await getApplicationConfiguration();
+  /**
+ 语言的设置，取决于浏览器设置=>语言=》第一顺序位=》中文(简体)
+ Accept-Language: zh-CN,zh;q=0.9
+ */
   /* TODO:添加后端本地化文本 ，本地化文本对应需要和后台对应*/
-  const appendLocalization = async () => {
+  const appendLocalization = async (applicationConfiguration: ApplicationConfigurationDto) => {
     const currentLocale = getLocale() as string;
+    console.log(currentLocale);
+    //设置匹配不上的区域语言
+    switch (currentLocale) {
+      case 'zh':
+      case 'zh-CN':
+        {
+          setLocale('zh-CN', false);
+        }
+        break;
+      case 'zh-TW':
+      case 'zh-HK':
+        {
+          setLocale('zh-CN', false);
+        }
+        break;
+    }
     for (const key in new Object(applicationConfiguration.localization.values)) {
       addLocale(currentLocale, applicationConfiguration.localization.values[key], {
         momentLocale: currentLocale.toLowerCase(),
@@ -41,7 +57,9 @@ export async function getInitialState(): Promise<InitialStateType> {
       });
     }
   };
-  await appendLocalization();
+  const applicationConfiguration = await getApplicationConfiguration();
+  console.log(applicationConfiguration);
+  await appendLocalization(applicationConfiguration);
   const fetchUserInfo = async () => {
     //同源方式
     try {
