@@ -22,6 +22,11 @@ export const initialStateConfig = {
 };
 
 /**
+ 语言的设置，取决于浏览器设置=>语言=》第一顺序位=》中文(简体)
+ Accept-Language: zh-CN,zh;q=0.9
+ */
+
+/**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<InitialStateType> {
@@ -31,8 +36,8 @@ export async function getInitialState(): Promise<InitialStateType> {
     const currentLocale = getLocale() as string;
     for (const key in new Object(applicationConfiguration.localization.values)) {
       addLocale(currentLocale, applicationConfiguration.localization.values[key], {
-        momentLocale: 'zh-cn',
-        antd: 'zhCN',
+        momentLocale: currentLocale.toLowerCase(),
+        antd: currentLocale.replace('-', ''),
       });
     }
   };

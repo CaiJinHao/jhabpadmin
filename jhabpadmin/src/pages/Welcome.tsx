@@ -16,7 +16,7 @@ const Welcome: React.FC = () => {
   const intl = useIntl();
   return (
     <PageContainer>
-      {/* <h1>{intl.formatMessage({ id: 'AccessDenied', defaultMessage: '啥也不是' })}</h1> */}
+      <h1>{intl.formatMessage({ id: 'AccessDenied', defaultMessage: '啥也不是' })}</h1>
       <Card>
         <Alert
           message={intl.formatMessage({

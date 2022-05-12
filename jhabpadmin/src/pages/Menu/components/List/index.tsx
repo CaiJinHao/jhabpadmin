@@ -12,6 +12,16 @@ const MenuList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
+  // columns functions
+  const handlerIsDeleted = async (record: any, action: any) => {
+    if (record.isDeleted) {
+      await recoverMenu(record.id);
+    } else {
+      await deleteMenuByid(record.id);
+    }
+    action?.reload();
+  };
+
   const columns: ProColumns<API.MenuDto>[] = [
     {
       title: '菜单编号',
@@ -34,7 +44,7 @@ const MenuList = () => {
       sorter: true,
     },
     {
-      title: '上级菜单编号',
+      title: '上级菜单',
       dataIndex: 'menuParentCode',
       filters: [
         { text: 'A01', value: 'A01' },
@@ -95,24 +105,15 @@ const MenuList = () => {
     },
   ];
 
-  const handlerIsDeleted = async (record: any, action: any) => {
-    if (record.isDeleted) {
-      await recoverMenu(record.id);
-    } else {
-      await deleteMenuByid(record.id);
-    }
-    action?.reload();
-  };
+  //table functions
 
-  //@ts-ignore
-  const getTableDataSource = async (params, sorter, filter) => {
+  const getTableDataSource = async (params: any, sorter: any, filter: any) => {
     // 表单搜索项会从 params 传入，传递给后端接口。
-    console.log(params);
-    console.log(sorter);
-    console.log(filter);
     const sortings = [];
-    for (const key in sorter) {
-      if (Object.prototype.hasOwnProperty.call(sorter, key)) {
+    console.log(filter);
+    const _sorter = new Object(sorter);
+    for (const key in _sorter) {
+      if (_sorter.hasOwnProperty(key)) {
         const val = sorter[key] as string;
         sortings.push(`${key} ${val.replace('end', '')}`);
       }
