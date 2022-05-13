@@ -151,12 +151,13 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         </>
       );
     },
-    menu: {
-      locale: false,
-      request: async () => {
-        return await queryCurrentUserNavMenus();
-      },
-    },
+    //todo:远程菜单
+    // menu: {
+    //   locale: false,
+    //   request: async () => {
+    //     return await queryCurrentUserNavMenus();
+    //   },
+    // },
     ...initialState?.settings,
   };
 };
