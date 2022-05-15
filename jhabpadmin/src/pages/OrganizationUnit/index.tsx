@@ -144,7 +144,7 @@ const OrganizationUnitList = () => {
             批量禁用
           </Button>,
         ]}
-        search={{ labelWidth: 100, span: 6 }}
+        search={{ labelWidth: 100 }}
       />
     </PageContainer>
   );

@@ -1,5 +1,5 @@
 import { Button, Switch, Table } from 'antd';
-import { PlusOutlined, DeleteOutlined, UndoOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, UndoOutlined, TransactionOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import React, { useState } from 'react';
@@ -36,7 +36,7 @@ const MenuList = () => {
     {
       title: '图标',
       dataIndex: 'menuIcon',
-      search: false,
+      hideInSearch: true,
       render: (text, record, index, action) => {
         if (record.menuIcon) {
           return React.createElement(icons[record.menuIcon]);
@@ -48,7 +48,7 @@ const MenuList = () => {
     {
       title: '序号',
       dataIndex: 'menuSort',
-      search: false,
+      hideInSearch: true,
       sorter: true,
     },
     {
@@ -63,13 +63,12 @@ const MenuList = () => {
     {
       title: '菜单路由',
       dataIndex: 'menuUrl',
-      width: 200,
       search: false,
     },
     {
       title: '是否可用',
       dataIndex: 'isDeleted',
-      search: false,
+      hideInSearch: true,
       render: (text, record, index, action) => {
         return (
           <Switch
@@ -83,22 +82,19 @@ const MenuList = () => {
     },
     {
       title: '创建时间',
-      width: 140,
       dataIndex: 'creationTime',
       valueType: 'date',
-      search: false,
+      hideInSearch: true,
       sorter: true,
     },
     {
       title: '备注',
       dataIndex: 'menuDescription',
-      ellipsis: true,
       copyable: true,
-      search: false,
+      hideInSearch: true,
     },
     {
       title: '操作',
-      width: 180,
       key: 'option',
       valueType: 'option',
       render: () => [<a key="edit">编辑</a>, <a key="detail">详情</a>],
@@ -137,7 +133,6 @@ const MenuList = () => {
   const rowSelection = {
     selectedRowKeys,
     onChange: (srk: any) => setSelectedRowKeys(srk),
-    selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
   };
 
   const deleteByKeys = () => {
@@ -174,7 +169,7 @@ const MenuList = () => {
           批量禁用
         </Button>,
       ]}
-      search={{ labelWidth: 100, span: 6 }}
+      search={{ labelWidth: 100 }}
     />
   );
 };
