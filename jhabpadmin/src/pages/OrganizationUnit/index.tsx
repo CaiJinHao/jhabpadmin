@@ -4,47 +4,37 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, DeleteOutlined, UndoOutlined } from '@ant-design/icons';
-import { getListMenu, deleteMenuByid, recoverMenu } from '@/services/jhabp/menu/menu.service';
+import { getYesOrNo } from '@/services/jhabp/app.enums';
+import * as organizationService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 
 const OrganizationUnitList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const columns: ProColumns<API.MenuDto>[] = [
+  // columns functions
+  const handlerIsDeleted = async (record: any, action: any) => {
+    if (record.isDeleted) {
+      await organizationService.RecoverAsyncOrganizationUnit(record.id);
+    } else {
+      await organizationService.DeleteAsyncOrganizationUnitById(record.id);
+    }
+    action?.reload();
+  };
+
+  //需要展示得字段、需要搜索得字段
+  const columns: ProColumns<API.JhIdentity.OrganizationUnitDto>[] = [
     {
-      title: '菜单编号',
-      dataIndex: 'menuCode',
+      title: '组织编号',
+      dataIndex: 'code',
       sorter: true,
     },
     {
-      title: '菜单名称',
-      dataIndex: 'menuName',
+      title: '组织名称',
+      dataIndex: 'displayName',
     },
     {
-      title: '图标',
-      dataIndex: 'menuIcon',
-      search: false,
-    },
-    {
-      title: '序号',
-      dataIndex: 'menuSort',
-      search: false,
-      sorter: true,
-    },
-    {
-      title: '上级菜单',
-      dataIndex: 'menuParentCode',
-      filters: [
-        { text: 'A01', value: 'A01' },
-        { text: 'A02', value: 'A02' },
-      ],
-      filterSearch: true,
-      // onFilter: (value, record) => record.menuParentCode.includes(value),
-    },
-    {
-      title: '菜单路由',
-      dataIndex: 'menuUrl',
-      width: 200,
+      title: '组织负责人',
+      dataIndex: 'leaderName',
       search: false,
     },
     {
@@ -71,13 +61,6 @@ const OrganizationUnitList = () => {
       sorter: true,
     },
     {
-      title: '备注',
-      dataIndex: 'menuDescription',
-      ellipsis: true,
-      copyable: true,
-      search: false,
-    },
-    {
       title: '操作',
       width: 180,
       key: 'option',
@@ -94,7 +77,6 @@ const OrganizationUnitList = () => {
   ];
 
   //table functions
-
   const getTableDataSource = async (params: any, sorter: any, filter: any) => {
     // 表单搜索项会从 params 传入，传递给后端接口。
     const sortings = [];
@@ -107,10 +89,10 @@ const OrganizationUnitList = () => {
       }
     }
     const inputParams = { ...params, sorting: sortings.join(',') };
-    const menusResponse = await getListMenu(inputParams);
-    setTotalPage(menusResponse.totalCount);
+    const responseData = await organizationService.GetListAsyncOrganizationUnit(inputParams);
+    setTotalPage(responseData.totalCount);
     return {
-      data: menusResponse.items,
+      data: responseData.items,
       success: true,
     };
   };
@@ -132,7 +114,7 @@ const OrganizationUnitList = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.MenuDto>
+      <ProTable<API.JhIdentity.OrganizationUnitDto>
         columns={columns}
         rowSelection={rowSelection}
         request={(params, sorter, filter) => getTableDataSource(params, sorter, filter)}

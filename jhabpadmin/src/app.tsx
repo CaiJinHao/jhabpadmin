@@ -13,7 +13,6 @@ import { getApplicationConfiguration } from './services/jhabp/abp.service';
 import Cookies from 'universal-cookie';
 import type { InitialStateType } from './model';
 import type { ApplicationConfigurationDto } from '@/lib/abp/asp-net-core/mvc/application-configurations/models';
-import { switchLanguage } from '@/services/jhabp/abp.service';
 
 // import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 const isDev = process.env.NODE_ENV === 'development';
@@ -34,7 +33,6 @@ export async function getInitialState(): Promise<InitialStateType> {
   /* TODO:添加后端本地化文本 ，本地化文本对应需要和后台对应*/
   const appendLocalization = async (applicationConfiguration: ApplicationConfigurationDto) => {
     const currentLocale = getLocale() as string;
-    console.log(currentLocale);
     //设置匹配不上的区域语言
     switch (currentLocale) {
       case 'zh':

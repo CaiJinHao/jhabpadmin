@@ -2,10 +2,11 @@ import { Button, Switch, Table } from 'antd';
 import { PlusOutlined, DeleteOutlined, UndoOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { getListMenu, deleteMenuByid, recoverMenu } from '@/services/jhabp/menu/menu.service';
 import { getYesOrNo } from '@/services/jhabp/app.enums';
+import * as icons from '@ant-design/icons';
 
 //@ts-ignore
 const MenuList = () => {
@@ -36,6 +37,13 @@ const MenuList = () => {
       title: '图标',
       dataIndex: 'menuIcon',
       search: false,
+      render: (text, record, index, action) => {
+        if (record.menuIcon) {
+          return React.createElement(icons[record.menuIcon]);
+        } else {
+          return <>-</>;
+        }
+      },
     },
     {
       title: '序号',
@@ -46,12 +54,11 @@ const MenuList = () => {
     {
       title: '上级菜单',
       dataIndex: 'menuParentCode',
-      filters: [
-        { text: 'A01', value: 'A01' },
-        { text: 'A02', value: 'A02' },
-      ],
-      filterSearch: true,
-      // onFilter: (value, record) => record.menuParentCode.includes(value),
+      // filters: [
+      //   { text: 'A01', value: 'A01' },
+      //   { text: 'A02', value: 'A02' },
+      // ],
+      // filterSearch: true,
     },
     {
       title: '菜单路由',
@@ -110,7 +117,7 @@ const MenuList = () => {
   const getTableDataSource = async (params: any, sorter: any, filter: any) => {
     // 表单搜索项会从 params 传入，传递给后端接口。
     const sortings = [];
-    console.log(filter);
+    // Object.assign(params, filter);//因为过滤查询后台需要支持数组，所以该功能根据需要实现
     const _sorter = new Object(sorter);
     for (const key in _sorter) {
       if (_sorter.hasOwnProperty(key)) {
