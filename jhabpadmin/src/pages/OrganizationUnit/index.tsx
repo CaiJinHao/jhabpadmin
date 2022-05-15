@@ -14,9 +14,9 @@ const OrganizationUnitList = () => {
   // columns functions
   const handlerIsDeleted = async (record: any, action: any) => {
     if (record.isDeleted) {
-      await organizationService.RecoverAsyncOrganizationUnit(record.id);
+      await organizationService.Recover(record.id);
     } else {
-      await organizationService.DeleteAsyncOrganizationUnitById(record.id);
+      await organizationService.DeleteById(record.id);
     }
     action?.reload();
   };
@@ -89,7 +89,7 @@ const OrganizationUnitList = () => {
       }
     }
     const inputParams = { ...params, sorting: sortings.join(',') };
-    const responseData = await organizationService.GetListAsyncOrganizationUnit(inputParams);
+    const responseData = await organizationService.GetList(inputParams);
     setTotalPage(responseData.totalCount);
     return {
       data: responseData.items,

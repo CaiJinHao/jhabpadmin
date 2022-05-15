@@ -1,6 +1,5 @@
+/** abp 的类型声明 */
 declare namespace API {
-  //account
-
   export interface LoginInput {
     userNameOrEmailAddress?: string;
     password?: string;
