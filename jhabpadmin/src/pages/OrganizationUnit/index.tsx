@@ -7,7 +7,7 @@ import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getYesOrNo } from '@/services/jhabp/app.enums';
 import * as organizationService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OperationModalOrganizationUnit from './components/OperationModal';
-import { useIntl, FormattedMessage } from 'umi';
+import { useIntl } from 'umi';
 
 const OrganizationUnitList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
