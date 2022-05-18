@@ -113,12 +113,7 @@ const OrganizationUnitList = () => {
       search: false,
       render: (text, record, index, action) => {
         return (
-          <Switch
-            checkedChildren="已启用"
-            unCheckedChildren="已禁用"
-            checked={!record.isDeleted}
-            onChange={() => handlerIsDeleted(record, action)}
-          />
+          <Switch checked={record.isDeleted} onChange={() => handlerIsDeleted(record, action)} />
         );
       },
     },
