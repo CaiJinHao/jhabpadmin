@@ -22,7 +22,6 @@ export interface OrganizationUnitCreateInputDto
 	 extraProperties?: any;
 	 parentId?: string;
 	 displayName?: string;
-	 methodInput?: any;
 	 concurrencyStamp?: string;
 	 roleIds?: string[];
 }
@@ -33,7 +32,6 @@ export interface OrganizationUnitUpdateInputDto
 	 displayName?: string;
 	 isDeleted?: boolean;
 	 concurrencyStamp?: string;
-	 methodInput?: any;
 	 roleIds?: string[];
 	 extraProperties?: any;
 }
@@ -44,7 +42,6 @@ export interface OrganizationUnitRetrieveInputDto
 	 code?: string;
 	 displayName?: string;
 	 deleted?: number;
-	 methodInput?: any;
 	 orParentId?: string;
 	 sorting?: string;
 	 skipCount?: number;

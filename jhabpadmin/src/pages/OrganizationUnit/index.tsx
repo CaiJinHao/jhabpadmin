@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Switch, Table } from 'antd';
+import { Button, Switch, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined, DeleteOutlined, UndoOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getYesOrNo } from '@/services/jhabp/app.enums';
 import * as organizationService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OperationModalOrganizationUnit from './components/OperationModal';
@@ -17,18 +17,15 @@ const OrganizationUnitList = () => {
   const proTableActionRef = useRef<ActionType>();
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [yesOrNo, setYesOrNo] = useState([]);
-
-  const initData = useCallback(async () => {
-    setYesOrNo(await getYesOrNo());
-  }, []);
-
-  useEffect(() => {
-    initData();
-  }, [initData]);
+  const [yesOrNoSelect, setYesOrNoSelect] = useState([]);
 
   const requestYesOrNo = async () => {
-    return yesOrNo;
+    if (yesOrNoSelect.length == 0) {
+      const data = await getYesOrNo();
+      setYesOrNoSelect(data);
+      return data;
+    }
+    return yesOrNoSelect;
   };
 
   // columns functions
@@ -38,6 +35,7 @@ const OrganizationUnitList = () => {
     } else {
       await organizationService.DeleteById(record.id);
     }
+    message.success(`操作成功`);
     action?.reload();
   };
 
@@ -47,6 +45,7 @@ const OrganizationUnitList = () => {
 
   const onSubmitOperation = () => {
     setVisibleOperation(false);
+    message.success(`操作成功`);
     proTableActionRef.current?.reload();
   };
 
@@ -55,10 +54,14 @@ const OrganizationUnitList = () => {
     setCurrentOperation(undefined);
   };
 
-  const deleteByKeys = () => {
-    console.log('deleteByKeys');
-    console.log(selectedRowKeys);
-    proTableActionRef.current?.reload();
+  const deleteByKeys = async () => {
+    if (selectedRowKeys.length > 0) {
+      await organizationService.DeleteByKeys(selectedRowKeys);
+      message.success(`操作成功`);
+      proTableActionRef.current?.reload();
+    } else {
+      message.warning(`请选择操作项`);
+    }
   };
 
   const edit = (record: API.JhIdentity.OrganizationUnitDto) => {
@@ -110,12 +113,13 @@ const OrganizationUnitList = () => {
       width: 180,
       key: 'option',
       valueType: 'option',
-      render: (_, record) => [
-        <a key="edit" onClick={() => edit(record)}>
-          编辑
-        </a>,
-        <a key="detail">详情</a>,
-      ],
+      render: (_, record) =>
+        !record.isDeleted && [
+          <a key="edit" onClick={() => edit(record)}>
+            编辑
+          </a>,
+          <a key="detail">详情</a>,
+        ],
     },
     {
       title: '是否禁用',
@@ -128,9 +132,7 @@ const OrganizationUnitList = () => {
 
   //table functions
   const getTableDataSource = async (params: any, sorter: any, filter: any) => {
-    // 表单搜索项会从 params 传入，传递给后端接口。
     const sortings = [];
-    console.log(filter);
     const _sorter = new Object(sorter);
     for (const key in _sorter) {
       if (_sorter.hasOwnProperty(key)) {
@@ -150,7 +152,6 @@ const OrganizationUnitList = () => {
   const rowSelection = {
     selectedRowKeys,
     onChange: (srk: any) => setSelectedRowKeys(srk),
-    selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
   };
 
   return (
@@ -171,10 +172,6 @@ const OrganizationUnitList = () => {
             <Button type="primary" key="create" shape="round" onClick={create}>
               <PlusOutlined />
               添加
-            </Button>,
-            <Button type="default" key="recover_keys" shape="round" onClick={deleteByKeys}>
-              <UndoOutlined />
-              批量启用
             </Button>,
             <Button
               type="default"

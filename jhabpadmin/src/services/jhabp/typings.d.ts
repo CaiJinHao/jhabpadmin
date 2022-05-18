@@ -171,4 +171,13 @@ declare namespace API {
     deleter: TUserDto;
     constructor(initialValues?: Partial<ExtensibleFullAuditedEntityWithUserDto<TPrimaryKey>>);
   }
+  export declare class RemoteServiceErrorResponse {
+    error: {
+      code: string;
+      message: string;
+      details: string;
+      data: any;
+      validationErrors: any[];
+    };
+  }
 }

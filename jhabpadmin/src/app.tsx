@@ -4,15 +4,15 @@ import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { getLocale, addLocale, setLocale, history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { currentUserNavMenus as queryCurrentUserNavMenus } from '@/services/jhabp/menu/menu.role.map.service';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
-import type { Context, OnionMiddleware, RequestInterceptor, RequestOptionsInit } from 'umi-request';
+import type { RequestInterceptor, RequestOptionsInit, ResponseError } from 'umi-request';
 import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/identityuser.service';
 import { getApplicationConfiguration } from './services/jhabp/abp.service';
 import Cookies from 'universal-cookie';
 import type { InitialStateType } from './model';
 import type { ApplicationConfigurationDto } from '@/lib/abp/asp-net-core/mvc/application-configurations/models';
+import { message } from 'antd';
 
 // import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 const isDev = process.env.NODE_ENV === 'development';
@@ -56,14 +56,12 @@ export async function getInitialState(): Promise<InitialStateType> {
     }
   };
   const applicationConfiguration = await getApplicationConfiguration();
-  console.log(applicationConfiguration);
   await appendLocalization(applicationConfiguration);
   const fetchUserInfo = async () => {
     //同源方式
     try {
       return await queryCurrentUser();
     } catch (error) {
-      console.log(error);
       window.location.href = Authorize_Login_Path;
       return undefined;
     }
@@ -105,7 +103,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
-      console.log(location);
+      // console.log(location);
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== LOGIN_PATH) {
         // history.push(LOGIN_PATH);
@@ -161,16 +159,20 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
 };
 
 /** ProTable 分页处理 */
-const proTableRequestInterceptor = (url: any, options: any) => {
+const proTableRequestInterceptor: RequestInterceptor = (
+  url: string,
+  options: RequestOptionsInit,
+) => {
   //@ts-ignore
   const { current, pageSize } = options.params;
   if (current) {
     const skipCount = (current - 1) * pageSize;
     Object.assign(options.params, { maxResultCount: pageSize, skipCount });
+    //@ts-ignore
     delete options.params.current;
+    //@ts-ignore
     delete options.params.pageSize;
   }
-  console.log(options);
   // const authorizationInfo = getToken();
   return {
     url: url,
@@ -188,11 +190,19 @@ const xsrfAppendRequestInterceptor: RequestInterceptor = (
   options: RequestOptionsInit,
 ) => {
   const cookie = new Cookies();
-  console.log(cookie);
   return {
     url,
     options: {
       ...options,
+      errorHandler: (error: ResponseError<API.RemoteServiceErrorResponse>) => {
+        if (error.response) {
+          //http状态判断
+          console.log(error.response);
+          message.error(error.data.error.message, 6);
+        } else {
+          console.log('error not response');
+        }
+      },
       headers: {
         RequestVerificationToken: cookie.get('XSRF-TOKEN'),
       },
@@ -200,16 +210,16 @@ const xsrfAppendRequestInterceptor: RequestInterceptor = (
   };
 };
 
-const requestMiddleware: OnionMiddleware = async (ctx: Context, next: () => void) => {
-  const { req } = ctx;
-  console.log(req);
-  await next();
-  const { res } = ctx;
-  console.log(res);
-};
+// const requestMiddleware: OnionMiddleware = async (ctx: Context, next: () => void) => {
+//   const { req } = ctx;
+//   console.log(req);
+//   await next();
+//   const { res } = ctx;
+//   console.log(res);
+// };
 
 //先走拦截器、后走中间件
 export const request: RequestConfig = {
   requestInterceptors: [proTableRequestInterceptor, xsrfAppendRequestInterceptor],
-  middlewares: [requestMiddleware],
+  // middlewares: [requestMiddleware],
 };
