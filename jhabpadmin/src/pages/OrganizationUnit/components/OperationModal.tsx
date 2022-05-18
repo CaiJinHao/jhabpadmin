@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 
 type OperationModalProps = {
+  detail: boolean;
   visible: boolean;
   current: Partial<API.JhIdentity.OrganizationUnitDto> | undefined;
   onCancel: () => void;
@@ -10,7 +11,7 @@ type OperationModalProps = {
 };
 
 const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
-  const { visible, current, onCancel, onSubmit, children } = props;
+  const { detail, visible, current, onCancel, onSubmit, children } = props;
 
   const modalFormFinish = async (values: API.JhIdentity.OrganizationUnitDto) => {
     if (current) {
@@ -45,6 +46,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
           onCancel: () => onCancel(),
           destroyOnClose: true,
         }}
+        submitter={!detail ? {} : false}
       >
         <>
           <ProFormText

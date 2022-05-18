@@ -10,6 +10,7 @@ import OperationModalOrganizationUnit from './components/OperationModal';
 
 const OrganizationUnitList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
+  const [detailOperation, setDetailOperation] = useState<boolean>(false);
   const [currentOperation, setCurrentOperation] = useState<
     Partial<API.JhIdentity.OrganizationUnitDto> | undefined
   >(undefined);
@@ -69,6 +70,12 @@ const OrganizationUnitList = () => {
     setCurrentOperation(record);
   };
 
+  const detail = (record: API.JhIdentity.OrganizationUnitDto) => {
+    setDetailOperation(true);
+    setVisibleOperation(true);
+    setCurrentOperation(record);
+  };
+
   //需要展示得字段、需要搜索得字段
   const columns: ProColumns<API.JhIdentity.OrganizationUnitDto>[] = [
     {
@@ -118,7 +125,9 @@ const OrganizationUnitList = () => {
           <a key="edit" onClick={() => edit(record)}>
             编辑
           </a>,
-          <a key="detail">详情</a>,
+          <a key="detail" onClick={() => detail(record)}>
+            详情
+          </a>,
         ],
     },
     {
@@ -188,6 +197,7 @@ const OrganizationUnitList = () => {
         />
       </PageContainer>
       <OperationModalOrganizationUnit
+        detail={detailOperation}
         visible={visibleOperation}
         current={currentOperation}
         onCancel={onCancelOperation}
