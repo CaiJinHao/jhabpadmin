@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Switch, message } from 'antd';
+import { Button, Switch, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { getYesOrNo } from '@/services/jhabp/app.enums';
 import * as organizationService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OperationModalOrganizationUnit from './components/OperationModal';
@@ -15,6 +15,7 @@ const OrganizationUnitList = () => {
   const [currentOperation, setCurrentOperation] = useState<
     Partial<API.JhIdentity.OrganizationUnitDto> | undefined
   >(undefined);
+  const { confirm } = Modal;
   const intl = useIntl();
 
   const proTableActionRef = useRef<ActionType>();
@@ -34,12 +35,46 @@ const OrganizationUnitList = () => {
   // columns functions
   const handlerIsDeleted = async (record: any, action: any) => {
     if (record.isDeleted) {
-      await organizationService.Recover(record.id);
+      confirm({
+        icon: <ExclamationCircleOutlined />,
+        content: (
+          <>
+            {intl.formatMessage({
+              id: 'ProTable.delete.Recover',
+              defaultMessage: '确定要恢复吗?',
+            })}
+          </>
+        ),
+        onOk: async () => {
+          await organizationService.Recover(record.id);
+          message.success(
+            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
+          );
+          action?.reload();
+        },
+        onCancel() {},
+      });
     } else {
-      await organizationService.DeleteById(record.id);
+      confirm({
+        icon: <ExclamationCircleOutlined />,
+        content: (
+          <>
+            {intl.formatMessage({
+              id: 'ProTable.delete.Delete',
+              defaultMessage: '确定要删除吗?',
+            })}
+          </>
+        ),
+        onOk: async () => {
+          await organizationService.DeleteById(record.id);
+          message.success(
+            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
+          );
+          action?.reload();
+        },
+        onCancel() {},
+      });
     }
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
-    action?.reload();
   };
 
   const onCancelOperation = () => {
@@ -60,9 +95,25 @@ const OrganizationUnitList = () => {
 
   const deleteByKeys = async () => {
     if (selectedRowKeys.length > 0) {
-      await organizationService.DeleteByKeys(selectedRowKeys);
-      message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
-      proTableActionRef.current?.reload();
+      confirm({
+        icon: <ExclamationCircleOutlined />,
+        content: (
+          <>
+            {intl.formatMessage({
+              id: 'ProTable.delete.BatchDelete',
+              defaultMessage: '确定要删除选中项吗?',
+            })}
+          </>
+        ),
+        onOk: async () => {
+          await organizationService.DeleteByKeys(selectedRowKeys);
+          message.success(
+            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
+          );
+          proTableActionRef.current?.reload();
+        },
+        onCancel() {},
+      });
     } else {
       message.warning(
         intl.formatMessage({ id: 'message.select.required', defaultMessage: '请选择操作项' }),

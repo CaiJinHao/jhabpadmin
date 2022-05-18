@@ -63,19 +63,17 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
         submitter={!detail ? {} : false}
       >
         <>
-          <ProForm.Group>
-            <ProFormText
-              name="displayName"
-              label="组织名称"
-              rules={[{ required: true, message: '请输入组织名称' }]}
-              placeholder="请输入"
-            />
-          </ProForm.Group>
           <ProFormSelect<API.OptionDto<string>>
             name="parentId"
             label="上级组织"
             rules={[{ required: false, message: '请选择上级组织' }]}
             request={requestOrganizationUnitOptions}
+          />
+          <ProFormText
+            name="displayName"
+            label="组织名称"
+            rules={[{ required: true, message: '请输入组织名称' }]}
+            placeholder="请输入"
           />
         </>
       </ModalForm>
