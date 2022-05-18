@@ -48,6 +48,7 @@ export async function getInitialState(): Promise<InitialStateType> {
         }
         break;
     }
+    console.log(applicationConfiguration.localization);
     for (const key in new Object(applicationConfiguration.localization.values)) {
       addLocale(currentLocale, applicationConfiguration.localization.values[key], {
         momentLocale: currentLocale.toLowerCase(),

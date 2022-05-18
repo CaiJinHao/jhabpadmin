@@ -14,6 +14,7 @@ const CodePreview: React.FC = ({ children }) => (
 
 const Welcome: React.FC = () => {
   const intl = useIntl();
+  console.log(intl);
   return (
     <PageContainer>
       <h1>{intl.formatMessage({ id: 'AccessDenied', defaultMessage: '啥也不是' })}</h1>

@@ -7,6 +7,7 @@ import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getYesOrNo } from '@/services/jhabp/app.enums';
 import * as organizationService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OperationModalOrganizationUnit from './components/OperationModal';
+import { useIntl, FormattedMessage } from 'umi';
 
 const OrganizationUnitList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
@@ -14,6 +15,7 @@ const OrganizationUnitList = () => {
   const [currentOperation, setCurrentOperation] = useState<
     Partial<API.JhIdentity.OrganizationUnitDto> | undefined
   >(undefined);
+  const intl = useIntl();
 
   const proTableActionRef = useRef<ActionType>();
   const [totalPage, setTotalPage] = useState(0);
@@ -36,7 +38,7 @@ const OrganizationUnitList = () => {
     } else {
       await organizationService.DeleteById(record.id);
     }
-    message.success(`操作成功`);
+    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     action?.reload();
   };
 
@@ -46,7 +48,7 @@ const OrganizationUnitList = () => {
 
   const onSubmitOperation = () => {
     setVisibleOperation(false);
-    message.success(`操作成功`);
+    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     proTableActionRef.current?.reload();
   };
 
@@ -59,10 +61,12 @@ const OrganizationUnitList = () => {
   const deleteByKeys = async () => {
     if (selectedRowKeys.length > 0) {
       await organizationService.DeleteByKeys(selectedRowKeys);
-      message.success(`操作成功`);
+      message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
       proTableActionRef.current?.reload();
     } else {
-      message.warning(`请选择操作项`);
+      message.warning(
+        intl.formatMessage({ id: 'message.select.required', defaultMessage: '请选择操作项' }),
+      );
     }
   };
 
@@ -81,21 +85,30 @@ const OrganizationUnitList = () => {
   //需要展示得字段、需要搜索得字段
   const columns: ProColumns<API.JhIdentity.OrganizationUnitDto>[] = [
     {
-      title: '组织编号',
+      title: intl.formatMessage({
+        id: 'JhIdentity:JhOrganizationUnit:Code',
+        defaultMessage: '组织编号',
+      }),
       dataIndex: 'code',
       sorter: true,
     },
     {
-      title: '组织名称',
+      title: intl.formatMessage({
+        id: 'JhIdentity:JhOrganizationUnit:DisplayName',
+        defaultMessage: '组织名称',
+      }),
       dataIndex: 'displayName',
     },
     {
-      title: '组织负责人',
+      title: intl.formatMessage({
+        id: 'JhIdentity:JhOrganizationUnit:LeaderId',
+        defaultMessage: '组织负责人',
+      }),
       dataIndex: 'leaderName',
       search: false,
     },
     {
-      title: '是否可用',
+      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否删除' }),
       dataIndex: 'isDeleted',
       search: false,
       render: (text, record, index, action) => {
@@ -110,7 +123,7 @@ const OrganizationUnitList = () => {
       },
     },
     {
-      title: '创建时间',
+      title: intl.formatMessage({ id: 'JhAbp:CreationTime', defaultMessage: '创建时间' }),
       width: 140,
       dataIndex: 'creationTime',
       valueType: 'date',
@@ -118,22 +131,22 @@ const OrganizationUnitList = () => {
       sorter: true,
     },
     {
-      title: '操作',
+      title: intl.formatMessage({ id: 'JhAbp:Operation', defaultMessage: '操作' }),
       width: 180,
       key: 'option',
       valueType: 'option',
       render: (_, record) =>
         !record.isDeleted && [
           <a key="edit" onClick={() => edit(record)}>
-            编辑
+            {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
           </a>,
           <a key="detail" onClick={() => detail(record)}>
-            详情
+            {intl.formatMessage({ id: 'Permission:Detail', defaultMessage: '详情' })}
           </a>,
         ],
     },
     {
-      title: '是否可用',
+      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否删除' }),
       dataIndex: 'deleted',
       hideInTable: true,
       valueType: 'select',
@@ -183,7 +196,7 @@ const OrganizationUnitList = () => {
           toolBarRender={() => [
             <Button type="primary" key="create" shape="round" onClick={create}>
               <PlusOutlined />
-              添加
+              {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
             </Button>,
             <Button
               type="default"
@@ -193,10 +206,20 @@ const OrganizationUnitList = () => {
               onClick={deleteByKeys}
             >
               <DeleteOutlined />
-              批量禁用
+              {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量禁用' })}
             </Button>,
           ]}
-          search={{ labelWidth: 100 }}
+          search={{
+            labelWidth: 100,
+            searchText: intl.formatMessage({
+              id: 'ProTable.search.searchText',
+              defaultMessage: '查询',
+            }),
+            resetText: intl.formatMessage({
+              id: 'ProTable.search.resetText',
+              defaultMessage: '重置',
+            }),
+          }}
         />
       </PageContainer>
       <OperationModalOrganizationUnit
