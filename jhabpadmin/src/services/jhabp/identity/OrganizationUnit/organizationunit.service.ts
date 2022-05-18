@@ -61,8 +61,8 @@ export const GetOrganizationTree = async (): Promise<API.ListResultDto<API.JhIde
     method: 'Get',
   });
 };
-export const GetSelect = async (name: string): Promise<any> => {
-  return await request<any>(`${Identity_API}api/v1/OrganizationUnit/select`, {
+export const GetOptions = async (name: string): Promise<API.ListResultDto<API.OptionDto<string>>> => {
+  return await request<API.ListResultDto<API.OptionDto<string>>>(`${Identity_API}api/v1/OrganizationUnit/options`, {
     method: 'Get',
 params: {name}
   });

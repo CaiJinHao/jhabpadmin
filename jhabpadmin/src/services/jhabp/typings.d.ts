@@ -180,4 +180,10 @@ declare namespace API {
       validationErrors: any[];
     };
   }
+  export declare class OptionDto<TValue = string> {
+    text: string;
+    lable: string;
+    value: TValue;
+    data: any;
+  }
 }

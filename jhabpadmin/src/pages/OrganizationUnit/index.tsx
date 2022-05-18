@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message } from 'antd';
@@ -18,15 +18,15 @@ const OrganizationUnitList = () => {
   const proTableActionRef = useRef<ActionType>();
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [yesOrNoSelect, setYesOrNoSelect] = useState([]);
+  const [yesOrNoOptions, setYesOrNoOptions] = useState([]);
 
-  const requestYesOrNo = async () => {
-    if (yesOrNoSelect.length == 0) {
+  const requestYesOrNoOptions = async () => {
+    if (yesOrNoOptions.length == 0) {
       const data = await getYesOrNo();
-      setYesOrNoSelect(data);
+      setYesOrNoOptions(data);
       return data;
     }
-    return yesOrNoSelect;
+    return yesOrNoOptions;
   };
 
   // columns functions
@@ -51,6 +51,7 @@ const OrganizationUnitList = () => {
   };
 
   const create = () => {
+    setDetailOperation(false);
     setVisibleOperation(true);
     setCurrentOperation(undefined);
   };
@@ -66,6 +67,7 @@ const OrganizationUnitList = () => {
   };
 
   const edit = (record: API.JhIdentity.OrganizationUnitDto) => {
+    setDetailOperation(false);
     setVisibleOperation(true);
     setCurrentOperation(record);
   };
@@ -131,11 +133,12 @@ const OrganizationUnitList = () => {
         ],
     },
     {
-      title: '是否禁用',
+      title: '是否可用',
       dataIndex: 'deleted',
       hideInTable: true,
       valueType: 'select',
-      request: requestYesOrNo,
+      initialValue: 2,
+      request: requestYesOrNoOptions,
     },
   ];
 

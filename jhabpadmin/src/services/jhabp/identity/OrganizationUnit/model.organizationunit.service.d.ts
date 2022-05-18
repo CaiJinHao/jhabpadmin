@@ -23,7 +23,7 @@ export interface OrganizationUnitCreateInputDto
 	 parentId?: string;
 	 displayName?: string;
 	 concurrencyStamp?: string;
-	 roleIds?: string[];
+	 roleIds?: string;
 }
 
 export interface OrganizationUnitUpdateInputDto
@@ -32,7 +32,7 @@ export interface OrganizationUnitUpdateInputDto
 	 displayName?: string;
 	 isDeleted?: boolean;
 	 concurrencyStamp?: string;
-	 roleIds?: string[];
+	 roleIds?: string;
 	 extraProperties?: any;
 }
 
@@ -101,8 +101,8 @@ export interface IdentityUserDto
 	 isActive?: boolean;
 	 concurrencyStamp?: string;
 	 tenantId?: string;
-	 organizationUnitIds?: string[];
-	 roleIds?: string[];
+	 organizationUnitIds?: string;
+	 roleIds?: string;
 	 isDeleted?: boolean;
 	 deleterId?: string;
 	 deletionTime?: string;
