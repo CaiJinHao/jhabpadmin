@@ -1,4 +1,3 @@
-import { WindowsOutlined } from '@ant-design/icons';
 import { Button, message, notification } from 'antd';
 import { useIntl } from 'umi';
 import defaultSettings from '../config/defaultSettings';

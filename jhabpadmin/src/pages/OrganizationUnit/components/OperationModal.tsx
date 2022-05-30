@@ -1,13 +1,13 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { FC } from 'react';
 import { useState } from 'react';
-import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
+import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 
 type OperationModalProps = {
   detail: boolean;
   visible: boolean;
-  current: Partial<API.JhIdentity.OrganizationUnitDto> | undefined;
   onCancel: () => void;
+  current: Partial<API.JhIdentity.OrganizationUnitDto> | undefined;
   onSubmit: (values: API.JhIdentity.OrganizationUnitDto) => void;
 };
 
@@ -17,30 +17,23 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
     [],
   );
 
-  const modalFormFinish = async (values: API.JhIdentity.OrganizationUnitDto) => {
+  const modalFormFinish = async (values: API.JhIdentity.OrganizationUnitCreateInputDto) => {
     if (current) {
-      Object.assign(current, values);
-      const updateDto = await organizationunitService.Update(current.id as string, {
-        parentId: current.parentId,
-        displayName: current.displayName,
-        isDeleted: current.isDeleted,
-        concurrencyStamp: current.concurrencyStamp,
-        extraProperties: current.extraProperties,
-      });
+      const updateDto = await defaultService.Update(current.id as string, values);
       if (updateDto) {
-        onSubmit(current);
+        onSubmit(updateDto);
       }
     } else {
-      const createDto = await organizationunitService.Create(values);
+      const createDto = await defaultService.Create(values);
       if (createDto) {
-        onSubmit(values);
+        onSubmit(createDto);
       }
     }
   };
 
   const requestOrganizationUnitOptions = async () => {
     if (organizationUnitOptions.length == 0) {
-      const data = await organizationunitService.GetOptions('');
+      const data = await defaultService.GetOptions('');
       const items = data.items as API.OptionDto<string>[];
       setOrganizationUnitOptions(items);
       return items;
