@@ -1,6 +1,11 @@
 ﻿import systemConfig from './RoutesConfig/system.config';
 export default [
   {
+    path: '/test',
+    layout: false,
+    component: './Test',
+  },
+  {
     path: '/user',
     layout: false,
     routes: [
