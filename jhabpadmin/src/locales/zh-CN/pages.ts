@@ -62,6 +62,6 @@ export default {
   'pages.searchTable.item': '项',
   'pages.searchTable.totalServiceCalls': '服务调用次数总计',
   'pages.searchTable.tenThousand': '万',
-  'pages.searchTable.batchDeletion': '批量删除',
+  'pages.searchTable.batchDeletion': '批量禁用',
   'pages.searchTable.batchApproval': '批量审批',
 };

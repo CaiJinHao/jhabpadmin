@@ -11,9 +11,8 @@ export const Create = async (
   });
 };
 export const DeleteById = async (id: string): Promise<void> => {
-  return await request<void>(`${Identity_API}api/v1/IdentityUser`, {
+  return await request<void>(`${Identity_API}api/v1/IdentityUser/${id}`, {
     method: 'Delete',
-    data: id,
   });
 };
 export const DeleteByKeys = async (keys: string[]): Promise<void> => {
@@ -26,7 +25,7 @@ export const Update = async (
   id: string,
   input: API.JhIdentity.IdentityUserUpdateInputDto,
 ): Promise<API.JhIdentity.IdentityUserDto> => {
-  return await request<API.JhIdentity.IdentityUserDto>(`${Identity_API}api/v1/IdentityUser`, {
+  return await request<API.JhIdentity.IdentityUserDto>(`${Identity_API}api/v1/IdentityUser/${id}`, {
     method: 'Put',
     data: input,
   });
@@ -35,26 +34,25 @@ export const UpdatePortion = async (
   id: string,
   inputDto: API.JhIdentity.IdentityUserUpdateInputDto,
 ): Promise<void> => {
-  return await request<void>(`${Identity_API}api/v1/IdentityUser`, {
-    method: 'Patch',
+  return await request<void>(`${Identity_API}api/v1/IdentityUser/Patch/${id}`, {
+    method: 'Put',
     data: inputDto,
   });
 };
 export const UpdateLockoutEnabled = async (id: string, lockoutEnabled: boolean): Promise<void> => {
   return await request<void>(`${Identity_API}api/v1/IdentityUser/${id}/lockoutEnabled`, {
-    method: 'Patch',
+    method: 'Put',
     data: lockoutEnabled,
   });
 };
 export const Recover = async (id: string): Promise<void> => {
   return await request<void>(`${Identity_API}api/v1/IdentityUser/${id}/Recover`, {
-    method: 'Patch',
+    method: 'Put',
   });
 };
 export const Get = async (id: string): Promise<API.JhIdentity.IdentityUserDto> => {
-  return await request<API.JhIdentity.IdentityUserDto>(`${Identity_API}api/v1/IdentityUser`, {
+  return await request<API.JhIdentity.IdentityUserDto>(`${Identity_API}api/v1/IdentityUser/${id}`, {
     method: 'Get',
-    params: { id },
   });
 };
 export const GetRoles = async (

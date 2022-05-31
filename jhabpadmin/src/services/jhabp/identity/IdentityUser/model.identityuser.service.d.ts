@@ -1,98 +1,98 @@
 declare namespace API.JhIdentity {
 export interface IdentityUserDto
 {
-	 userName?: string;
-	 normalizedUserName?: string;
-	 name?: string;
-	 surname?: string;
-	 email?: string;
-	 normalizedEmail?: string;
+	 userName: string;
+	 normalizedUserName: string;
+	 name: string;
+	 surname: string;
+	 email: string;
+	 normalizedEmail: string;
 	 emailConfirmed?: boolean;
-	 passwordHash?: string;
-	 securityStamp?: string;
+	 passwordHash: string;
+	 securityStamp: string;
 	 isExternal?: boolean;
-	 phoneNumber?: string;
+	 phoneNumber: string;
 	 phoneNumberConfirmed?: boolean;
 	 twoFactorEnabled?: boolean;
 	 lockoutEnd?: string;
 	 lockoutEnabled?: boolean;
 	 accessFailedCount?: number;
-	 isActive?: boolean;
-	 concurrencyStamp?: string;
+	 isActive: boolean;
+	 concurrencyStamp: string;
 	 tenantId?: string;
-	 organizationUnitIds?: string;
-	 roleIds?: string;
-	 isDeleted?: boolean;
+	 organizationUnitIds: string;
+	 roleIds: string;
+	 isDeleted: boolean;
 	 deleterId?: string;
 	 deletionTime?: string;
 	 lastModificationTime?: string;
 	 lastModifierId?: string;
-	 creationTime?: string;
+	 creationTime: string;
 	 creatorId?: string;
-	 id?: string;
-	 extraProperties?: any;
+	 id: string;
+	 extraProperties: any;
 }
 
 export interface IdentityUserCreateInputDto
 {
-	 password?: string;
-	 concurrencyStamp?: string;
-	 roleIds?: string;
-	 organizationUnitIds?: string;
-	 userName?: string;
-	 name?: string;
-	 surname?: string;
-	 email?: string;
-	 phoneNumber?: string;
-	 isActive?: boolean;
-	 lockoutEnabled?: boolean;
-	 roleNames?: string;
-	 extraProperties?: any;
+	 password: string;
+	 concurrencyStamp: string;
+	 roleIds: string;
+	 organizationUnitIds: string;
+	 userName: string;
+	 name: string;
+	 surname: string;
+	 email: string;
+	 phoneNumber: string;
+	 isActive: boolean;
+	 lockoutEnabled: boolean;
+	 roleNames: string;
+	 extraProperties: any;
 }
 
 export interface IdentityUserUpdateInputDto
 {
-	 password?: string;
-	 isDeleted?: boolean;
-	 concurrencyStamp?: string;
-	 organizationUnitIds?: string;
-	 userName?: string;
-	 name?: string;
-	 surname?: string;
-	 email?: string;
-	 phoneNumber?: string;
-	 isActive?: boolean;
-	 lockoutEnabled?: boolean;
-	 roleNames?: string;
-	 extraProperties?: any;
+	 password: string;
+	 isDeleted: boolean;
+	 concurrencyStamp: string;
+	 organizationUnitIds: string;
+	 userName: string;
+	 name: string;
+	 surname: string;
+	 email: string;
+	 phoneNumber: string;
+	 isActive: boolean;
+	 lockoutEnabled: boolean;
+	 roleNames: string;
+	 extraProperties: any;
 }
 
 export interface IdentityRoleDto
 {
-	 name?: string;
-	 normalizedName?: string;
+	 name: string;
+	 normalizedName: string;
 	 isDefault?: boolean;
 	 isStatic?: boolean;
 	 isPublic?: boolean;
-	 concurrencyStamp?: string;
+	 concurrencyStamp: string;
 	 tenantId?: string;
-	 id?: string;
-	 extraProperties?: any;
+	 id: string;
+	 extraProperties: any;
 }
 
 export interface IdentityUserRetrieveInputDto
 {
-	 userName?: string;
-	 normalizedUserName?: string;
-	 name?: string;
-	 surname?: string;
-	 email?: string;
-	 normalizedEmail?: string;
+	 userName: string;
+	 normalizedUserName: string;
+	 name: string;
+	 surname: string;
+	 email: string;
+	 normalizedEmail: string;
 	 emailConfirmed?: boolean;
-	 passwordHash?: string;
-	 securityStamp?: string;
+	 passwordHash: string;
+	 securityStamp: string;
 	 isExternal?: boolean;
-	 phoneNumber?: string;
+	 phoneNumber: string;
 	 phoneNumberConfirmed?: boolean;
 	 twoFactorEnabled?: boolean;
 	 lockoutEnd?: string;
@@ -100,15 +100,15 @@ export interface IdentityUserRetrieveInputDto
 	 accessFailedCount?: number;
 	 deleted?: number;
 	 organizationUnitId?: string;
-	 sorting?: string;
-	 skipCount?: number;
-	 maxResultCount?: number;
+	 sorting: string;
+	 skipCount: number;
+	 maxResultCount: number;
 }
 
 export interface ChangePasswordInputDto
 {
-	 currentPassword?: string;
-	 newPassword?: string;
+	 currentPassword: string;
+	 newPassword: string;
 }
 
 }

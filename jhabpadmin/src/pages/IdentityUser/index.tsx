@@ -33,7 +33,7 @@ const IdentityUserList = () => {
   };
 
   // columns functions
-  const handlerIsDeleted = async (record: any, action: any) => {
+  const handlerIsDeleted = async (record: API.JhIdentity.IdentityUserDto, action: any) => {
     if (record.isDeleted) {
       confirm({
         icon: <ExclamationCircleOutlined />,
@@ -61,7 +61,7 @@ const IdentityUserList = () => {
           <>
             {intl.formatMessage({
               id: 'ProTable.delete.Delete',
-              defaultMessage: '确定要删除吗?',
+              defaultMessage: '确定要禁用吗?',
             })}
           </>
         ),
@@ -77,6 +77,32 @@ const IdentityUserList = () => {
     }
   };
 
+  const handlerLockoutEnabled = async (record: API.JhIdentity.IdentityUserDto, action: any) => {
+    let msg = '确定要启用登录锁吗?';
+    if (record.lockoutEnabled) {
+      msg = '确定要关闭登录锁吗?';
+    }
+    console.log(record);
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <>
+          {intl.formatMessage({
+            id: 'JhIdentity:IdentityUsers:LockoutEnd',
+            defaultMessage: msg,
+          })}
+        </>
+      ),
+      onOk: async () => {
+        const _v = !record.lockoutEnabled;
+        console.log(_v);
+        await defaultService.UpdateLockoutEnabled(record.id, _v);
+        message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
+        action?.reload();
+      },
+      onCancel() {},
+    });
+  };
   const onCancelOperation = () => {
     setVisibleOperation(false);
   };
@@ -101,7 +127,7 @@ const IdentityUserList = () => {
           <>
             {intl.formatMessage({
               id: 'ProTable.delete.BatchDelete',
-              defaultMessage: '确定要删除选中项吗?',
+              defaultMessage: '确定要禁用选中项吗?',
             })}
           </>
         ),
@@ -166,6 +192,7 @@ const IdentityUserList = () => {
         defaultMessage: '登录锁结束时间',
       }),
       dataIndex: 'lockoutEnd',
+      search: false,
     },
     {
       title: intl.formatMessage({ id: 'JhAbp:LockoutEnabled', defaultMessage: '启用登录锁' }),
@@ -173,7 +200,10 @@ const IdentityUserList = () => {
       search: false,
       render: (text, record, index, action) => {
         return (
-          <Switch checked={record.isDeleted} onChange={() => handlerIsDeleted(record, action)} />
+          <Switch
+            checked={record.lockoutEnabled}
+            onChange={() => handlerLockoutEnabled(record, action)}
+          />
         );
       },
     },
@@ -183,9 +213,10 @@ const IdentityUserList = () => {
         defaultMessage: '登录错误次数',
       }),
       dataIndex: 'accessFailedCount',
+      search: false,
     },
     {
-      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否删除' }),
+      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否禁用' }),
       dataIndex: 'isDeleted',
       search: false,
       render: (text, record, index, action) => {
@@ -218,7 +249,7 @@ const IdentityUserList = () => {
         ],
     },
     {
-      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否删除' }),
+      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否禁用' }),
       dataIndex: 'deleted',
       hideInTable: true,
       valueType: 'select',

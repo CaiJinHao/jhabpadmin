@@ -61,7 +61,7 @@ const OrganizationUnitList = () => {
           <>
             {intl.formatMessage({
               id: 'ProTable.delete.Delete',
-              defaultMessage: '确定要删除吗?',
+              defaultMessage: '确定要禁用吗?',
             })}
           </>
         ),
@@ -101,7 +101,7 @@ const OrganizationUnitList = () => {
           <>
             {intl.formatMessage({
               id: 'ProTable.delete.BatchDelete',
-              defaultMessage: '确定要删除选中项吗?',
+              defaultMessage: '确定要禁用选中项吗?',
             })}
           </>
         ),
@@ -159,7 +159,7 @@ const OrganizationUnitList = () => {
       search: false,
     },
     {
-      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否删除' }),
+      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否禁用' }),
       dataIndex: 'isDeleted',
       search: false,
       render: (text, record, index, action) => {
@@ -192,7 +192,7 @@ const OrganizationUnitList = () => {
         ],
     },
     {
-      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否删除' }),
+      title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否禁用' }),
       dataIndex: 'deleted',
       hideInTable: true,
       valueType: 'select',

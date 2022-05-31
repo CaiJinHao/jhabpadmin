@@ -61,37 +61,4 @@ declare namespace API.JhIdentity {
     data?: any;
     value?: string;
   }
-
-  export interface IdentityUserDto {
-    userName?: string;
-    normalizedUserName?: string;
-    name?: string;
-    surname?: string;
-    email?: string;
-    normalizedEmail?: string;
-    emailConfirmed?: boolean;
-    passwordHash?: string;
-    securityStamp?: string;
-    isExternal?: boolean;
-    phoneNumber?: string;
-    phoneNumberConfirmed?: boolean;
-    twoFactorEnabled?: boolean;
-    lockoutEnd?: string;
-    lockoutEnabled?: boolean;
-    accessFailedCount?: number;
-    isActive?: boolean;
-    concurrencyStamp?: string;
-    tenantId?: string;
-    organizationUnitIds?: string;
-    roleIds?: string;
-    isDeleted?: boolean;
-    deleterId?: string;
-    deletionTime?: string;
-    lastModificationTime?: string;
-    lastModifierId?: string;
-    creationTime?: string;
-    creatorId?: string;
-    id?: string;
-    extraProperties?: any;
-  }
 }

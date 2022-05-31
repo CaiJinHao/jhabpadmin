@@ -53,7 +53,7 @@ export const getMaxMenuCodeMenu = async (parentCode: string): Promise<string> =>
 
 export const recoverMenu = async (id: string): Promise<void> => {
   return await request<void>(`${Menu_API}/api/v1/Menu/${id}/Recover`, {
-    method: 'PATCH',
+    method: 'Put',
   });
 };
 

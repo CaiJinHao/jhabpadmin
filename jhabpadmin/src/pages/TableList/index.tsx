@@ -58,12 +58,12 @@ const handleUpdate = async (fields: FormValueType) => {
 
 /**
  *  Delete node
- * @zh-CN 删除节点
+ * @zh-CN 禁用节点
  *
  * @param selectedRows
  */
 const handleRemove = async (selectedRows: API.RuleListItem[]) => {
-  const hide = message.loading('正在删除');
+  const hide = message.loading('正在禁用');
   if (!selectedRows) return true;
   try {
     await removeRule({

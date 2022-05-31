@@ -1,5 +1,5 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import type { FC } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { useState } from 'react';
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 import * as identityroleService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
@@ -14,12 +14,27 @@ type OperationModalProps = {
 };
 const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
   const { detail, visible, current, onCancel, onSubmit, children } = props;
+  const [identityUserDto, setIdentityUserDto] = useState<API.JhIdentity.IdentityUserDto>([]);
   const [identityRoleOptions, setIdentityRoleOptions] = useState<API.OptionDto<string>[]>([]);
   const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
     [],
   );
+
+  //需要重新获取用户信息
+  const initData = useCallback(async () => {
+    const dataDto = await defaultService.Get(current?.id as string);
+    setIdentityUserDto(dataDto);
+  }, [current]);
+
+  useEffect(() => {
+    if (current) {
+      initData();
+    }
+  }, [current]);
+
   const modalFormFinish = async (values: API.JhIdentity.IdentityUserCreateInputDto) => {
     if (current) {
+      values.concurrencyStamp = identityUserDto.concurrencyStamp;
       const updateDto = await defaultService.Update(current.id as string, values);
       if (updateDto) {
         onSubmit(updateDto);
@@ -51,14 +66,16 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
     }
     return organizationUnitOptions;
   };
-
+  if (!current) {
+    return <></>;
+  }
   return (
     <>
       <ModalForm<API.JhIdentity.IdentityUserDto>
         visible={visible}
         title={`${current ? '编辑' : '添加'}`}
         onFinish={modalFormFinish}
-        initialValues={current}
+        initialValues={identityUserDto}
         trigger={<>{children}</>}
         modalProps={{
           onCancel: () => onCancel(),
@@ -75,13 +92,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
               rules={[{ required: true, message: '请输入用户账号' }]}
               placeholder="请输入"
             />
-            <ProFormText
-              width="md"
-              name="password"
-              label="用户密码"
-              rules={[{ required: true, message: '用户密码' }]}
-              placeholder="请输入"
-            />
+            <ProFormText width="md" name="password" label="用户密码" placeholder="请输入" />
             <ProFormText
               width="md"
               name="phoneNumber"
