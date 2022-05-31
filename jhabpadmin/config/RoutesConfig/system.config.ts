@@ -1,14 +1,20 @@
 export default [
   {
+    path: 'OrganizationUnit',
+    name: 'OrganizationUnit',
+    icon: 'table',
+    component: './OrganizationUnit',
+  },
+  {
     path: 'IdentityRole',
     name: 'IdentityRole',
     icon: 'table',
     component: './IdentityRole',
   },
   {
-    path: 'OrganizationUnit',
-    name: 'OrganizationUnit',
+    path: 'IdentityUser',
+    name: 'IdentityUser',
     icon: 'table',
-    component: './OrganizationUnit',
+    component: './IdentityUser',
   },
 ];
