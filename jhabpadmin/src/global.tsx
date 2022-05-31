@@ -91,9 +91,9 @@ if (pwa) {
 }
 
 //全局变量定义
-window['HOST_API'] = '/host';
-window['Identity_API'] = '/identity';
-window['Menu_API'] = '/menu';
+window['HOST_API'] = '/host/';
+window['Identity_API'] = '/identity/';
+window['Menu_API'] = '/menu/';
 window['LOGIN_PATH'] = '/user/login';
 window[
   'Authorize_Login_Path'
