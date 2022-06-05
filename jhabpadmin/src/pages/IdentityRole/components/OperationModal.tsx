@@ -9,29 +9,33 @@ type OperationModalProps = {
   operator: ViewOperator;
   visible: boolean;
   onCancel: () => void;
-  current: Partial<API.JhIdentity.IdentityRoleDto> | undefined;
+  current: API.JhIdentity.IdentityRoleDto;
   onSubmit: (values: API.JhIdentity.IdentityRoleDto) => void;
 };
 const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
   const { operator, visible, current, onCancel, onSubmit, children } = props;
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
-  const modalFormFinish = async (values: API.JhIdentity.IdentityRoleCreateInputDto) => {
-    values.isDefault = false;
-    values.isPublic = true;
-    values.isStatic = true;
+
+  const modalFormFinish = async (values: any) => {
     if (current) {
-      const updateDto = await defaultService.Update(current.id as string, values);
+      const _data = values as API.JhIdentity.IdentityRoleUpdateInputDto;
+      _data.concurrencyStamp = current.concurrencyStamp;
+      const updateDto = await defaultService.Update(current.id, _data);
       if (updateDto) {
         onSubmit(updateDto);
       }
     } else {
-      const createDto = await defaultService.Create(values);
+      const _data = values as API.JhIdentity.IdentityRoleCreateDto;
+      _data.isDefault = true;
+      _data.isPublic = true;
+      const createDto = await defaultService.Create(_data);
       if (createDto) {
         onSubmit(createDto);
       }
     }
   };
+
   const initTitle = () => {
     let _t = '角色';
     switch (operator) {
