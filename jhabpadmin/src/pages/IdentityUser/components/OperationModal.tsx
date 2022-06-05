@@ -73,7 +73,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
     <>
       <ModalForm<API.JhIdentity.IdentityUserDto>
         visible={visible}
-        title={`${current ? '编辑' : '添加'}`}
+        title={`用户${current ? (detail ? '详情' : '编辑') : '创建'}`}
         onFinish={modalFormFinish}
         initialValues={identityUserDto}
         trigger={<>{children}</>}

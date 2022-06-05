@@ -34,7 +34,7 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
       <ModalForm<API.JhIdentity.IdentityRoleDto>
         width={378}
         visible={visible}
-        title={`${current ? '编辑' : '添加'}`}
+        title={`角色${current ? (detail ? '详情' : '编辑') : '创建'}`}
         onFinish={modalFormFinish}
         initialValues={current}
         trigger={<>{children}</>}

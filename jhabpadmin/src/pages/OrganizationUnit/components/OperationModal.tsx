@@ -13,9 +13,6 @@ type OperationModalProps = {
 
 const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   const { detail, visible, current, onCancel, onSubmit, children } = props;
-  const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
-    [],
-  );
 
   const modalFormFinish = async (values: API.JhIdentity.OrganizationUnitCreateInputDto) => {
     if (current) {
@@ -32,13 +29,9 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   };
 
   const requestOrganizationUnitOptions = async () => {
-    if (organizationUnitOptions.length == 0) {
-      const data = await defaultService.GetOptions('');
-      const items = data.items as API.OptionDto<string>[];
-      setOrganizationUnitOptions(items);
-      return items;
-    }
-    return organizationUnitOptions;
+    const data = await defaultService.GetOptions('');
+    const items = data.items as API.OptionDto<string>[];
+    return items;
   };
 
   return (
@@ -46,7 +39,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
       <ModalForm<API.JhIdentity.OrganizationUnitDto>
         width={378}
         visible={visible}
-        title={`组织${current ? '编辑' : '添加'}`}
+        title={`组织${current ? (detail ? '详情' : '编辑') : '创建'}`}
         onFinish={modalFormFinish}
         initialValues={current}
         trigger={<>{children}</>}
