@@ -1,46 +1,41 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { FC, useCallback, useEffect } from 'react';
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { ViewOperator } from '@/services/jhabp/app.enums';
+import { useIntl } from 'umi';
+
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 import * as identityroleService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
 import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 
 type OperationModalProps = {
-  detail: boolean;
+  operator: ViewOperator;
   visible: boolean;
   onCancel: () => void;
-  current: Partial<API.JhIdentity.IdentityUserDto> | undefined;
+  current: API.JhIdentity.IdentityUserDto;
   onSubmit: (values: API.JhIdentity.IdentityUserDto) => void;
 };
 const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
-  const { detail, visible, current, onCancel, onSubmit, children } = props;
-  const [identityUserDto, setIdentityUserDto] = useState<API.JhIdentity.IdentityUserDto>([]);
+  const { operator, visible, current, onCancel, onSubmit, children } = props;
+  const [title, setTitle] = useState<string>();
+  const intl = useIntl();
+
   const [identityRoleOptions, setIdentityRoleOptions] = useState<API.OptionDto<string>[]>([]);
   const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
     [],
   );
 
-  //需要重新获取用户信息
-  // const initData = useCallback(async () => {
-  //   const dataDto = await defaultService.Get(current?.id as string);
-  //   setIdentityUserDto(dataDto);
-  // }, [current]);
-
-  // useEffect(() => {
-  //   if (current) {
-  //     initData();
-  //   }
-  // }, [current]);
-
-  const modalFormFinish = async (values: API.JhIdentity.IdentityUserCreateInputDto) => {
+  const modalFormFinish = async (values: any) => {
     if (current) {
-      values.concurrencyStamp = identityUserDto.concurrencyStamp;
-      const updateDto = await defaultService.Update(current.id as string, values);
+      const _data = values as API.JhIdentity.IdentityUserUpdateInputDto;
+      _data.concurrencyStamp = current.concurrencyStamp;
+      const updateDto = await defaultService.Update(current.id as string, _data);
       if (updateDto) {
         onSubmit(updateDto);
       }
     } else {
-      const createDto = await defaultService.Create(values);
+      const createDto = await defaultService.Create(
+        values as API.JhIdentity.IdentityUserCreateInputDto,
+      );
       if (createDto) {
         onSubmit(createDto);
       }
@@ -66,19 +61,58 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
     }
     return organizationUnitOptions;
   };
+  const initTitle = () => {
+    let _t = '用户';
+    switch (operator) {
+      case ViewOperator.Add:
+        {
+          _t = `${_t}${intl.formatMessage({
+            id: 'Permission:Create',
+            defaultMessage: '创建',
+          })}`;
+        }
+        break;
+      case ViewOperator.Edit:
+        {
+          _t = `${_t}${intl.formatMessage({
+            id: 'Permission:Edit',
+            defaultMessage: '编辑',
+          })}`;
+        }
+        break;
+      case ViewOperator.Detail:
+        {
+          _t = `${_t}${intl.formatMessage({
+            id: 'Permission:Detail',
+            defaultMessage: '详情',
+          })}`;
+        }
+        break;
+    }
+    setTitle(_t);
+  };
+
+  useEffect(() => {
+    initTitle();
+  }, [operator]);
+
+  if (!current) {
+    return <></>;
+  }
+
   return (
     <>
       <ModalForm<API.JhIdentity.IdentityUserDto>
         visible={visible}
-        title={`用户${current ? (detail ? '详情' : '编辑') : '创建'}`}
+        title={title}
         onFinish={modalFormFinish}
-        initialValues={identityUserDto}
+        initialValues={current}
         trigger={<>{children}</>}
         modalProps={{
           onCancel: () => onCancel(),
           destroyOnClose: true,
         }}
-        submitter={!detail ? {} : false}
+        submitter={operator == ViewOperator.Detail ? false : {}}
       >
         <>
           <ProForm.Group>

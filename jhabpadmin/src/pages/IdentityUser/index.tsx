@@ -4,14 +4,14 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { getYesOrNo } from '@/services/jhabp/app.enums';
+import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 import OperationModalIdentityUser from './components/OperationModal';
 const IdentityUserList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
-  const [detailOperation, setDetailOperation] = useState<boolean>(false);
+  const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
   const { confirm } = Modal;
   const intl = useIntl();
   const proTableActionRef = useRef<ActionType>();
@@ -114,7 +114,7 @@ const IdentityUserList = () => {
   };
 
   const create = () => {
-    setDetailOperation(false);
+    setDetailOperation(ViewOperator.Add);
     setVisibleOperation(true);
     setCurrentOperation(undefined);
   };
@@ -147,16 +147,20 @@ const IdentityUserList = () => {
     }
   };
 
-  const edit = async (record: API.JhIdentity.IdentityUserDto) => {
-    // const userDetail = await defaultService.Get(record.id);
-    setDetailOperation(false);
+  const loadDetail = async (record: API.JhIdentity.IdentityUserDto) => {
     setVisibleOperation(true);
-    setCurrentOperation(record);
+    const detailDto = await defaultService.Get(record.id);
+    console.log(detailDto);
+    setCurrentOperation(detailDto);
   };
-  const detail = (record: API.JhIdentity.IdentityUserDto) => {
-    setDetailOperation(true);
-    setVisibleOperation(true);
-    setCurrentOperation(record);
+
+  const edit = async (record: API.JhIdentity.IdentityUserDto) => {
+    setDetailOperation(ViewOperator.Edit);
+    await loadDetail(record);
+  };
+  const detail = async (record: API.JhIdentity.IdentityUserDto) => {
+    setDetailOperation(ViewOperator.Detail);
+    await loadDetail(record);
   };
   const columns: ProColumns<API.JhIdentity.IdentityUserDto>[] = [
     {
@@ -329,7 +333,7 @@ const IdentityUserList = () => {
         />
       </PageContainer>
       <OperationModalIdentityUser
-        detail={detailOperation}
+        operator={detailOperation}
         visible={visibleOperation}
         current={currentOperation}
         onCancel={onCancelOperation}
