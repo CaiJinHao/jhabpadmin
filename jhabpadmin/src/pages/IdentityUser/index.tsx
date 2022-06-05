@@ -147,7 +147,8 @@ const IdentityUserList = () => {
     }
   };
 
-  const edit = (record: API.JhIdentity.IdentityUserDto) => {
+  const edit = async (record: API.JhIdentity.IdentityUserDto) => {
+    // const userDetail = await defaultService.Get(record.id);
     setDetailOperation(false);
     setVisibleOperation(true);
     setCurrentOperation(record);
@@ -160,42 +161,45 @@ const IdentityUserList = () => {
   const columns: ProColumns<API.JhIdentity.IdentityUserDto>[] = [
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:UserName',
+        id: 'JhIdentity:IdentityUser:UserName',
         defaultMessage: '用户账号',
       }),
       dataIndex: 'userName',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:Name',
+        id: 'JhIdentity:IdentityUser:Name',
         defaultMessage: '用户名称',
       }),
       dataIndex: 'name',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:Email',
+        id: 'JhIdentity:IdentityUser:Email',
         defaultMessage: '邮箱',
       }),
       dataIndex: 'email',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:PhoneNumber',
+        id: 'JhIdentity:IdentityUser:PhoneNumber',
         defaultMessage: '手机号',
       }),
       dataIndex: 'phoneNumber',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:LockoutEnd',
+        id: 'JhIdentity:IdentityUser:LockoutEnd',
         defaultMessage: '登录锁结束时间',
       }),
       dataIndex: 'lockoutEnd',
       search: false,
     },
     {
-      title: intl.formatMessage({ id: 'JhAbp:LockoutEnabled', defaultMessage: '启用登录锁' }),
+      title: intl.formatMessage({
+        id: 'JhIdentity:IdentityUser:LockoutEnabled',
+        defaultMessage: '启用登录锁',
+      }),
       dataIndex: 'lockoutEnabled',
       search: false,
       render: (text, record, index, action) => {
@@ -209,7 +213,7 @@ const IdentityUserList = () => {
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:AccessFailedCount',
+        id: 'JhIdentity:IdentityUser:AccessFailedCount',
         defaultMessage: '登录错误次数',
       }),
       dataIndex: 'accessFailedCount',

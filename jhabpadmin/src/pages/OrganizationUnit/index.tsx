@@ -4,24 +4,25 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { getYesOrNo } from '@/services/jhabp/app.enums';
+import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
+import { useIntl } from 'umi';
+
 import * as organizationService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OperationModalOrganizationUnit from './components/OperationModal';
-import { useIntl } from 'umi';
 
 const OrganizationUnitList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
-  const [detailOperation, setDetailOperation] = useState<boolean>(false);
-  const [currentOperation, setCurrentOperation] = useState<
-    Partial<API.JhIdentity.OrganizationUnitDto> | undefined
-  >(undefined);
+  const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
   const { confirm } = Modal;
   const intl = useIntl();
-
   const proTableActionRef = useRef<ActionType>();
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [yesOrNoOptions, setYesOrNoOptions] = useState([]);
+
+  const [currentOperation, setCurrentOperation] = useState<
+    Partial<API.JhIdentity.OrganizationUnitDto> | undefined
+  >(undefined);
 
   const requestYesOrNoOptions = async () => {
     if (yesOrNoOptions.length == 0) {
@@ -88,7 +89,7 @@ const OrganizationUnitList = () => {
   };
 
   const create = () => {
-    setDetailOperation(false);
+    setDetailOperation(ViewOperator.Add);
     setVisibleOperation(true);
     setCurrentOperation(undefined);
   };
@@ -122,13 +123,13 @@ const OrganizationUnitList = () => {
   };
 
   const edit = (record: API.JhIdentity.OrganizationUnitDto) => {
-    setDetailOperation(false);
+    setDetailOperation(ViewOperator.Edit);
     setVisibleOperation(true);
     setCurrentOperation(record);
   };
 
   const detail = (record: API.JhIdentity.OrganizationUnitDto) => {
-    setDetailOperation(true);
+    setDetailOperation(ViewOperator.Detail);
     setVisibleOperation(true);
     setCurrentOperation(record);
   };
@@ -269,7 +270,7 @@ const OrganizationUnitList = () => {
         />
       </PageContainer>
       <OperationModalOrganizationUnit
-        detail={detailOperation}
+        operator={detailOperation}
         visible={visibleOperation}
         current={currentOperation}
         onCancel={onCancelOperation}

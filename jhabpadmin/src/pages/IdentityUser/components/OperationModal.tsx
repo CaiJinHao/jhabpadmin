@@ -21,16 +21,16 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
   );
 
   //需要重新获取用户信息
-  const initData = useCallback(async () => {
-    const dataDto = await defaultService.Get(current?.id as string);
-    setIdentityUserDto(dataDto);
-  }, [current]);
+  // const initData = useCallback(async () => {
+  //   const dataDto = await defaultService.Get(current?.id as string);
+  //   setIdentityUserDto(dataDto);
+  // }, [current]);
 
-  useEffect(() => {
-    if (current) {
-      initData();
-    }
-  }, [current]);
+  // useEffect(() => {
+  //   if (current) {
+  //     initData();
+  //   }
+  // }, [current]);
 
   const modalFormFinish = async (values: API.JhIdentity.IdentityUserCreateInputDto) => {
     if (current) {
@@ -66,9 +66,6 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
     }
     return organizationUnitOptions;
   };
-  if (!current) {
-    return <></>;
-  }
   return (
     <>
       <ModalForm<API.JhIdentity.IdentityUserDto>

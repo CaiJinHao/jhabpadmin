@@ -1,17 +1,21 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import type { FC } from 'react';
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { ViewOperator } from '@/services/jhabp/app.enums';
+import { useIntl } from 'umi';
+
 import * as defaultService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
 
 type OperationModalProps = {
-  detail: boolean;
+  operator: ViewOperator;
   visible: boolean;
   onCancel: () => void;
   current: Partial<API.JhIdentity.IdentityRoleDto> | undefined;
   onSubmit: (values: API.JhIdentity.IdentityRoleDto) => void;
 };
 const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
-  const { detail, visible, current, onCancel, onSubmit, children } = props;
+  const { operator, visible, current, onCancel, onSubmit, children } = props;
+  const [title, setTitle] = useState<string>();
+  const intl = useIntl();
   const modalFormFinish = async (values: API.JhIdentity.IdentityRoleCreateInputDto) => {
     values.isDefault = false;
     values.isPublic = true;
@@ -28,13 +32,46 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
       }
     }
   };
+  const initTitle = () => {
+    let _t = '角色';
+    switch (operator) {
+      case ViewOperator.Add:
+        {
+          _t = `${_t}${intl.formatMessage({
+            id: 'Permission:Create',
+            defaultMessage: '创建',
+          })}`;
+        }
+        break;
+      case ViewOperator.Edit:
+        {
+          _t = `${_t}${intl.formatMessage({
+            id: 'Permission:Edit',
+            defaultMessage: '编辑',
+          })}`;
+        }
+        break;
+      case ViewOperator.Detail:
+        {
+          _t = `${_t}${intl.formatMessage({
+            id: 'Permission:Detail',
+            defaultMessage: '详情',
+          })}`;
+        }
+        break;
+    }
+    setTitle(_t);
+  };
 
+  useEffect(() => {
+    initTitle();
+  }, [operator]);
   return (
     <>
       <ModalForm<API.JhIdentity.IdentityRoleDto>
         width={378}
         visible={visible}
-        title={`角色${current ? (detail ? '详情' : '编辑') : '创建'}`}
+        title={title}
         onFinish={modalFormFinish}
         initialValues={current}
         trigger={<>{children}</>}
@@ -42,7 +79,7 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
           onCancel: () => onCancel(),
           destroyOnClose: true,
         }}
-        submitter={!detail ? {} : false}
+        submitter={operator == ViewOperator.Detail ? false : {}}
       >
         <>
           <ProForm.Group>

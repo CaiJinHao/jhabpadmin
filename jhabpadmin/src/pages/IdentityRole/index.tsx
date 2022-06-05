@@ -1,16 +1,17 @@
 import { useState, useRef } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, message, Modal } from 'antd';
+import { Button, Switch, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
 import OperationModalIdentityRole from './components/OperationModal';
 const IdentityRoleList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
-  const [detailOperation, setDetailOperation] = useState<boolean>(false);
+  const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
   const { confirm } = Modal;
   const intl = useIntl();
   const proTableActionRef = useRef<ActionType>();
@@ -32,24 +33,24 @@ const IdentityRoleList = () => {
   };
 
   const create = () => {
-    setDetailOperation(false);
+    setDetailOperation(ViewOperator.Add);
     setVisibleOperation(true);
     setCurrentOperation(undefined);
   };
   const edit = (record: API.JhIdentity.IdentityRoleDto) => {
-    setDetailOperation(false);
+    setDetailOperation(ViewOperator.Edit);
     setVisibleOperation(true);
     setCurrentOperation(record);
   };
   const detail = (record: API.JhIdentity.IdentityRoleDto) => {
-    setDetailOperation(true);
+    setDetailOperation(ViewOperator.Detail);
     setVisibleOperation(true);
     setCurrentOperation(record);
   };
   const columns: ProColumns<API.JhIdentity.IdentityRoleDto>[] = [
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:DisplayName',
+        id: 'JhIdentity:IdentityRole:DisplayName',
         defaultMessage: '角色名称',
       }),
       dataIndex: 'name',
@@ -136,7 +137,7 @@ const IdentityRoleList = () => {
       </PageContainer>
 
       <OperationModalIdentityRole
-        detail={detailOperation}
+        operator={detailOperation}
         visible={visibleOperation}
         current={currentOperation}
         onCancel={onCancelOperation}
