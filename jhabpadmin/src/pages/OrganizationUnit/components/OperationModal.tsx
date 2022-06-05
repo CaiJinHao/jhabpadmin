@@ -9,7 +9,7 @@ type OperationModalProps = {
   operator: ViewOperator;
   visible: boolean;
   onCancel: () => void;
-  current: Partial<API.JhIdentity.OrganizationUnitDto> | undefined;
+  current: API.JhIdentity.OrganizationUnitDto;
   onSubmit: (values: API.JhIdentity.OrganizationUnitDto) => void;
 };
 
@@ -18,14 +18,18 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
 
-  const modalFormFinish = async (values: API.JhIdentity.OrganizationUnitCreateInputDto) => {
+  const modalFormFinish = async (values: any) => {
     if (current) {
-      const updateDto = await defaultService.Update(current.id as string, values);
+      const _data = values as API.JhIdentity.OrganizationUnitUpdateInputDto;
+      _data.concurrencyStamp = current.concurrencyStamp;
+      const updateDto = await defaultService.Update(current.id, _data);
       if (updateDto) {
         onSubmit(updateDto);
       }
     } else {
-      const createDto = await defaultService.Create(values);
+      const createDto = await defaultService.Create(
+        values as API.JhIdentity.OrganizationUnitCreateInputDto,
+      );
       if (createDto) {
         onSubmit(createDto);
       }
