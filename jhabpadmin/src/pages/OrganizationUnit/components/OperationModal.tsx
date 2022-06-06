@@ -1,5 +1,5 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
@@ -78,19 +78,26 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
           })}`;
         }
         break;
+      default:
+        break;
     }
     setTitle(_t);
   }, [intl, operator]);
 
   const leaderSelectedChange = (value: API.OptionDto<string>) => {
-    setExtraProperties({ ...extraProperties, LeaderId: value.value, LeaderName: value.text });
+    setExtraProperties({
+      ...extraProperties,
+      LeaderId: value.value ?? null,
+      LeaderName: value.text ?? null,
+    });
   };
 
   useEffect(() => {
     initTitle();
-  });
+    setExtraProperties(current?.extraProperties);
+  }, [current, initTitle]);
 
-  if (!current) {
+  if (!current && operator != ViewOperator.Add) {
     return <></>;
   }
 
@@ -101,7 +108,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
         visible={visible}
         title={title}
         onFinish={modalFormFinish}
-        initialValues={current}
+        initialValues={operator == ViewOperator.Add ? {} : current}
         trigger={<>{children}</>}
         modalProps={{
           onCancel: () => onCancel(),
@@ -128,7 +135,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
             <ProFormSelect<API.OptionDto<string>>
               width="md"
               name="LeaderId"
-              initialValue={current.extraProperties.LeaderId}
+              initialValue={current?.extraProperties?.LeaderId}
               label="负责人"
               rules={[{ required: false, message: '请选择负责人' }]}
               request={requestIdentityUserOptions}
