@@ -12,7 +12,7 @@ import OperationModalOrganizationUnit from './components/OperationModal';
 
 const OrganizationUnitList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
-  const [detailOperation, setDetailOperation] = useState<ViewOperator>();
+  const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
   const { confirm } = Modal;
   const intl = useIntl();
   const proTableActionRef = useRef<ActionType>();

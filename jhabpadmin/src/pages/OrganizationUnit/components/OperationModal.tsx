@@ -84,7 +84,9 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
     setTitle(_t);
   }, [intl, operator]);
 
-  const leaderSelectedChange = (value: API.OptionDto<string>) => {
+  const leaderSelectedChange = (value: API.OptionDto<string>, option: any) => {
+    console.log(value);
+    console.log(option);
     setExtraProperties({
       ...extraProperties,
       LeaderId: value.value ?? null,
@@ -135,7 +137,11 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
             <ProFormSelect<API.OptionDto<string>>
               width="md"
               name="LeaderId"
-              initialValue={current?.extraProperties?.LeaderId}
+              initialValue={
+                current?.extraProperties.LeaderId
+                  ? { value: current.extraProperties.LeaderId }
+                  : undefined
+              }
               label="负责人"
               rules={[{ required: false, message: '请选择负责人' }]}
               request={requestIdentityUserOptions}
