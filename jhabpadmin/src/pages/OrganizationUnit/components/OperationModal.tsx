@@ -84,13 +84,11 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
     setTitle(_t);
   }, [intl, operator]);
 
-  const leaderSelectedChange = (value: API.OptionDto<string>, option: any) => {
-    console.log(value);
-    console.log(option);
+  const leaderSelectedChange = (value: any, option: any) => {
     setExtraProperties({
       ...extraProperties,
-      LeaderId: value.value ?? null,
-      LeaderName: value.text ?? null,
+      LeaderId: value ?? null,
+      LeaderName: value ? option.label : null,
     });
   };
 
@@ -146,7 +144,6 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
               rules={[{ required: false, message: '请选择负责人' }]}
               request={requestIdentityUserOptions}
               fieldProps={{
-                labelInValue: true,
                 onChange: leaderSelectedChange,
               }}
             />
