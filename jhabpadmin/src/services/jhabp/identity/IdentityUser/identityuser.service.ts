@@ -102,8 +102,8 @@ export const GetOrganizations = async (
     },
   );
 };
-export const GetOptions = async (): Promise<API.ListResultDto<API.JhIdentity.IdentityUserDto>> => {
-  return await request<API.ListResultDto<API.JhIdentity.IdentityUserDto>>(
+export const GetOptions = async (): Promise<API.ListResultDto<API.OptionDto<string>>> => {
+  return await request<API.ListResultDto<API.OptionDto<string>>>(
     `${Identity_API}api/v1/IdentityUser/options`,
     {
       method: 'Get',

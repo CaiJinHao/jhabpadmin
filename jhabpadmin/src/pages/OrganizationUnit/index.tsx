@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message, Modal } from 'antd';
@@ -7,7 +7,7 @@ import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-de
 import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
-import * as organizationService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
+import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OperationModalOrganizationUnit from './components/OperationModal';
 
 const OrganizationUnitList = () => {
@@ -21,7 +21,7 @@ const OrganizationUnitList = () => {
   const [yesOrNoOptions, setYesOrNoOptions] = useState([]);
 
   const [currentOperation, setCurrentOperation] = useState<
-    Partial<API.JhIdentity.OrganizationUnitDto> | undefined
+    API.JhIdentity.OrganizationUnitDto | undefined
   >(undefined);
 
   const requestYesOrNoOptions = async () => {
@@ -47,7 +47,7 @@ const OrganizationUnitList = () => {
           </>
         ),
         onOk: async () => {
-          await organizationService.Recover(record.id);
+          await defaultService.Recover(record.id);
           message.success(
             intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
           );
@@ -67,7 +67,7 @@ const OrganizationUnitList = () => {
           </>
         ),
         onOk: async () => {
-          await organizationService.DeleteById(record.id);
+          await defaultService.DeleteById(record.id);
           message.success(
             intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
           );
@@ -107,7 +107,7 @@ const OrganizationUnitList = () => {
           </>
         ),
         onOk: async () => {
-          await organizationService.DeleteByKeys(selectedRowKeys);
+          await defaultService.DeleteByKeys(selectedRowKeys);
           message.success(
             intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
           );
@@ -121,18 +121,24 @@ const OrganizationUnitList = () => {
       );
     }
   };
-
-  const edit = (record: API.JhIdentity.OrganizationUnitDto) => {
+  const loadDetail = async (record: API.JhIdentity.OrganizationUnitDto) => {
+    setVisibleOperation(true);
+    const detailDto = await defaultService.Get(record.id); //如果有额外得字段才会需要重新获取
+    setCurrentOperation(detailDto);
+  };
+  const edit = async (record: API.JhIdentity.OrganizationUnitDto) => {
     setDetailOperation(ViewOperator.Edit);
-    setVisibleOperation(true);
-    setCurrentOperation(record);
+    await loadDetail(record);
   };
 
-  const detail = (record: API.JhIdentity.OrganizationUnitDto) => {
+  const detail = async (record: API.JhIdentity.OrganizationUnitDto) => {
     setDetailOperation(ViewOperator.Detail);
-    setVisibleOperation(true);
-    setCurrentOperation(record);
+    await loadDetail(record);
   };
+
+  useEffect(() => {
+    setCurrentOperation(undefined);
+  }, [visibleOperation]);
 
   //需要展示得字段、需要搜索得字段
   const columns: ProColumns<API.JhIdentity.OrganizationUnitDto>[] = [
@@ -156,8 +162,9 @@ const OrganizationUnitList = () => {
         id: 'JhIdentity:JhOrganizationUnit:LeaderId',
         defaultMessage: '组织负责人',
       }),
-      dataIndex: 'leaderName',
-      search: false,
+      renderText: (text, record) => {
+        return record.extraProperties.LeaderName;
+      },
     },
     {
       title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否禁用' }),
@@ -213,7 +220,7 @@ const OrganizationUnitList = () => {
       }
     }
     const inputParams = { ...params, sorting: sortings.join(',') };
-    const responseData = await organizationService.GetList(inputParams);
+    const responseData = await defaultService.GetList(inputParams);
     setTotalPage(responseData.totalCount);
     return {
       data: responseData.items,

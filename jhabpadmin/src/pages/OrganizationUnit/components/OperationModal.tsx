@@ -1,15 +1,16 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
+import * as identityUserService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 
 type OperationModalProps = {
   operator: ViewOperator;
   visible: boolean;
   onCancel: () => void;
-  current: API.JhIdentity.OrganizationUnitDto;
+  current?: API.JhIdentity.OrganizationUnitDto;
   onSubmit: (values: API.JhIdentity.OrganizationUnitDto) => void;
 };
 
@@ -17,8 +18,10 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   const { operator, visible, current, onCancel, onSubmit, children } = props;
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
+  const [extraProperties, setExtraProperties] = useState<any>();
 
   const modalFormFinish = async (values: any) => {
+    values.extraProperties = extraProperties;
     if (current) {
       const _data = values as API.JhIdentity.OrganizationUnitUpdateInputDto;
       _data.concurrencyStamp = current.concurrencyStamp;
@@ -42,7 +45,13 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
     return items;
   };
 
-  const initTitle = () => {
+  const requestIdentityUserOptions = async () => {
+    const data = await identityUserService.GetOptions();
+    const items = data.items as API.OptionDto<string>[];
+    return items;
+  };
+
+  const initTitle = useCallback(() => {
     let _t = '组织';
     switch (operator) {
       case ViewOperator.Add:
@@ -71,11 +80,19 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
         break;
     }
     setTitle(_t);
+  }, [intl, operator]);
+
+  const leaderSelectedChange = (value: API.OptionDto<string>) => {
+    setExtraProperties({ ...extraProperties, LeaderId: value.value, LeaderName: value.text });
   };
 
   useEffect(() => {
     initTitle();
-  }, [operator]);
+  });
+
+  if (!current) {
+    return <></>;
+  }
 
   return (
     <>
@@ -107,6 +124,18 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
               label="组织名称"
               rules={[{ required: true, message: '请输入组织名称' }]}
               placeholder="请输入"
+            />
+            <ProFormSelect<API.OptionDto<string>>
+              width="md"
+              name="LeaderId"
+              initialValue={current.extraProperties.LeaderId}
+              label="负责人"
+              rules={[{ required: false, message: '请选择负责人' }]}
+              request={requestIdentityUserOptions}
+              fieldProps={{
+                labelInValue: true,
+                onChange: leaderSelectedChange,
+              }}
             />
           </ProForm.Group>
         </>
