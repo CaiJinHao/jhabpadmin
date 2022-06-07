@@ -34,7 +34,7 @@ const OrganizationUnitList = () => {
   };
 
   // columns functions
-  const handlerIsDeleted = async (record: any, action: any) => {
+  const handlerIsDeleted = async (record: API.JhIdentity.OrganizationUnitDto, action: any) => {
     if (record.isDeleted) {
       confirm({
         icon: <ExclamationCircleOutlined />,
@@ -123,7 +123,7 @@ const OrganizationUnitList = () => {
   };
   const loadDetail = async (record: API.JhIdentity.OrganizationUnitDto) => {
     setVisibleOperation(true);
-    const detailDto = await defaultService.Get(record.id); //如果有额外得字段才会需要重新获取
+    const detailDto = await defaultService.Get(record.id); //如果有额外得字段才会需要重新获取,否则可以直接使用record传递
     setCurrentOperation(detailDto);
   };
   const edit = async (record: API.JhIdentity.OrganizationUnitDto) => {

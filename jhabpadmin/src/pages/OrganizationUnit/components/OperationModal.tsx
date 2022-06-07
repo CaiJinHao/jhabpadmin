@@ -1,5 +1,6 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { FC, useCallback, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
@@ -30,9 +31,8 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
         onSubmit(updateDto);
       }
     } else {
-      const createDto = await defaultService.Create(
-        values as API.JhIdentity.OrganizationUnitCreateInputDto,
-      );
+      const _data = values as API.JhIdentity.OrganizationUnitCreateInputDto;
+      const createDto = await defaultService.Create(_data);
       if (createDto) {
         onSubmit(createDto);
       }
