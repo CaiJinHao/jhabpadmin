@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Switch, message, Modal } from 'antd';
+import { Button, Switch, message, Modal, Col, Row } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
@@ -9,6 +9,8 @@ import { useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 import OperationModalIdentityUser from './components/OperationModal';
+import OrganizationUnitTree from '@/pages/components/OrganizationUnitTree';
+
 const IdentityUserList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
   const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
@@ -18,6 +20,7 @@ const IdentityUserList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [yesOrNoOptions, setYesOrNoOptions] = useState([]);
+  const [queryOrgCode, setQueryOrgCode] = useState<string | null>(null);
 
   const [currentOperation, setCurrentOperation] = useState<
     API.JhIdentity.IdentityUserDto | undefined
@@ -278,7 +281,11 @@ const IdentityUserList = () => {
         sortings.push(`${key} ${val.replace('end', '')}`);
       }
     }
-    const inputParams = { ...params, sorting: sortings.join(',') };
+    const inputParams = {
+      ...params,
+      sorting: sortings.join(','),
+      OrganizationUnitCode: queryOrgCode,
+    };
     const responseData = await defaultService.GetList(inputParams);
     setTotalPage(responseData.totalCount);
     return {
@@ -291,48 +298,64 @@ const IdentityUserList = () => {
     onChange: (srk: any) => setSelectedRowKeys(srk),
   };
 
+  const orgTreeSelected = (info: any) => {
+    if (info == null) {
+      setQueryOrgCode(null);
+    } else {
+      setQueryOrgCode(info.node.data.code);
+    }
+    proTableActionRef.current?.reload();
+  };
+
   return (
     <>
       <PageContainer>
-        <ProTable<API.JhIdentity.IdentityUserDto>
-          actionRef={proTableActionRef}
-          columns={columns}
-          rowSelection={rowSelection}
-          request={(params, sorter) => getTableDataSource(params, sorter)}
-          rowKey="id"
-          pagination={{
-            pageSize: 10,
-            total: totalPage,
-          }}
-          dateFormatter="string"
-          toolBarRender={() => [
-            <Button type="primary" key="create" shape="round" onClick={create}>
-              <PlusOutlined />
-              {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-            </Button>,
-            <Button
-              type="default"
-              key="delete_keys"
-              shape="round"
-              danger={true}
-              onClick={deleteByKeys}
-            >
-              <DeleteOutlined />
-              {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量禁用' })}
-            </Button>,
-          ]}
-          search={{
-            labelWidth: 100,
-            searchText: intl.formatMessage({
-              id: 'ProTable.search.searchText',
-              defaultMessage: '查询',
-            }),
-            resetText: intl.formatMessage({
-              id: 'ProTable.search.resetText',
-              defaultMessage: '重置',
-            }),
-          }}
-        />
+        <Row gutter={{ md: 16 }}>
+          <Col md={6}>
+            <OrganizationUnitTree onTreeSelected={orgTreeSelected} />
+          </Col>
+          <Col md={18}>
+            <ProTable<API.JhIdentity.IdentityUserDto>
+              actionRef={proTableActionRef}
+              columns={columns}
+              rowSelection={rowSelection}
+              request={(params, sorter) => getTableDataSource(params, sorter)}
+              rowKey="id"
+              pagination={{
+                pageSize: 10,
+                total: totalPage,
+              }}
+              dateFormatter="string"
+              toolBarRender={() => [
+                <Button type="primary" key="create" shape="round" onClick={create}>
+                  <PlusOutlined />
+                  {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+                </Button>,
+                <Button
+                  type="default"
+                  key="delete_keys"
+                  shape="round"
+                  danger={true}
+                  onClick={deleteByKeys}
+                >
+                  <DeleteOutlined />
+                  {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量禁用' })}
+                </Button>,
+              ]}
+              search={{
+                labelWidth: 100,
+                searchText: intl.formatMessage({
+                  id: 'ProTable.search.searchText',
+                  defaultMessage: '查询',
+                }),
+                resetText: intl.formatMessage({
+                  id: 'ProTable.search.resetText',
+                  defaultMessage: '重置',
+                }),
+              }}
+            />
+          </Col>
+        </Row>
       </PageContainer>
       <OperationModalIdentityUser
         operator={detailOperation}

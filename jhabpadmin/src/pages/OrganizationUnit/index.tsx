@@ -21,7 +21,7 @@ const OrganizationUnitList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [yesOrNoOptions, setYesOrNoOptions] = useState([]);
-  const [queryCode, setQueryCode] = useState<string | null>(null);
+  const [queryOrgCode, setQueryOrgCode] = useState<string | null>(null);
 
   const [currentOperation, setCurrentOperation] = useState<
     API.JhIdentity.OrganizationUnitDto | undefined
@@ -213,7 +213,7 @@ const OrganizationUnitList = () => {
         sortings.push(`${key} ${val.replace('end', '')}`);
       }
     }
-    const inputParams = { ...params, sorting: sortings.join(','), code: queryCode };
+    const inputParams = { ...params, sorting: sortings.join(','), code: queryOrgCode };
     const responseData = await defaultService.GetList(inputParams);
     setTotalPage(responseData.totalCount);
     return {
@@ -229,9 +229,9 @@ const OrganizationUnitList = () => {
 
   const orgTreeSelected = (info: any) => {
     if (info == null) {
-      setQueryCode(null);
+      setQueryOrgCode(null);
     } else {
-      setQueryCode(info.node.data.code);
+      setQueryOrgCode(info.node.data.code);
     }
     proTableActionRef.current?.reload();
   };
