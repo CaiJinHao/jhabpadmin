@@ -241,7 +241,7 @@ const OrganizationUnitList = () => {
           actionRef={proTableActionRef}
           columns={columns}
           rowSelection={rowSelection}
-          request={(params, sorter, filter) => getTableDataSource(params, sorter, filter)}
+          request={(params, sorter) => getTableDataSource(params, sorter)}
           rowKey="id"
           pagination={{
             pageSize: 10,

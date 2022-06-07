@@ -68,7 +68,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/menu',
+    redirect: '/welcome',
   },
   {
     component: './404',

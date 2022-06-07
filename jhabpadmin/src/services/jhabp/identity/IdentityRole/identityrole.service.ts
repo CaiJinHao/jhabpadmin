@@ -1,18 +1,25 @@
 import { request } from 'umi';
-
-export const Create = async (
+export const CreateByRoles = async (
   input: API.JhIdentity.IdentityRoleCreateDto,
 ): Promise<API.JhIdentity.IdentityRoleDto> => {
   if (!input.extraProperties) {
     input.extraProperties = {};
   }
-  return await request<API.JhIdentity.IdentityRoleDto>(
-    `${Identity_API}api/v1/IdentityRole/roles/`,
-    {
-      method: 'Post',
-      data: input,
-    },
-  );
+  return await request<API.JhIdentity.IdentityRoleDto>(`${Identity_API}api/v1/IdentityRole/roles`, {
+    method: 'Post',
+    data: input,
+  });
+};
+export const Create = async (
+  input: API.JhIdentity.IdentityRoleCreateInputDto,
+): Promise<API.JhIdentity.IdentityRoleDto> => {
+  if (!input.extraProperties) {
+    input.extraProperties = {};
+  }
+  return await request<API.JhIdentity.IdentityRoleDto>(`${Identity_API}api/v1/IdentityRole`, {
+    method: 'Post',
+    data: input,
+  });
 };
 export const DeleteById = async (id: string): Promise<void> => {
   return await request<void>(`${Identity_API}api/v1/IdentityRole/${id}`, {
@@ -29,9 +36,27 @@ export const Update = async (
   id: string,
   input: API.JhIdentity.IdentityRoleUpdateInputDto,
 ): Promise<API.JhIdentity.IdentityRoleDto> => {
-  return await request<API.JhIdentity.IdentityRoleDto>(`${Identity_API}/api/identity/roles/${id}`, {
+  return await request<API.JhIdentity.IdentityRoleDto>(`${Identity_API}api/v1/IdentityRole/${id}`, {
     method: 'Put',
     data: input,
+  });
+};
+export const UpdateByRoles = async (
+  id: string,
+  input: API.JhIdentity.IdentityRoleUpdateInputDto,
+): Promise<API.JhIdentity.IdentityRoleDto> => {
+  return await request<API.JhIdentity.IdentityRoleDto>(`${Identity_API}api/identity/roles/${id}`, {
+    method: 'Put',
+    data: input,
+  });
+};
+export const UpdatePortion = async (
+  id: string,
+  inputDto: API.JhIdentity.IdentityRoleUpdateInputDto,
+): Promise<void> => {
+  return await request<void>(`${Identity_API}api/v1/IdentityRole/Patch/${id}`, {
+    method: 'Put',
+    data: inputDto,
   });
 };
 export const GetList = async (
@@ -57,9 +82,8 @@ export const GetEntitys = async (
   );
 };
 export const Get = async (id: string): Promise<API.JhIdentity.IdentityRoleDto> => {
-  return await request<API.JhIdentity.IdentityRoleDto>(`${Identity_API}api/v1/IdentityRole`, {
+  return await request<API.JhIdentity.IdentityRoleDto>(`${Identity_API}api/v1/IdentityRole/${id}`, {
     method: 'Get',
-    params: { id },
   });
 };
 export const GetTree = async (name: string): Promise<any> => {
@@ -68,14 +92,19 @@ export const GetTree = async (name: string): Promise<any> => {
     params: { name },
   });
 };
-export const GetOptions = async (name: string): Promise<any> => {
-  return await request<any>(`${Identity_API}api/v1/IdentityRole/options`, {
-    method: 'Get',
-    params: { name },
-  });
+export const GetOptions = async (
+  name: string,
+): Promise<API.ListResultDto<API.OptionDto<string>>> => {
+  return await request<API.ListResultDto<API.OptionDto<string>>>(
+    `${Identity_API}api/v1/IdentityRole/options`,
+    {
+      method: 'Get',
+      params: { name },
+    },
+  );
 };
 export const GetAdminRoleId = async (): Promise<string> => {
-  return await request<string>(`${Identity_API}api/v1/IdentityRole`, {
+  return await request<string>(`${Identity_API}api/v1/IdentityRole/AdminRoleId`, {
     method: 'Get',
   });
 };

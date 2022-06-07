@@ -1,5 +1,6 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
@@ -9,19 +10,21 @@ type OperationModalProps = {
   operator: ViewOperator;
   visible: boolean;
   onCancel: () => void;
-  current: API.JhIdentity.IdentityRoleDto;
+  current?: API.JhIdentity.IdentityRoleDto;
   onSubmit: (values: API.JhIdentity.IdentityRoleDto) => void;
 };
 const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
   const { operator, visible, current, onCancel, onSubmit, children } = props;
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
+  const [extraProperties, setExtraProperties] = useState<any>();
 
   const modalFormFinish = async (values: any) => {
+    values.extraProperties = extraProperties;
     if (current) {
       const _data = values as API.JhIdentity.IdentityRoleUpdateInputDto;
       _data.concurrencyStamp = current.concurrencyStamp;
-      const updateDto = await defaultService.Update(current.id, _data);
+      const updateDto = await defaultService.UpdateByRoles(current.id, _data);
       if (updateDto) {
         onSubmit(updateDto);
       }
@@ -29,14 +32,14 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
       const _data = values as API.JhIdentity.IdentityRoleCreateDto;
       _data.isDefault = true;
       _data.isPublic = true;
-      const createDto = await defaultService.Create(_data);
+      const createDto = await defaultService.CreateByRoles(_data);
       if (createDto) {
         onSubmit(createDto);
       }
     }
   };
 
-  const initTitle = () => {
+  const initTitle = useCallback(() => {
     let _t = '角色';
     switch (operator) {
       case ViewOperator.Add:
@@ -63,13 +66,21 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
           })}`;
         }
         break;
+      default:
+        break;
     }
     setTitle(_t);
-  };
+  }, [intl, operator]);
 
   useEffect(() => {
     initTitle();
-  }, [operator]);
+    setExtraProperties(current?.extraProperties);
+  }, [current, initTitle]);
+
+  if (!current && operator != ViewOperator.Add) {
+    return <></>;
+  }
+
   return (
     <>
       <ModalForm<API.JhIdentity.IdentityRoleDto>
@@ -77,7 +88,7 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
         visible={visible}
         title={title}
         onFinish={modalFormFinish}
-        initialValues={current}
+        initialValues={operator == ViewOperator.Add ? {} : current}
         trigger={<>{children}</>}
         modalProps={{
           onCancel: () => onCancel(),
@@ -92,7 +103,7 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
               name="name"
               label="角色名称"
               rules={[{ required: true, message: '请输入角色名称' }]}
-              placeholder="请输入"
+              placeholder="请输入角色名称"
             />
           </ProForm.Group>
         </>

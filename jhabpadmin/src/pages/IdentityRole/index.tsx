@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message, Modal } from 'antd';
@@ -19,7 +19,7 @@ const IdentityRoleList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const [currentOperation, setCurrentOperation] = useState<
-    Partial<API.JhIdentity.IdentityRoleDto> | undefined
+    API.JhIdentity.IdentityRoleDto | undefined
   >(undefined);
 
   const onCancelOperation = () => {
@@ -37,16 +37,23 @@ const IdentityRoleList = () => {
     setVisibleOperation(true);
     setCurrentOperation(undefined);
   };
-  const edit = (record: API.JhIdentity.IdentityRoleDto) => {
+  const loadDetail = async (record: API.JhIdentity.IdentityRoleDto) => {
+    setVisibleOperation(true);
+    const detailDto = await defaultService.Get(record.id); //如果有额外得字段才会需要重新获取,否则可以直接使用record传递
+    setCurrentOperation(detailDto);
+  };
+  const edit = async (record: API.JhIdentity.IdentityRoleDto) => {
     setDetailOperation(ViewOperator.Edit);
-    setVisibleOperation(true);
-    setCurrentOperation(record);
+    await loadDetail(record);
   };
-  const detail = (record: API.JhIdentity.IdentityRoleDto) => {
+  const detail = async (record: API.JhIdentity.IdentityRoleDto) => {
     setDetailOperation(ViewOperator.Detail);
-    setVisibleOperation(true);
-    setCurrentOperation(record);
+    await loadDetail(record);
   };
+
+  useEffect(() => {
+    setCurrentOperation(undefined);
+  }, [visibleOperation]);
   const columns: ProColumns<API.JhIdentity.IdentityRoleDto>[] = [
     {
       title: intl.formatMessage({
@@ -80,7 +87,7 @@ const IdentityRoleList = () => {
   ];
 
   //table functions
-  const getTableDataSource = async (params: any, sorter: any, filter: any) => {
+  const getTableDataSource = async (params: any, sorter: any) => {
     const sortings = [];
     const _sorter = new Object(sorter);
     for (const key in _sorter) {
@@ -109,7 +116,7 @@ const IdentityRoleList = () => {
           actionRef={proTableActionRef}
           columns={columns}
           rowSelection={rowSelection}
-          request={(params, sorter, filter) => getTableDataSource(params, sorter, filter)}
+          request={(params, sorter) => getTableDataSource(params, sorter)}
           rowKey="id"
           pagination={{
             pageSize: 10,
