@@ -44,34 +44,4 @@ declare namespace API.JhIdentity {
     skipCount: number;
     maxResultCount: number;
   }
-
-  export interface IdentityRoleDto {
-    name: string;
-    normalizedName: string;
-    isDefault?: boolean;
-    isStatic?: boolean;
-    isPublic?: boolean;
-    concurrencyStamp: string;
-    tenantId?: string;
-    id: string;
-    extraProperties: any;
-  }
-
-  export interface TreeDto {
-    id: string;
-    title: string;
-    name: string;
-    url: string;
-    href: string;
-    icon: string;
-    parent_id: string;
-    spread: boolean;
-    checked: boolean;
-    disabled: boolean;
-    obj: any;
-    sort: string;
-    children: any;
-    data: any;
-    value: string;
-  }
 }

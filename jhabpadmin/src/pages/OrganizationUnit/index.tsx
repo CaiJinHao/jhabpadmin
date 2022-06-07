@@ -1,11 +1,17 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+  DownOutlined,
+} from '@ant-design/icons';
 import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
+import { Row, Col, Tree, Card } from 'antd';
 
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OperationModalOrganizationUnit from './components/OperationModal';
@@ -19,6 +25,8 @@ const OrganizationUnitList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [yesOrNoOptions, setYesOrNoOptions] = useState([]);
+  const [orgTreeData, setOrgTreeData] = useState<any>();
+  const [queryCode, setQueryCode] = useState<string | null>(null);
 
   const [currentOperation, setCurrentOperation] = useState<
     API.JhIdentity.OrganizationUnitDto | undefined
@@ -136,20 +144,21 @@ const OrganizationUnitList = () => {
     await loadDetail(record);
   };
 
+  const initOrgTreeData = useCallback(async () => {
+    const _orgTreeDto = await defaultService.GetOrganizationTree();
+    setOrgTreeData(_orgTreeDto.items);
+  }, []);
+
   useEffect(() => {
     setCurrentOperation(undefined);
   }, [visibleOperation]);
 
+  useEffect(() => {
+    initOrgTreeData();
+  }, [initOrgTreeData]);
+
   //需要展示得字段、需要搜索得字段
   const columns: ProColumns<API.JhIdentity.OrganizationUnitDto>[] = [
-    {
-      title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:Code',
-        defaultMessage: '组织编号',
-      }),
-      dataIndex: 'code',
-      sorter: true,
-    },
     {
       title: intl.formatMessage({
         id: 'JhIdentity:JhOrganizationUnit:DisplayName',
@@ -218,7 +227,7 @@ const OrganizationUnitList = () => {
         sortings.push(`${key} ${val.replace('end', '')}`);
       }
     }
-    const inputParams = { ...params, sorting: sortings.join(',') };
+    const inputParams = { ...params, sorting: sortings.join(','), code: queryCode };
     const responseData = await defaultService.GetList(inputParams);
     setTotalPage(responseData.totalCount);
     return {
@@ -232,48 +241,75 @@ const OrganizationUnitList = () => {
     onChange: (srk: any) => setSelectedRowKeys(srk),
   };
 
+  const orgTreeSelected = (selectedKeys: any[], info: any) => {
+    if (selectedKeys.length > 0) {
+      setQueryCode(info.node.data.code);
+    } else {
+      setQueryCode(null);
+    }
+    proTableActionRef.current?.reload();
+  };
+
   return (
     <>
       <PageContainer>
-        <ProTable<API.JhIdentity.OrganizationUnitDto>
-          actionRef={proTableActionRef}
-          columns={columns}
-          rowSelection={rowSelection}
-          request={(params, sorter) => getTableDataSource(params, sorter)}
-          rowKey="id"
-          pagination={{
-            pageSize: 10,
-            total: totalPage,
-          }}
-          dateFormatter="string"
-          toolBarRender={() => [
-            <Button type="primary" key="create" shape="round" onClick={create}>
-              <PlusOutlined />
-              {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-            </Button>,
-            <Button
-              type="default"
-              key="delete_keys"
-              shape="round"
-              danger={true}
-              onClick={deleteByKeys}
-            >
-              <DeleteOutlined />
-              {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量禁用' })}
-            </Button>,
-          ]}
-          search={{
-            labelWidth: 100,
-            searchText: intl.formatMessage({
-              id: 'ProTable.search.searchText',
-              defaultMessage: '查询',
-            }),
-            resetText: intl.formatMessage({
-              id: 'ProTable.search.resetText',
-              defaultMessage: '重置',
-            }),
-          }}
-        />
+        <Row gutter={{ md: 16 }}>
+          <Col md={6}>
+            {orgTreeData && (
+              <Card size="small">
+                <Tree
+                  showLine={{ showLeafIcon: false }}
+                  defaultExpandAll
+                  showIcon={false}
+                  switcherIcon={<DownOutlined />}
+                  onSelect={orgTreeSelected}
+                  treeData={orgTreeData}
+                />
+              </Card>
+            )}
+          </Col>
+          <Col md={18}>
+            <ProTable<API.JhIdentity.OrganizationUnitDto>
+              actionRef={proTableActionRef}
+              columns={columns}
+              rowSelection={rowSelection}
+              request={(params, sorter) => getTableDataSource(params, sorter)}
+              rowKey="id"
+              pagination={{
+                pageSize: 10,
+                total: totalPage,
+              }}
+              dateFormatter="string"
+              toolBarRender={() => [
+                <Button type="primary" key="create" shape="round" onClick={create}>
+                  <PlusOutlined />
+                  {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+                </Button>,
+                <Button
+                  type="default"
+                  key="delete_keys"
+                  shape="round"
+                  danger={true}
+                  onClick={deleteByKeys}
+                >
+                  <DeleteOutlined />
+                  {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量禁用' })}
+                </Button>,
+              ]}
+              search={{
+                labelWidth: 100,
+                searchText: intl.formatMessage({
+                  id: 'ProTable.search.searchText',
+                  defaultMessage: '查询',
+                }),
+                resetText: intl.formatMessage({
+                  id: 'ProTable.search.resetText',
+                  defaultMessage: '重置',
+                }),
+              }}
+            />
+          </Col>
+        </Row>
       </PageContainer>
       <OperationModalOrganizationUnit
         operator={detailOperation}

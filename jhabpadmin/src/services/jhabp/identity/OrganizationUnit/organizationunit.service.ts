@@ -90,14 +90,15 @@ export const GetRoles = async (
     },
   );
 };
-export const GetOrganizationTree = async (): Promise<API.ListResultDto<API.JhIdentity.TreeDto>> => {
-  return await request<API.ListResultDto<API.JhIdentity.TreeDto>>(
+export const GetOrganizationTree = async (): Promise<API.ListResultDto<API.TreeAntdDto>> => {
+  return await request<API.ListResultDto<API.TreeAntdDto>>(
     `${Identity_API}api/v1/OrganizationUnit/Trees`,
     {
       method: 'Get',
     },
   );
 };
+
 export const GetOptions = async (
   name: string,
 ): Promise<API.ListResultDto<API.OptionDto<string>>> => {

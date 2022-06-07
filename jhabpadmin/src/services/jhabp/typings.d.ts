@@ -186,4 +186,20 @@ declare namespace API {
     value: TValue;
     data: any;
   }
+
+  export interface TreeAntdDto {
+    order: string;
+    parentId: string;
+    id: string;
+    data: any;
+    key: string;
+    title: string;
+    selectable: boolean;
+    isLeaf: boolean;
+    icon: string;
+    disabled: boolean;
+    disableCheckbox: boolean;
+    checkable: boolean;
+    children: any;
+  }
 }
