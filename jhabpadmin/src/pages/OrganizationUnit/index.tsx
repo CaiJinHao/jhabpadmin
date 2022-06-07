@@ -1,20 +1,16 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import {
-  PlusOutlined,
-  DeleteOutlined,
-  ExclamationCircleOutlined,
-  DownOutlined,
-} from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
-import { Row, Col, Tree, Card } from 'antd';
+import { Row, Col } from 'antd';
 
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OperationModalOrganizationUnit from './components/OperationModal';
+import OrganizationUnitTree from '@/pages/components/OrganizationUnitTree';
 
 const OrganizationUnitList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
@@ -25,7 +21,6 @@ const OrganizationUnitList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [yesOrNoOptions, setYesOrNoOptions] = useState([]);
-  const [orgTreeData, setOrgTreeData] = useState<any>();
   const [queryCode, setQueryCode] = useState<string | null>(null);
 
   const [currentOperation, setCurrentOperation] = useState<
@@ -144,18 +139,9 @@ const OrganizationUnitList = () => {
     await loadDetail(record);
   };
 
-  const initOrgTreeData = useCallback(async () => {
-    const _orgTreeDto = await defaultService.GetOrganizationTree();
-    setOrgTreeData(_orgTreeDto.items);
-  }, []);
-
   useEffect(() => {
     setCurrentOperation(undefined);
   }, [visibleOperation]);
-
-  useEffect(() => {
-    initOrgTreeData();
-  }, [initOrgTreeData]);
 
   //需要展示得字段、需要搜索得字段
   const columns: ProColumns<API.JhIdentity.OrganizationUnitDto>[] = [
@@ -241,11 +227,11 @@ const OrganizationUnitList = () => {
     onChange: (srk: any) => setSelectedRowKeys(srk),
   };
 
-  const orgTreeSelected = (selectedKeys: any[], info: any) => {
-    if (selectedKeys.length > 0) {
-      setQueryCode(info.node.data.code);
-    } else {
+  const orgTreeSelected = (info: any) => {
+    if (info == null) {
       setQueryCode(null);
+    } else {
+      setQueryCode(info.node.data.code);
     }
     proTableActionRef.current?.reload();
   };
@@ -255,18 +241,7 @@ const OrganizationUnitList = () => {
       <PageContainer>
         <Row gutter={{ md: 16 }}>
           <Col md={6}>
-            {orgTreeData && (
-              <Card size="small">
-                <Tree
-                  showLine={{ showLeafIcon: false }}
-                  defaultExpandAll
-                  showIcon={false}
-                  switcherIcon={<DownOutlined />}
-                  onSelect={orgTreeSelected}
-                  treeData={orgTreeData}
-                />
-              </Card>
-            )}
+            <OrganizationUnitTree onTreeSelected={orgTreeSelected} />
           </Col>
           <Col md={18}>
             <ProTable<API.JhIdentity.OrganizationUnitDto>
