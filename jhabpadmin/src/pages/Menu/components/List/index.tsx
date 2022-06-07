@@ -83,7 +83,7 @@ const MenuList = () => {
     {
       title: '创建时间',
       dataIndex: 'creationTime',
-      valueType: 'date',
+      valueType: 'dateTime',
       hideInSearch: true,
       sorter: true,
     },

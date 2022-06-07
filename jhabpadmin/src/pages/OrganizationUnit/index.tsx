@@ -178,15 +178,13 @@ const OrganizationUnitList = () => {
     },
     {
       title: intl.formatMessage({ id: 'JhAbp:CreationTime', defaultMessage: '创建时间' }),
-      width: 140,
       dataIndex: 'creationTime',
-      valueType: 'date',
+      valueType: 'dateTime',
       search: false,
       sorter: true,
     },
     {
       title: intl.formatMessage({ id: 'JhAbp:Operation', defaultMessage: '操作' }),
-      width: 180,
       key: 'option',
       valueType: 'option',
       render: (_, record) =>
