@@ -18,11 +18,11 @@ export type GlobalHeaderRightProps = {
  */
 const loginOut = async () => {
   await logout();
-  const { query = {}, search, pathname } = history.location;
+  const { query = {} } = history.location;
   const { redirect } = query;
   // Note: There may be security issues, please note
   if (window.location.pathname !== LOGIN_PATH && !redirect) {
-    // window.location.href = Authorize_Login_Path;
+    window.location.href = Authorize_Login_Path;
     // history.replace({
     //   pathname: LOGIN_PATH,
     //   search: stringify({

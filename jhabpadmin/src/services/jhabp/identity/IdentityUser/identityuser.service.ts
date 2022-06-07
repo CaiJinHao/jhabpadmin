@@ -40,10 +40,12 @@ export const UpdatePortion = async (
   });
 };
 export const UpdateLockoutEnabled = async (id: string, lockoutEnabled: boolean): Promise<void> => {
-  return await request<void>(`${Identity_API}api/v1/IdentityUser/${id}/lockoutEnabled`, {
-    method: 'Put',
-    data: lockoutEnabled,
-  });
+  return await request<void>(
+    `${Identity_API}api/v1/IdentityUser/${id}/lockoutEnabled/${lockoutEnabled}`,
+    {
+      method: 'Put',
+    },
+  );
 };
 export const Recover = async (id: string): Promise<void> => {
   return await request<void>(`${Identity_API}api/v1/IdentityUser/${id}/Recover`, {
@@ -88,7 +90,7 @@ export const GetEntitys = async (
   );
 };
 export const GetCurrent = async (): Promise<API.JhIdentity.IdentityUserDto> => {
-  return await request<API.JhIdentity.IdentityUserDto>(`${Identity_API}api/v1/IdentityUser`, {
+  return await request<API.JhIdentity.IdentityUserDto>(`${Identity_API}api/v1/IdentityUser/info`, {
     method: 'Get',
   });
 };
@@ -111,10 +113,12 @@ export const GetOptions = async (): Promise<API.ListResultDto<API.OptionDto<stri
   );
 };
 export const GetSuperiorUser = async (userId: string): Promise<API.JhIdentity.IdentityUserDto> => {
-  return await request<API.JhIdentity.IdentityUserDto>(`${Identity_API}api/v1/IdentityUser`, {
-    method: 'Get',
-    params: { userId },
-  });
+  return await request<API.JhIdentity.IdentityUserDto>(
+    `${Identity_API}api/v1/IdentityUser/${userId}/SuperiorUser`,
+    {
+      method: 'Get',
+    },
+  );
 };
 export const ChangePassword = async (
   input: API.JhIdentity.ChangePasswordInputDto,
