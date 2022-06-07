@@ -29,6 +29,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
 
   const modalFormFinish = async (values: any) => {
     values.extraProperties = extraProperties;
+    values.roleNames = roleNames;
     if (current) {
       const _data = values as API.JhIdentity.IdentityUserUpdateInputDto;
       _data.concurrencyStamp = current.concurrencyStamp;
@@ -98,14 +99,11 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
   }, [intl, operator]);
 
   const roleSelectedChange = (value: any, option: any) => {
-    console.log(value);
-    console.log(option);
-    // setRoleNames();
-    // setExtraProperties({
-    //   ...extraProperties,
-    //   LeaderId: value ?? null,
-    //   LeaderName: value ? option.label : null,
-    // });
+    const _rns: string[] = [];
+    (option as any[]).forEach((item) => {
+      _rns.push(item.label);
+    });
+    setRoleNames(_rns);
   };
 
   useEffect(() => {
