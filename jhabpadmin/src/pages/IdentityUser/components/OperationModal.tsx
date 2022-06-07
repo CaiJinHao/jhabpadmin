@@ -1,5 +1,6 @@
 import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
@@ -11,20 +12,23 @@ type OperationModalProps = {
   operator: ViewOperator;
   visible: boolean;
   onCancel: () => void;
-  current: API.JhIdentity.IdentityUserDto;
+  current?: API.JhIdentity.IdentityUserDto;
   onSubmit: (values: API.JhIdentity.IdentityUserDto) => void;
 };
 const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
   const { operator, visible, current, onCancel, onSubmit, children } = props;
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
+  const [extraProperties, setExtraProperties] = useState<any>();
 
   const [identityRoleOptions, setIdentityRoleOptions] = useState<API.OptionDto<string>[]>([]);
   const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
     [],
   );
+  const [roleNames, setRoleNames] = useState<string[]>([]);
 
   const modalFormFinish = async (values: any) => {
+    values.extraProperties = extraProperties;
     if (current) {
       const _data = values as API.JhIdentity.IdentityUserUpdateInputDto;
       _data.concurrencyStamp = current.concurrencyStamp;
@@ -33,9 +37,8 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
         onSubmit(updateDto);
       }
     } else {
-      const createDto = await defaultService.Create(
-        values as API.JhIdentity.IdentityUserCreateInputDto,
-      );
+      const _data = values as API.JhIdentity.IdentityUserCreateInputDto;
+      const createDto = await defaultService.Create(_data);
       if (createDto) {
         onSubmit(createDto);
       }
@@ -61,7 +64,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
     }
     return organizationUnitOptions;
   };
-  const initTitle = () => {
+  const initTitle = useCallback(() => {
     let _t = '用户';
     switch (operator) {
       case ViewOperator.Add:
@@ -88,15 +91,29 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
           })}`;
         }
         break;
+      default:
+        break;
     }
     setTitle(_t);
+  }, [intl, operator]);
+
+  const roleSelectedChange = (value: any, option: any) => {
+    console.log(value);
+    console.log(option);
+    // setRoleNames();
+    // setExtraProperties({
+    //   ...extraProperties,
+    //   LeaderId: value ?? null,
+    //   LeaderName: value ? option.label : null,
+    // });
   };
 
   useEffect(() => {
     initTitle();
-  }, [operator]);
+    setExtraProperties(current?.extraProperties);
+  }, [current, initTitle]);
 
-  if (!current) {
+  if (!current && operator != ViewOperator.Add) {
     return <></>;
   }
 
@@ -106,7 +123,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
         visible={visible}
         title={title}
         onFinish={modalFormFinish}
-        initialValues={current}
+        initialValues={operator == ViewOperator.Add ? {} : current}
         trigger={<>{children}</>}
         modalProps={{
           onCancel: () => onCancel(),
@@ -153,6 +170,9 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
               label="角色"
               rules={[{ required: false, message: '请选择角色' }]}
               request={requestIdentityRoleOptions}
+              fieldProps={{
+                onChange: roleSelectedChange,
+              }}
             />
             <ProFormSelect<API.OptionDto<string>>
               mode="multiple"

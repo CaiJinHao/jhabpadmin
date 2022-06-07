@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message, Modal } from 'antd';
@@ -20,7 +20,7 @@ const IdentityUserList = () => {
   const [yesOrNoOptions, setYesOrNoOptions] = useState([]);
 
   const [currentOperation, setCurrentOperation] = useState<
-    Partial<API.JhIdentity.IdentityUserDto> | undefined
+    API.JhIdentity.IdentityUserDto | undefined
   >(undefined);
 
   const requestYesOrNoOptions = async () => {
@@ -149,11 +149,9 @@ const IdentityUserList = () => {
 
   const loadDetail = async (record: API.JhIdentity.IdentityUserDto) => {
     setVisibleOperation(true);
-    const detailDto = await defaultService.Get(record.id);
-    console.log(detailDto);
+    const detailDto = await defaultService.Get(record.id); //如果有额外得字段才会需要重新获取,否则可以直接使用record传递
     setCurrentOperation(detailDto);
   };
-
   const edit = async (record: API.JhIdentity.IdentityUserDto) => {
     setDetailOperation(ViewOperator.Edit);
     await loadDetail(record);
@@ -162,6 +160,11 @@ const IdentityUserList = () => {
     setDetailOperation(ViewOperator.Detail);
     await loadDetail(record);
   };
+
+  useEffect(() => {
+    setCurrentOperation(undefined);
+  }, [visibleOperation]);
+
   const columns: ProColumns<API.JhIdentity.IdentityUserDto>[] = [
     {
       title: intl.formatMessage({
@@ -267,7 +270,7 @@ const IdentityUserList = () => {
   ];
 
   //table functions
-  const getTableDataSource = async (params: any, sorter: any, filter: any) => {
+  const getTableDataSource = async (params: any, sorter: any) => {
     const sortings = [];
     const _sorter = new Object(sorter);
     for (const key in _sorter) {
@@ -296,7 +299,7 @@ const IdentityUserList = () => {
           actionRef={proTableActionRef}
           columns={columns}
           rowSelection={rowSelection}
-          request={(params, sorter, filter) => getTableDataSource(params, sorter, filter)}
+          request={(params, sorter) => getTableDataSource(params, sorter)}
           rowKey="id"
           pagination={{
             pageSize: 10,

@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Switch, message, Modal } from 'antd';
+import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
+import { PlusOutlined } from '@ant-design/icons';
+import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
@@ -12,7 +12,6 @@ import OperationModalIdentityRole from './components/OperationModal';
 const IdentityRoleList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
   const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
-  const { confirm } = Modal;
   const intl = useIntl();
   const proTableActionRef = useRef<ActionType>();
   const [totalPage, setTotalPage] = useState(0);
