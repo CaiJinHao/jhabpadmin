@@ -129,11 +129,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
               placeholder="请输入"
             />
 
-            <OrganizationUnitRoleSelect
-              width="md"
-              organizationUnitDefalutValue={current?.organizationUnitIds}
-              onRoleSelectedChange={roleSelectedChange}
-            />
+            <OrganizationUnitRoleSelect width="md" onRoleSelectedChange={roleSelectedChange} />
 
             <ProFormText
               width="md"

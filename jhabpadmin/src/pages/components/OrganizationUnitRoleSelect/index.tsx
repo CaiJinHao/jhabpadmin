@@ -1,22 +1,18 @@
 import { ProFormSelect } from '@ant-design/pro-form';
 import type { FC } from 'react';
-import { useEffect } from 'react';
 import { useState } from 'react';
 import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 
 type OrganizationUnitRoleSelectProps = {
-  organizationUnitDefalutValue?: string[];
   onRoleSelectedChange?: (values: any, option: any) => void;
-  name?: string;
+  roleSelectName?: string;
   width?: number | 'sm' | 'md' | 'xl' | 'xs' | 'lg';
 };
 const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
   onRoleSelectedChange,
-  name,
-  organizationUnitDefalutValue,
+  roleSelectName,
   ...props
 }) => {
-  const [identityRoleOptions, setIdentityRoleOptions] = useState<any[]>([]);
   const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
     [],
   );
@@ -30,6 +26,18 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
     return organizationUnitOptions;
   };
 
+  const requestIdentityRoleOptions = async (value: any) => {
+    const organizationUnitIds = value.organizationUnitIds as string[];
+    if (organizationUnitIds.length > 0) {
+      const data = await organizationunitService.GetRoleOptions(organizationUnitIds);
+      const items = data.items as API.OptionDto<string>[];
+      return items;
+    }
+    return [];
+  };
+
+  /*
+  已使用简单的方式实现
   const loadIdentityRoleOptions = async (values: string[]) => {
     if (values.length > 0) {
       const data = await organizationunitService.GetRoleOptions(values);
@@ -45,10 +53,10 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
     }
   }, [organizationUnitDefalutValue]);
 
-  //TODO: organizationUnitIds是否可以直接拿到组织的值，就不需要传值了
   const onOrganizationUnitSelectedChange = async (values: any) => {
     await loadIdentityRoleOptions(values);
   };
+  */
 
   return (
     <>
@@ -60,21 +68,20 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
         label="组织"
         rules={[{ required: false, message: '请选择组织' }]}
         request={requestOrganizationUnitOptions}
-        fieldProps={{
-          onChange: onOrganizationUnitSelectedChange,
-        }}
       />
       <ProFormSelect<API.OptionDto<string>>
         {...props}
         mode="multiple"
         allowClear
-        name={name ?? 'roleIds'}
+        name={roleSelectName ?? 'roleIds'}
         label="角色"
         rules={[{ required: false, message: '请选择角色' }]}
-        options={identityRoleOptions}
+        // options={identityRoleOptions}
+        dependencies={['organizationUnitIds']}
+        request={requestIdentityRoleOptions}
         fieldProps={{
           onChange: onRoleSelectedChange,
-          notFoundContent: '请选择组织',
+          notFoundContent: '请先选择组织',
         }}
       />
     </>
