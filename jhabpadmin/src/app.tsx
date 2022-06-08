@@ -200,7 +200,7 @@ const xsrfAppendRequestInterceptor: RequestInterceptor = (
           //http状态判断
           console.log(error.response);
           console.log(error.data);
-          if (error.data) {
+          if (error.data.error) {
             message.error(error.data.error.message, 6);
           } else {
             message.error(error.response.statusText, 6);
