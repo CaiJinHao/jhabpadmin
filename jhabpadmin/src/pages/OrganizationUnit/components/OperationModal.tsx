@@ -6,6 +6,7 @@ import { useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import * as identityUserService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
+import IdentityRoleSelect from '@/pages/components/IdentityRoleSelect';
 
 type OperationModalProps = {
   operator: ViewOperator;
@@ -20,6 +21,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
   const [extraProperties, setExtraProperties] = useState<any>();
+  const [roleIds, setRoleIds] = useState<string[]>([]);
 
   const modalFormFinish = async (values: any) => {
     values.extraProperties = extraProperties;
@@ -132,6 +134,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
               rules={[{ required: true, message: '请输入组织名称' }]}
               placeholder="请输入"
             />
+            <IdentityRoleSelect />
             <ProFormSelect<API.OptionDto<string>>
               width="md"
               name="LeaderId"
