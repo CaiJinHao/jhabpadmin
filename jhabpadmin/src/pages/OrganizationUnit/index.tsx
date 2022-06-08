@@ -172,10 +172,8 @@ const OrganizationUnitList = () => {
       title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否禁用' }),
       dataIndex: 'isDeleted',
       search: false,
-      render: (text, record, index, action) => {
-        return (
-          <Switch checked={record.isDeleted} onChange={() => handlerIsDeleted(record, action)} />
-        );
+      render: (text, record) => {
+        return <Switch checked={record.isDeleted} onChange={() => handlerIsDeleted(record)} />;
       },
     },
     {
