@@ -125,3 +125,14 @@ export const CreateByRole = async (roleId: string): Promise<void> => {
     method: 'Get',
   });
 };
+export const GetRoleOptions = async (
+  orgIds: string[],
+): Promise<API.ListResultDto<API.OptionDto<string>>> => {
+  return await request<API.ListResultDto<API.OptionDto<string>>>(
+    `${Identity_API}api/v1/OrganizationUnit/RoleOptions`,
+    {
+      method: 'Get',
+      params: { orgIds },
+    },
+  );
+};

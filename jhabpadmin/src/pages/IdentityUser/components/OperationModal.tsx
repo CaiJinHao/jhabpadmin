@@ -7,6 +7,7 @@ import { useIntl } from 'umi';
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 import * as identityroleService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
 import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
+import OrganizationUnitRoleSelect from '@/pages/components/OrganizationUnitRoleSelect';
 
 type OperationModalProps = {
   operator: ViewOperator;
@@ -160,26 +161,9 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
               rules={[{ required: true, message: '邮箱' }]}
               placeholder="请输入"
             />
-            <ProFormSelect<API.OptionDto<string>>
-              mode="multiple"
-              allowClear
-              width="md"
-              name="roleIds"
-              label="角色"
-              rules={[{ required: false, message: '请选择角色' }]}
-              request={requestIdentityRoleOptions}
-              fieldProps={{
-                onChange: roleSelectedChange,
-              }}
-            />
-            <ProFormSelect<API.OptionDto<string>>
-              mode="multiple"
-              allowClear
-              width="md"
-              name="organizationUnitIds"
-              label="组织"
-              rules={[{ required: false, message: '请选择组织' }]}
-              request={requestOrganizationUnitOptions}
+            <OrganizationUnitRoleSelect
+              organizationUnitDefalutValue={current?.organizationUnitIds}
+              onRoleSelectedChange={roleSelectedChange}
             />
           </ProForm.Group>
         </>
