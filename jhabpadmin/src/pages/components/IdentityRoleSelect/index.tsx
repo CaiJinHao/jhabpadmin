@@ -6,8 +6,14 @@ import * as identityroleService from '@/services/jhabp/identity/IdentityRole/ide
 type IdentityRoleSelectProps = {
   onRoleSelectedChange?: (values: any, option: any) => void;
   name?: string;
+  label?: React.ReactNode;
+  width?: number | 'sm' | 'md' | 'xl' | 'xs' | 'lg';
 };
-const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({ onRoleSelectedChange, name }) => {
+const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({
+  onRoleSelectedChange,
+  name,
+  ...props
+}) => {
   const [identityRoleOptions, setIdentityRoleOptions] = useState<API.OptionDto<string>[]>([]);
 
   const requestIdentityRoleOptions = async () => {
@@ -23,12 +29,12 @@ const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({ onRoleSelectedChange,
   return (
     <>
       <ProFormSelect<API.OptionDto<string>>
+        {...props}
         mode="multiple"
         allowClear
-        width="md"
         name={name ?? 'roleIds'}
-        label="角色"
         rules={[{ required: false, message: '请选择角色' }]}
+        placeholder="请选择角色"
         request={requestIdentityRoleOptions}
         fieldProps={{
           onChange: onRoleSelectedChange,

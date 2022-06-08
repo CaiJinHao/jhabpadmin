@@ -105,7 +105,6 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   return (
     <>
       <ModalForm<API.JhIdentity.OrganizationUnitDto>
-        width={378}
         visible={visible}
         title={title}
         onFinish={modalFormFinish}
@@ -133,7 +132,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
               rules={[{ required: true, message: '请输入组织名称' }]}
               placeholder="请输入"
             />
-            <IdentityRoleSelect />
+            <IdentityRoleSelect width="md" label="为组织分配可用角色" />
             <ProFormSelect<API.OptionDto<string>>
               width="md"
               name="LeaderId"
