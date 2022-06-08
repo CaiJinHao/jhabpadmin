@@ -91,7 +91,7 @@ const IdentityUserList = () => {
       content: (
         <>
           {intl.formatMessage({
-            id: 'JhIdentity:IdentityUsers:LockoutEnd',
+            id: 'DisplayName:IdentityUsers:LockoutEnd',
             defaultMessage: msg,
           })}
         </>
@@ -171,35 +171,35 @@ const IdentityUserList = () => {
   const columns: ProColumns<API.JhIdentity.IdentityUserDto>[] = [
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:IdentityUser:UserName',
+        id: 'DisplayName:IdentityUser:UserName',
         defaultMessage: '用户账号',
       }),
       dataIndex: 'userName',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:IdentityUser:Name',
+        id: 'DisplayName:IdentityUser:Name',
         defaultMessage: '用户名称',
       }),
       dataIndex: 'name',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:IdentityUser:Email',
+        id: 'DisplayName:IdentityUser:Email',
         defaultMessage: '邮箱',
       }),
       dataIndex: 'email',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:IdentityUser:PhoneNumber',
+        id: 'DisplayName:IdentityUser:PhoneNumber',
         defaultMessage: '手机号',
       }),
       dataIndex: 'phoneNumber',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:IdentityUser:LockoutEnd',
+        id: 'DisplayName:IdentityUser:LockoutEnd',
         defaultMessage: '登录锁结束时间',
       }),
       valueType: 'dateTime',
@@ -208,7 +208,7 @@ const IdentityUserList = () => {
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:IdentityUser:LockoutEnabled',
+        id: 'DisplayName:IdentityUser:LockoutEnabled',
         defaultMessage: '启用登录锁',
       }),
       dataIndex: 'lockoutEnabled',
@@ -224,7 +224,7 @@ const IdentityUserList = () => {
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:IdentityUser:AccessFailedCount',
+        id: 'DisplayName:IdentityUser:AccessFailedCount',
         defaultMessage: '登录错误次数',
       }),
       dataIndex: 'accessFailedCount',

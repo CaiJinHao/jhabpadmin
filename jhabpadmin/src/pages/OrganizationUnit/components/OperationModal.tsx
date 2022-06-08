@@ -53,11 +53,11 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   };
 
   const initTitle = useCallback(() => {
-    let _t = '组织';
+    let _t = intl.formatMessage({ id: 'DisplayName:JhOrganizationUnit', defaultMessage: '组织' });
     switch (operator) {
       case ViewOperator.Add:
         {
-          _t = `${_t}${intl.formatMessage({
+          _t = `${_t} ${intl.formatMessage({
             id: 'Permission:Create',
             defaultMessage: '创建',
           })}`;
@@ -65,7 +65,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
         break;
       case ViewOperator.Edit:
         {
-          _t = `${_t}${intl.formatMessage({
+          _t = `${_t} ${intl.formatMessage({
             id: 'Permission:Edit',
             defaultMessage: '编辑',
           })}`;
@@ -73,7 +73,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
         break;
       case ViewOperator.Detail:
         {
-          _t = `${_t}${intl.formatMessage({
+          _t = `${_t} ${intl.formatMessage({
             id: 'Permission:Detail',
             defaultMessage: '详情',
           })}`;
@@ -121,18 +121,41 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
             <ProFormSelect<API.OptionDto<string>>
               width="md"
               name="parentId"
-              label="上级组织"
-              rules={[{ required: false, message: '请选择上级组织' }]}
+              label={intl.formatMessage({
+                id: 'DisplayName:JhOrganizationUnit:ParentId',
+                defaultMessage: '上级组织',
+              })}
               request={requestOrganizationUnitOptions}
             />
             <ProFormText
               width="md"
               name="displayName"
-              label="组织名称"
-              rules={[{ required: true, message: '请输入组织名称' }]}
-              placeholder="请输入"
+              label={intl.formatMessage({
+                id: 'DisplayName:JhOrganizationUnit:DisplayName',
+                defaultMessage: '组织名称',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'Form.rules.message',
+                    defaultMessage: '请输入',
+                  })} ${intl.formatMessage({
+                    id: 'DisplayName:JhOrganizationUnit:DisplayName',
+                    defaultMessage: '组织名称',
+                  })}`,
+                },
+              ]}
             />
-            <IdentityRoleSelect width="md" label="为组织分配可用角色" />
+            <IdentityRoleSelect
+              //@ts-ignore
+              title="为组织分配可用角色"
+              width="md"
+              label={intl.formatMessage({
+                id: 'DisplayName:IdentityRole',
+                defaultMessage: '为组织分配可用角色',
+              })}
+            />
             <ProFormSelect<API.OptionDto<string>>
               width="md"
               name="LeaderId"
@@ -141,8 +164,10 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
                   ? { value: current.extraProperties.LeaderId }
                   : undefined
               }
-              label="负责人"
-              rules={[{ required: false, message: '请选择负责人' }]}
+              label={intl.formatMessage({
+                id: 'DisplayName:JhOrganizationUnit:LeaderId',
+                defaultMessage: '负责人',
+              })}
               request={requestIdentityUserOptions}
               fieldProps={{
                 onChange: leaderSelectedChange,

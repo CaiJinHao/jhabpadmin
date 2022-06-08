@@ -56,7 +56,7 @@ const IdentityRoleList = () => {
   const columns: ProColumns<API.JhIdentity.IdentityRoleDto>[] = [
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:IdentityRole:DisplayName',
+        id: 'DisplayName:IdentityRole:DisplayName',
         defaultMessage: '角色名称',
       }),
       dataIndex: 'name',

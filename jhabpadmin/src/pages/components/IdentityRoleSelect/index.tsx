@@ -33,8 +33,6 @@ const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({
         mode="multiple"
         allowClear
         name={name ?? 'roleIds'}
-        rules={[{ required: false, message: '请选择角色' }]}
-        placeholder="请选择角色"
         request={requestIdentityRoleOptions}
         fieldProps={{
           onChange: onRoleSelectedChange,

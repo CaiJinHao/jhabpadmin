@@ -40,11 +40,11 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
   };
 
   const initTitle = useCallback(() => {
-    let _t = '角色';
+    let _t = intl.formatMessage({ id: 'DisplayName:IdentityRole', defaultMessage: '角色' });
     switch (operator) {
       case ViewOperator.Add:
         {
-          _t = `${_t}${intl.formatMessage({
+          _t = `${_t} ${intl.formatMessage({
             id: 'Permission:Create',
             defaultMessage: '创建',
           })}`;
@@ -52,7 +52,7 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
         break;
       case ViewOperator.Edit:
         {
-          _t = `${_t}${intl.formatMessage({
+          _t = `${_t} ${intl.formatMessage({
             id: 'Permission:Edit',
             defaultMessage: '编辑',
           })}`;
@@ -60,7 +60,7 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
         break;
       case ViewOperator.Detail:
         {
-          _t = `${_t}${intl.formatMessage({
+          _t = `${_t} ${intl.formatMessage({
             id: 'Permission:Detail',
             defaultMessage: '详情',
           })}`;
@@ -101,9 +101,22 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
             <ProFormText
               width="md"
               name="name"
-              label="角色名称"
-              rules={[{ required: true, message: '请输入角色名称' }]}
-              placeholder="请输入角色名称"
+              label={intl.formatMessage({
+                id: 'DisplayName:IdentityRole:DisplayName',
+                defaultMessage: '角色名称',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'Form.rules.message',
+                    defaultMessage: '请输入',
+                  })} ${intl.formatMessage({
+                    id: 'DisplayName:IdentityRole:DisplayName',
+                    defaultMessage: '角色名称',
+                  })}`,
+                },
+              ]}
             />
           </ProForm.Group>
         </>

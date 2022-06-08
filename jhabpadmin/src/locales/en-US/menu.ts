@@ -53,4 +53,6 @@ export default {
   'menu.menu': 'Menu management',
   'menu.systemConfig': 'System configuration',
   'menu.systemConfig.OrganizationUnit': 'Organization management',
+  'menu.systemConfig.IdentityRole': 'Role management',
+  'menu.systemConfig.IdentityUser': 'User management',
 };

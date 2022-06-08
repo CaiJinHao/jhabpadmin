@@ -2,6 +2,7 @@ import { ProFormSelect } from '@ant-design/pro-form';
 import type { FC } from 'react';
 import { useState } from 'react';
 import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
+import { useIntl } from 'umi';
 
 type OrganizationUnitRoleSelectProps = {
   onRoleSelectedChange?: (values: any, option: any) => void;
@@ -16,6 +17,8 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
   const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
     [],
   );
+  const intl = useIntl();
+
   const requestOrganizationUnitOptions = async () => {
     if (organizationUnitOptions.length == 0) {
       const data = await organizationunitService.GetOptions('');
@@ -65,8 +68,10 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
         mode="multiple"
         allowClear
         name="organizationUnitIds"
-        label="组织"
-        rules={[{ required: false, message: '请选择组织' }]}
+        label={intl.formatMessage({
+          id: 'DisplayName:JhOrganizationUnit',
+          defaultMessage: '组织',
+        })}
         request={requestOrganizationUnitOptions}
       />
       <ProFormSelect<API.OptionDto<string>>
@@ -74,8 +79,10 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
         mode="multiple"
         allowClear
         name={roleSelectName ?? 'roleIds'}
-        label="角色"
-        rules={[{ required: false, message: '请选择角色' }]}
+        label={intl.formatMessage({
+          id: 'DisplayName:IdentityRole',
+          defaultMessage: '角色',
+        })}
         // options={identityRoleOptions}
         dependencies={['organizationUnitIds']}
         request={requestIdentityRoleOptions}

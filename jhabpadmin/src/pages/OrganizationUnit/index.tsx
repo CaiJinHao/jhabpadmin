@@ -154,14 +154,14 @@ const OrganizationUnitList = () => {
   const columns: ProColumns<API.JhIdentity.OrganizationUnitDto>[] = [
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:DisplayName',
+        id: 'DisplayName:JhOrganizationUnit:DisplayName',
         defaultMessage: '组织名称',
       }),
       dataIndex: 'displayName',
     },
     {
       title: intl.formatMessage({
-        id: 'JhIdentity:JhOrganizationUnit:LeaderId',
+        id: 'DisplayName:JhOrganizationUnit:LeaderId',
         defaultMessage: '组织负责人',
       }),
       renderText: (text, record) => {

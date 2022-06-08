@@ -41,7 +41,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
     }
   };
   const initTitle = useCallback(() => {
-    let _t = '用户';
+    let _t = intl.formatMessage({ id: 'DisplayName:IdentityUser', defaultMessage: '用户' });
     switch (operator) {
       case ViewOperator.Add:
         {
@@ -109,24 +109,70 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
             <ProFormText
               width="md"
               name="userName"
-              label="用户账号"
-              rules={[{ required: true, message: '请输入用户账号' }]}
-              placeholder="请输入"
+              label={intl.formatMessage({
+                id: 'DisplayName:IdentityUser:UserName',
+                defaultMessage: '用户账号',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'Form.rules.message',
+                    defaultMessage: '请输入',
+                  })} ${intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:UserName',
+                    defaultMessage: '用户账号',
+                  })}`,
+                },
+              ]}
             />
-            <ProFormText width="md" name="password" label="用户密码" placeholder="请输入" />
+            <ProFormText
+              width="md"
+              name="password"
+              label={intl.formatMessage({
+                id: 'DisplayName:IdentityUser:Password',
+                defaultMessage: '用户密码',
+              })}
+            />
             <ProFormText
               width="md"
               name="phoneNumber"
-              label="手机号"
-              rules={[{ required: true, message: '手机号' }]}
-              placeholder="请输入"
+              label={intl.formatMessage({
+                id: 'DisplayName:IdentityUser:PhoneNumber',
+                defaultMessage: '手机号',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'Form.rules.message',
+                    defaultMessage: '请输入',
+                  })} ${intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:PhoneNumber',
+                    defaultMessage: '手机号',
+                  })}`,
+                },
+              ]}
             />
             <ProFormText
               width="md"
               name="email"
-              label="邮箱"
-              rules={[{ required: true, message: '邮箱' }]}
-              placeholder="请输入"
+              label={intl.formatMessage({
+                id: 'DisplayName:IdentityUser:Email',
+                defaultMessage: '邮箱',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'Form.rules.message',
+                    defaultMessage: '请输入',
+                  })} ${intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:Email',
+                    defaultMessage: '邮箱',
+                  })}`,
+                },
+              ]}
             />
 
             <OrganizationUnitRoleSelect width="md" onRoleSelectedChange={roleSelectedChange} />
@@ -134,9 +180,22 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
             <ProFormText
               width="md"
               name="name"
-              label="用户名称"
-              rules={[{ required: true, message: '邮箱' }]}
-              placeholder="请输入"
+              label={intl.formatMessage({
+                id: 'DisplayName:IdentityUser:Name',
+                defaultMessage: '用户名称',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'Form.rules.message',
+                    defaultMessage: '请输入',
+                  })} ${intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:Name',
+                    defaultMessage: '用户名称',
+                  })}`,
+                },
+              ]}
             />
           </ProForm.Group>
         </>
