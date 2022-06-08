@@ -3,6 +3,7 @@ import { DownOutlined } from '@ant-design/icons';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
+import defaultStyle from './index.less';
 
 type OrganizationUnitTreeProps = {
   onTreeSelected: (values: API.TreeAntdDto | null) => void;
@@ -30,7 +31,7 @@ const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = (props) => {
   return (
     <>
       {orgTreeData && (
-        <Card size="small">
+        <Card size="small" className={defaultStyle.myCard}>
           <Tree
             showLine={{ showLeafIcon: false }}
             defaultExpandAll
