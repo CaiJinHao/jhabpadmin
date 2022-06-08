@@ -21,7 +21,6 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
   const [extraProperties, setExtraProperties] = useState<any>();
-  const [roleIds, setRoleIds] = useState<string[]>([]);
 
   const modalFormFinish = async (values: any) => {
     values.extraProperties = extraProperties;

@@ -1,12 +1,10 @@
-import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
-import * as identityroleService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
-import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import OrganizationUnitRoleSelect from '@/pages/components/OrganizationUnitRoleSelect';
 
 type OperationModalProps = {
@@ -22,10 +20,6 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
   const intl = useIntl();
   const [extraProperties, setExtraProperties] = useState<any>();
 
-  const [identityRoleOptions, setIdentityRoleOptions] = useState<API.OptionDto<string>[]>([]);
-  const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
-    [],
-  );
   const [roleNames, setRoleNames] = useState<string[]>([]);
 
   const modalFormFinish = async (values: any) => {
@@ -45,26 +39,6 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
         onSubmit(createDto);
       }
     }
-  };
-
-  const requestIdentityRoleOptions = async () => {
-    if (identityRoleOptions.length == 0) {
-      const data = await identityroleService.GetOptions('');
-      const items = data.items as API.OptionDto<string>[];
-      setIdentityRoleOptions(items);
-      return items;
-    }
-    return identityRoleOptions;
-  };
-
-  const requestOrganizationUnitOptions = async () => {
-    if (organizationUnitOptions.length == 0) {
-      const data = await organizationunitService.GetOptions('');
-      const items = data.items as API.OptionDto<string>[];
-      setOrganizationUnitOptions(items);
-      return items;
-    }
-    return organizationUnitOptions;
   };
   const initTitle = useCallback(() => {
     let _t = '用户';
@@ -154,16 +128,19 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
               rules={[{ required: true, message: '邮箱' }]}
               placeholder="请输入"
             />
+
+            <OrganizationUnitRoleSelect
+              width="md"
+              organizationUnitDefalutValue={current?.organizationUnitIds}
+              onRoleSelectedChange={roleSelectedChange}
+            />
+
             <ProFormText
               width="md"
               name="name"
               label="用户名称"
               rules={[{ required: true, message: '邮箱' }]}
               placeholder="请输入"
-            />
-            <OrganizationUnitRoleSelect
-              organizationUnitDefalutValue={current?.organizationUnitIds}
-              onRoleSelectedChange={roleSelectedChange}
             />
           </ProForm.Group>
         </>

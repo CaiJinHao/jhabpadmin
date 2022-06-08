@@ -8,11 +8,13 @@ type OrganizationUnitRoleSelectProps = {
   organizationUnitDefalutValue?: string[];
   onRoleSelectedChange?: (values: any, option: any) => void;
   name?: string;
+  width?: number | 'sm' | 'md' | 'xl' | 'xs' | 'lg';
 };
 const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
   onRoleSelectedChange,
   name,
   organizationUnitDefalutValue,
+  ...props
 }) => {
   const [identityRoleOptions, setIdentityRoleOptions] = useState<any[]>([]);
   const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
@@ -47,12 +49,13 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
   const onOrganizationUnitSelectedChange = async (values: any) => {
     await loadIdentityRoleOptions(values);
   };
+
   return (
     <>
       <ProFormSelect<API.OptionDto<string>>
+        {...props}
         mode="multiple"
         allowClear
-        width="md"
         name="organizationUnitIds"
         label="组织"
         rules={[{ required: false, message: '请选择组织' }]}
@@ -62,9 +65,9 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
         }}
       />
       <ProFormSelect<API.OptionDto<string>>
+        {...props}
         mode="multiple"
         allowClear
-        width="md"
         name={name ?? 'roleIds'}
         label="角色"
         rules={[{ required: false, message: '请选择角色' }]}
