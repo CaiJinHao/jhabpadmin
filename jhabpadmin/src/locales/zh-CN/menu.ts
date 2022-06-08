@@ -55,4 +55,5 @@ export default {
   'menu.systemConfig.OrganizationUnit': '组织管理',
   'menu.systemConfig.IdentityRole': '角色管理',
   'menu.systemConfig.IdentityUser': '用户管理',
+  'menu.systemConfig.MenuPermission': '菜单权限管理',
 };
