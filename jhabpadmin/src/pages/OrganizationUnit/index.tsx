@@ -27,6 +27,13 @@ const OrganizationUnitList = () => {
     API.JhIdentity.OrganizationUnitDto | undefined
   >(undefined);
 
+  const [reloadTree, setReloadTree] = useState<boolean>(false);
+
+  const reloadProTable = () => {
+    setReloadTree(!reloadTree);
+    proTableActionRef.current?.reload();
+  };
+
   const requestYesOrNoOptions = async () => {
     if (yesOrNoOptions.length == 0) {
       const data = await getYesOrNo();
@@ -37,7 +44,7 @@ const OrganizationUnitList = () => {
   };
 
   // columns functions
-  const handlerIsDeleted = async (record: API.JhIdentity.OrganizationUnitDto, action: any) => {
+  const handlerIsDeleted = async (record: API.JhIdentity.OrganizationUnitDto) => {
     if (record.isDeleted) {
       confirm({
         icon: <ExclamationCircleOutlined />,
@@ -54,7 +61,7 @@ const OrganizationUnitList = () => {
           message.success(
             intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
           );
-          action?.reload();
+          reloadProTable();
         },
         onCancel() {},
       });
@@ -74,7 +81,7 @@ const OrganizationUnitList = () => {
           message.success(
             intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
           );
-          action?.reload();
+          reloadProTable();
         },
         onCancel() {},
       });
@@ -88,7 +95,7 @@ const OrganizationUnitList = () => {
   const onSubmitOperation = () => {
     setVisibleOperation(false);
     message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
-    proTableActionRef.current?.reload();
+    reloadProTable();
   };
 
   const create = () => {
@@ -114,7 +121,7 @@ const OrganizationUnitList = () => {
           message.success(
             intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
           );
-          proTableActionRef.current?.reload();
+          reloadProTable();
         },
         onCancel() {},
       });
@@ -233,7 +240,8 @@ const OrganizationUnitList = () => {
     } else {
       setQueryOrgCode(info.node.data.code);
     }
-    proTableActionRef.current?.reload();
+
+    reloadProTable();
   };
 
   return (
@@ -241,7 +249,7 @@ const OrganizationUnitList = () => {
       <PageContainer>
         <Row gutter={{ md: 16 }}>
           <Col md={6}>
-            <OrganizationUnitTree onTreeSelected={orgTreeSelected} />
+            <OrganizationUnitTree onTreeSelected={orgTreeSelected} reload={reloadTree} />
           </Col>
           <Col md={18}>
             <ProTable<API.JhIdentity.OrganizationUnitDto>

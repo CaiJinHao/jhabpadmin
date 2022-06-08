@@ -1,11 +1,12 @@
 import { Card, Tree } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import type { FC } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import defaultStyle from './index.less';
 
 type OrganizationUnitTreeProps = {
+  reload?: boolean;
   onTreeSelected: (values: API.TreeAntdDto | null) => void;
 };
 const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = (props) => {
@@ -19,14 +20,14 @@ const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = (props) => {
     }
   };
 
-  const initOrgTreeData = useCallback(async () => {
+  const loadOrgTreeData = async () => {
     const _orgTreeDto = await defaultService.GetOrganizationTree();
     setOrgTreeData(_orgTreeDto.items);
-  }, []);
+  };
 
   useEffect(() => {
-    initOrgTreeData();
-  }, [initOrgTreeData]);
+    loadOrgTreeData();
+  }, [props.reload]);
 
   return (
     <>
