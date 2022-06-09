@@ -108,3 +108,11 @@ export const GetAdminRoleId = async (): Promise<string> => {
     method: 'Get',
   });
 };
+export const GetTrees = async (): Promise<API.ListResultDto<API.TreeAntdDto>> => {
+  return await request<API.ListResultDto<API.TreeAntdDto>>(
+    `${Identity_API}api/v1/IdentityRole/Trees`,
+    {
+      method: 'Get',
+    },
+  );
+};

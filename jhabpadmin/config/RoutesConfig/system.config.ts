@@ -18,9 +18,9 @@ export default [
     component: './IdentityUser',
   },
   {
-    path: 'MenuPermission',
-    name: 'MenuPermission',
+    path: 'Permission',
+    name: 'Permission',
     icon: 'table',
-    component: './MenuPermission',
+    component: './Permission',
   },
 ];
