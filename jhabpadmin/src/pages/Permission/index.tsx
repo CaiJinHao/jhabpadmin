@@ -10,27 +10,27 @@ import * as jhpermissions from '@/services/jhabp/identity/JhPermissions/jhpermis
 const MenuPermission = () => {
   const intl = useIntl();
 
-  const [permissionSelectedKeys, setPermissionSelectedKeys] = useState<string[]>([]);
+  const [permissionCheckedKeys, setPermissionCheckedKeys] = useState<string[]>([]);
   const [roleSelected, setRoleSelected] = useState<string>('');
 
-  const onTreeSelectedRole = async (info: any) => {
-    if (info != null) {
+  const onSelectTreeRole = async (selectedKeys: any[], info: any) => {
+    if (selectedKeys.length > 0) {
       setRoleSelected(info.node.title);
       //触发获取当前选中角色的权限
       const grantedPermissions = await jhpermissions.GetPermissionGrantedByRole({
         roleName: info.node.title,
       });
-      setPermissionSelectedKeys(grantedPermissions.items as string[]);
+      setPermissionCheckedKeys(grantedPermissions.items as string[]);
     }
   };
 
   const onCheckPermissionTree = (checkedKeys: string[]) => {
-    setPermissionSelectedKeys(checkedKeys);
+    setPermissionCheckedKeys(checkedKeys);
   };
 
   const onSavePermission = async () => {
     await jhpermissions.Update({
-      permissionNames: permissionSelectedKeys,
+      permissionNames: permissionCheckedKeys,
       roleName: roleSelected,
     });
     message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
@@ -47,12 +47,12 @@ const MenuPermission = () => {
       >
         <Row gutter={{ md: 16 }}>
           <Col md={6}>
-            <IdentityRoleTree onTreeSelected={onTreeSelectedRole} />
+            <IdentityRoleTree onSelect={onSelectTreeRole} />
           </Col>
           <Col md={18}>
             <PermissionTree
               checkable
-              checkedKeys={permissionSelectedKeys}
+              checkedKeys={permissionCheckedKeys}
               onCheck={onCheckPermissionTree}
             />
           </Col>

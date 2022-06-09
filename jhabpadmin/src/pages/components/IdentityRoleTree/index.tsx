@@ -6,18 +6,10 @@ import * as defaultService from '@/services/jhabp/identity/IdentityRole/identity
 
 type IdentityRoleTreeProps = {
   reload?: boolean;
-  onTreeSelected: (values: API.TreeAntdDto | null) => void;
+  onSelect: (selectedKeys: any[], info: any) => void;
 };
-const IdentityRoleTree: FC<IdentityRoleTreeProps> = ({ onTreeSelected, reload, ...props }) => {
+const IdentityRoleTree: FC<IdentityRoleTreeProps> = ({ reload, ...props }) => {
   const [treeData, setTreeData] = useState<any>();
-
-  const treeSelected = (selectedKeys: any[], info: any) => {
-    if (selectedKeys.length > 0) {
-      onTreeSelected(info);
-    } else {
-      onTreeSelected(null);
-    }
-  };
 
   const loadTreeData = async () => {
     const _treeDto = await defaultService.GetTrees();
@@ -38,7 +30,6 @@ const IdentityRoleTree: FC<IdentityRoleTreeProps> = ({ onTreeSelected, reload, .
             defaultExpandAll
             showIcon={false}
             switcherIcon={<DownOutlined />}
-            onSelect={treeSelected}
             treeData={treeData}
           />
         </Card>
