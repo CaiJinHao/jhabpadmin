@@ -5,12 +5,12 @@ import * as organizationunitService from '@/services/jhabp/identity/Organization
 import { useIntl } from 'umi';
 
 type OrganizationUnitRoleSelectProps = {
-  onRoleSelectedChange?: (values: any, option: any) => void;
+  onChange?: (values: any, option: any) => void;
   roleSelectName?: string;
   width?: number | 'sm' | 'md' | 'xl' | 'xs' | 'lg';
 };
 const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
-  onRoleSelectedChange,
+  onChange,
   roleSelectName,
   ...props
 }) => {
@@ -87,7 +87,7 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
         dependencies={['organizationUnitIds']}
         request={requestIdentityRoleOptions}
         fieldProps={{
-          onChange: onRoleSelectedChange,
+          onChange: onChange,
           notFoundContent: '请先选择组织',
         }}
       />

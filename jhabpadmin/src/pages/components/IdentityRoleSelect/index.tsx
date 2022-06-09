@@ -4,16 +4,12 @@ import { useState } from 'react';
 import * as identityroleService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
 
 type IdentityRoleSelectProps = {
-  onRoleSelectedChange?: (values: any, option: any) => void;
+  onChange?: (values: any, option: any) => void;
   name?: string;
   label?: React.ReactNode;
   width?: number | 'sm' | 'md' | 'xl' | 'xs' | 'lg';
 };
-const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({
-  onRoleSelectedChange,
-  name,
-  ...props
-}) => {
+const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({ onChange, name, ...props }) => {
   const [identityRoleOptions, setIdentityRoleOptions] = useState<API.OptionDto<string>[]>([]);
 
   const requestIdentityRoleOptions = async () => {
@@ -35,7 +31,7 @@ const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({
         name={name ?? 'roleIds'}
         request={requestIdentityRoleOptions}
         fieldProps={{
-          onChange: onRoleSelectedChange,
+          onChange: onChange,
         }}
       />
     </>

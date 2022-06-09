@@ -6,26 +6,14 @@ import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/orga
 
 type OrganizationUnitTreeProps = {
   reload?: boolean;
-  onTreeSelected: (values: API.TreeAntdDto | null) => void;
+  onSelect?: (selectedKeys: any[], info: any) => void;
 };
-const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = ({
-  onTreeSelected,
-  reload,
-  ...props
-}) => {
-  const [orgTreeData, setOrgTreeData] = useState<any>();
-
-  const orgTreeSelected = (selectedKeys: any[], info: any) => {
-    if (selectedKeys.length > 0) {
-      onTreeSelected(info);
-    } else {
-      onTreeSelected(null);
-    }
-  };
+const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = ({ reload, ...props }) => {
+  const [treeData, setOrgTreeData] = useState<any>();
 
   const loadOrgTreeData = async () => {
-    const _orgTreeDto = await defaultService.GetOrganizationTree();
-    setOrgTreeData(_orgTreeDto.items);
+    const _treeDto = await defaultService.GetOrganizationTree();
+    setOrgTreeData(_treeDto.items);
   };
 
   useEffect(() => {
@@ -34,7 +22,7 @@ const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = ({
 
   return (
     <>
-      {orgTreeData && (
+      {treeData && (
         <Card size="small" className="myCard">
           <Tree
             {...props}
@@ -42,8 +30,7 @@ const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = ({
             defaultExpandAll
             showIcon={false}
             switcherIcon={<DownOutlined />}
-            onSelect={orgTreeSelected}
-            treeData={orgTreeData}
+            treeData={treeData}
           />
         </Card>
       )}

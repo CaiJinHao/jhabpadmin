@@ -73,7 +73,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
     setTitle(_t);
   }, [intl, operator]);
 
-  const roleSelectedChange = (value: any, option: any) => {
+  const onChangeRole = (value: any, option: any) => {
     const _rns: string[] = [];
     (option as any[]).forEach((item) => {
       _rns.push(item.label);
@@ -175,7 +175,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
               ]}
             />
 
-            <OrganizationUnitRoleSelect width="md" onRoleSelectedChange={roleSelectedChange} />
+            <OrganizationUnitRoleSelect width="md" onChange={onChangeRole} />
 
             <ProFormText
               width="md"

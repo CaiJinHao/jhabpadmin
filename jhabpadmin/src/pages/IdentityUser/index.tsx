@@ -298,11 +298,11 @@ const IdentityUserList = () => {
     onChange: (srk: any) => setSelectedRowKeys(srk),
   };
 
-  const orgTreeSelected = (info: any) => {
-    if (info == null) {
-      setQueryOrgCode(null);
-    } else {
+  const onSelectOrgTree = async (selectedKeys: any[], info: any) => {
+    if (selectedKeys.length > 0) {
       setQueryOrgCode(info.node.data.code);
+    } else {
+      setQueryOrgCode(null);
     }
     proTableActionRef.current?.reload();
   };
@@ -312,7 +312,7 @@ const IdentityUserList = () => {
       <PageContainer>
         <Row gutter={{ md: 16 }}>
           <Col md={6}>
-            <OrganizationUnitTree onTreeSelected={orgTreeSelected} />
+            <OrganizationUnitTree onSelect={onSelectOrgTree} />
           </Col>
           <Col md={18}>
             <ProTable<API.JhIdentity.IdentityUserDto>
