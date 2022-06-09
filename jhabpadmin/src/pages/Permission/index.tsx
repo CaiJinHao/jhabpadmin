@@ -10,20 +10,11 @@ import * as jhpermissions from '@/services/jhabp/identity/JhPermissions/jhpermis
 const MenuPermission = () => {
   const intl = useIntl();
 
-  const [reloadRoleTree, setReloadRoleTree] = useState<boolean>(false);
-  const [reloadPermisionTree, setReloadPermisionTree] = useState<boolean>(false);
   const [permissionSelectedKeys, setPermissionSelectedKeys] = useState<string[]>([]);
   const [roleSelected, setRoleSelected] = useState<string>('');
 
-  const reloadProTable = () => {
-    setReloadRoleTree(!reloadRoleTree);
-    setReloadPermisionTree(!reloadPermisionTree);
-    // proTableActionRef.current?.reload();
-  };
-
   const onTreeSelectedRole = async (info: any) => {
-    if (info == null) {
-    } else {
+    if (info != null) {
       setRoleSelected(info.node.title);
       //触发获取当前选中角色的权限
       const grantedPermissions = await jhpermissions.GetPermissionGrantedByRole({
@@ -31,14 +22,6 @@ const MenuPermission = () => {
       });
       setPermissionSelectedKeys(grantedPermissions.items as string[]);
     }
-    // reloadProTable();
-  };
-
-  const onTreeSelectedPermission = (info: any) => {
-    if (info == null) {
-    } else {
-    }
-    // reloadProTable();
   };
 
   const onCheckPermissionTree = (checkedKeys: string[]) => {
@@ -70,7 +53,6 @@ const MenuPermission = () => {
             <PermissionTree
               checkable
               checkedKeys={permissionSelectedKeys}
-              onTreeSelected={onTreeSelectedPermission}
               onCheck={onCheckPermissionTree}
             />
           </Col>
