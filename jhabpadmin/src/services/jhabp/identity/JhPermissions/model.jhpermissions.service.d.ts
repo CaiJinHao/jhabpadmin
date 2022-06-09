@@ -5,9 +5,9 @@ declare namespace API.JhIdentity {
     granted: boolean;
   }
 
-  export interface PermissionGrantedByNameRetrieveInputDto {
-    permissionNames: string;
-    providerName: string;
+  export interface PermissionGrantedRetrieveInputDto {
+    providerName?: string;
+    roleName: string;
   }
 
   export interface PermissionTreesRetrieveInputDto {

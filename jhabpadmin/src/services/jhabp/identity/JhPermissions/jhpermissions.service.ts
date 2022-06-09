@@ -1,12 +1,24 @@
 import { request } from 'umi';
-export const GetPermissionGrantedByName = async (
-  input: API.JhIdentity.PermissionGrantedByNameRetrieveInputDto,
-): Promise<API.JhIdentity.PermissionGrantedDto> => {
-  return await request<API.JhIdentity.PermissionGrantedDto>(`${Identity_API}api/v1/JhPermissions`, {
-    method: 'Post',
-    data: input,
+export const GetPermissionGrantedByRole = async (
+  input: API.JhIdentity.PermissionGrantedRetrieveInputDto,
+): Promise<API.ListResultDto<string>> => {
+  return await request<API.ListResultDto<string>>(
+    `${Identity_API}api/v1/JhPermissions/GrantedByRole`,
+    {
+      method: 'Get',
+      params: input,
+    },
+  );
+};
+export const Update = async (
+  inputDto: API.JhIdentity.PermissionGrantedCreateInputDto,
+): Promise<void> => {
+  return await request<void>(`${Identity_API}api/v1/JhPermissions/GrantedByRole`, {
+    method: 'Put',
+    data: inputDto,
   });
 };
+
 export const GetTrees = async (
   inputDto?: API.JhIdentity.PermissionTreesRetrieveInputDto,
 ): Promise<API.ListResultDto<API.TreeAntdDto>> => {
@@ -17,12 +29,4 @@ export const GetTrees = async (
       params: inputDto,
     },
   );
-};
-export const Update = async (
-  inputDto: API.JhIdentity.PermissionGrantedCreateInputDto,
-): Promise<void> => {
-  return await request<void>(`${Identity_API}api/v1/JhPermissions`, {
-    method: 'Post',
-    data: inputDto,
-  });
 };

@@ -7,15 +7,18 @@ import * as defaultService from '@/services/jhabp/identity/JhPermissions/jhpermi
 type TreePermissionTreeProps = {
   reload?: boolean;
   onTreeSelected: (values: API.TreeAntdDto | null) => void;
+  checkable?: boolean;
+  defaultCheckedKeys?: any[];
+  defaultSelectedKeys?: any[];
 };
-const TreePermissionTree: FC<TreePermissionTreeProps> = (props) => {
+const TreePermissionTree: FC<TreePermissionTreeProps> = ({ onTreeSelected, reload, ...props }) => {
   const [treeData, setTreeData] = useState<any>();
 
   const treeSelected = (selectedKeys: any[], info: any) => {
     if (selectedKeys.length > 0) {
-      props.onTreeSelected(info);
+      onTreeSelected(info);
     } else {
-      props.onTreeSelected(null);
+      onTreeSelected(null);
     }
   };
 
@@ -24,21 +27,31 @@ const TreePermissionTree: FC<TreePermissionTreeProps> = (props) => {
     setTreeData(_treeDto.items);
   };
 
+  const onCheck = (checkedKeys: any, info: any) => {
+    console.log('onCheck', checkedKeys, info);
+  };
+
   useEffect(() => {
     loadTreeData();
-  }, [props.reload]);
+  }, [reload]);
+
+  console.log(props.defaultCheckedKeys);
 
   return (
     <>
       {treeData && (
         <Card size="small" className="myCard">
           <Tree
+            {...props}
+            onCheck={onCheck}
             showLine={{ showLeafIcon: false }}
             defaultExpandAll
             showIcon={false}
             switcherIcon={<DownOutlined />}
             onSelect={treeSelected}
             treeData={treeData}
+            // defaultSelectedKeys={['0-0-0', '0-0-1']}
+            // defaultCheckedKeys={['0-0-0', '0-0-1']}
           />
         </Card>
       )}

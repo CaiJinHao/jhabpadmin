@@ -8,14 +8,18 @@ type OrganizationUnitTreeProps = {
   reload?: boolean;
   onTreeSelected: (values: API.TreeAntdDto | null) => void;
 };
-const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = (props) => {
+const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = ({
+  onTreeSelected,
+  reload,
+  ...props
+}) => {
   const [orgTreeData, setOrgTreeData] = useState<any>();
 
   const orgTreeSelected = (selectedKeys: any[], info: any) => {
     if (selectedKeys.length > 0) {
-      props.onTreeSelected(info);
+      onTreeSelected(info);
     } else {
-      props.onTreeSelected(null);
+      onTreeSelected(null);
     }
   };
 
@@ -26,13 +30,14 @@ const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = (props) => {
 
   useEffect(() => {
     loadOrgTreeData();
-  }, [props.reload]);
+  }, [reload]);
 
   return (
     <>
       {orgTreeData && (
         <Card size="small" className="myCard">
           <Tree
+            {...props}
             showLine={{ showLeafIcon: false }}
             defaultExpandAll
             showIcon={false}

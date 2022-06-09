@@ -8,14 +8,14 @@ type IdentityRoleTreeProps = {
   reload?: boolean;
   onTreeSelected: (values: API.TreeAntdDto | null) => void;
 };
-const IdentityRoleTree: FC<IdentityRoleTreeProps> = (props) => {
+const IdentityRoleTree: FC<IdentityRoleTreeProps> = ({ onTreeSelected, reload, ...props }) => {
   const [treeData, setTreeData] = useState<any>();
 
   const treeSelected = (selectedKeys: any[], info: any) => {
     if (selectedKeys.length > 0) {
-      props.onTreeSelected(info);
+      onTreeSelected(info);
     } else {
-      props.onTreeSelected(null);
+      onTreeSelected(null);
     }
   };
 
@@ -26,13 +26,14 @@ const IdentityRoleTree: FC<IdentityRoleTreeProps> = (props) => {
 
   useEffect(() => {
     loadTreeData();
-  }, [props.reload]);
+  }, [reload]);
 
   return (
     <>
       {treeData && (
         <Card size="small" className="myCard">
           <Tree
+            {...props}
             showLine={{ showLeafIcon: false }}
             defaultExpandAll
             showIcon={false}
