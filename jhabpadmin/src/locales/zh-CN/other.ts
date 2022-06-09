@@ -7,4 +7,5 @@ export default {
   'ProTable.delete.BatchDelete': '确定要禁用选中项吗?',
   'ProTable.delete.Delete': '确定要禁用吗?',
   'ProTable.delete.Recover': '确定要恢复吗?',
+  'Button.Permission.Save': '保存权限',
 };

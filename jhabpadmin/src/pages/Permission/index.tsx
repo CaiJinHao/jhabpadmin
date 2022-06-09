@@ -41,7 +41,7 @@ const MenuPermission = () => {
       <PageContainer
         extra={[
           <Button key="permission_save" type="primary" onClick={onSavePermission}>
-            保存权限
+            {intl.formatMessage({ id: 'Button.Permission.Save', defaultMessage: '保存权限' })}
           </Button>,
         ]}
       >
