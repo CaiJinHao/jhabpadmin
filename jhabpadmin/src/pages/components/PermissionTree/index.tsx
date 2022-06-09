@@ -6,9 +6,10 @@ import * as defaultService from '@/services/jhabp/identity/JhPermissions/jhpermi
 
 type TreePermissionTreeProps = {
   reload?: boolean;
-  onTreeSelected: (values: API.TreeAntdDto | null) => void;
   checkable?: boolean;
   checkedKeys?: any[];
+  onCheck?: (checked: any, info: any) => void;
+  onTreeSelected: (values: API.TreeAntdDto | null) => void;
 };
 const TreePermissionTree: FC<TreePermissionTreeProps> = ({ onTreeSelected, reload, ...props }) => {
   const [treeData, setTreeData] = useState<any>();
@@ -26,10 +27,6 @@ const TreePermissionTree: FC<TreePermissionTreeProps> = ({ onTreeSelected, reloa
     setTreeData(_treeDto.items);
   };
 
-  const onCheck = (checkedKeys: any, info: any) => {
-    console.log('onCheck', checkedKeys, info);
-  };
-
   useEffect(() => {
     loadTreeData();
   }, [reload]);
@@ -40,7 +37,6 @@ const TreePermissionTree: FC<TreePermissionTreeProps> = ({ onTreeSelected, reloa
         <Card size="small" className="myCard">
           <Tree
             {...props}
-            onCheck={onCheck}
             showLine={{ showLeafIcon: false }}
             defaultExpandAll
             showIcon={false}

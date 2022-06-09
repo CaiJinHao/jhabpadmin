@@ -15,8 +15,8 @@ declare namespace API.JhIdentity {
   }
 
   export interface PermissionGrantedCreateInputDto {
-    permissionNames: string;
-    providerName: string;
-    providerKey: string;
+    permissionNames: string[];
+    providerName?: string;
+    roleName: string;
   }
 }
