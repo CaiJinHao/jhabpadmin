@@ -8,8 +8,7 @@ type TreePermissionTreeProps = {
   reload?: boolean;
   onTreeSelected: (values: API.TreeAntdDto | null) => void;
   checkable?: boolean;
-  defaultCheckedKeys?: any[];
-  defaultSelectedKeys?: any[];
+  checkedKeys?: any[];
 };
 const TreePermissionTree: FC<TreePermissionTreeProps> = ({ onTreeSelected, reload, ...props }) => {
   const [treeData, setTreeData] = useState<any>();
@@ -35,8 +34,6 @@ const TreePermissionTree: FC<TreePermissionTreeProps> = ({ onTreeSelected, reloa
     loadTreeData();
   }, [reload]);
 
-  console.log(props.defaultCheckedKeys);
-
   return (
     <>
       {treeData && (
@@ -50,8 +47,6 @@ const TreePermissionTree: FC<TreePermissionTreeProps> = ({ onTreeSelected, reloa
             switcherIcon={<DownOutlined />}
             onSelect={treeSelected}
             treeData={treeData}
-            // defaultSelectedKeys={['0-0-0', '0-0-1']}
-            // defaultCheckedKeys={['0-0-0', '0-0-1']}
           />
         </Card>
       )}

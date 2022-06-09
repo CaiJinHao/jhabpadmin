@@ -8,7 +8,7 @@ import * as jhpermissions from '@/services/jhabp/identity/JhPermissions/jhpermis
 const MenuPermission = () => {
   const [reloadRoleTree, setReloadRoleTree] = useState<boolean>(false);
   const [reloadPermisionTree, setReloadPermisionTree] = useState<boolean>(false);
-  const [permissionSelectedKeys, setPermissionSelectedKeys] = useState<string[]>([]);
+  const [permissionSelectedKeys, setPermissionSelectedKeys] = useState<string[]>();
 
   const reloadProTable = () => {
     setReloadRoleTree(!reloadRoleTree);
@@ -17,7 +17,6 @@ const MenuPermission = () => {
   };
 
   const orgRoleTreeSelected = async (info: any) => {
-    console.log(info);
     if (info == null) {
     } else {
       //触发获取当前选中角色的权限
@@ -30,7 +29,6 @@ const MenuPermission = () => {
   };
 
   const orgPermissionTreeSelected = (info: any) => {
-    console.log(info);
     if (info == null) {
     } else {
     }
@@ -46,10 +44,9 @@ const MenuPermission = () => {
           </Col>
           <Col md={18}>
             <PermissionTree
-              onTreeSelected={orgPermissionTreeSelected}
               checkable
-              defaultCheckedKeys={permissionSelectedKeys}
-              defaultSelectedKeys={permissionSelectedKeys}
+              checkedKeys={permissionSelectedKeys}
+              onTreeSelected={orgPermissionTreeSelected}
             />
           </Col>
         </Row>
