@@ -1,8 +1,7 @@
 declare namespace API.JhIdentity {
   export interface PermissionGrantedDto {
-    tenantId?: string;
     name: string;
-    granted: boolean;
+    isGranted: boolean;
   }
 
   export interface PermissionGrantedRetrieveInputDto {

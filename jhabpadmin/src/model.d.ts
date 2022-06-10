@@ -7,4 +7,5 @@ export interface InitialStateType {
   currentUser?: API.CurrentUser;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  permissions?: API.ListResultDto<API.JhIdentity.PermissionGrantedDto>;
 }

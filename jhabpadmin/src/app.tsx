@@ -13,6 +13,7 @@ import Cookies from 'universal-cookie';
 import type { InitialStateType } from './model';
 import type { ApplicationConfigurationDto } from '@/lib/abp/asp-net-core/mvc/application-configurations/models';
 import { message } from 'antd';
+import * as jhpermissions from '@/services/jhabp/identity/JhPermissions/jhpermissions.service';
 
 // import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 const isDev = process.env.NODE_ENV === 'development';
@@ -78,10 +79,12 @@ export async function getInitialState(): Promise<InitialStateType> {
   // 如果不是登录页面，执行
   if (history.location.pathname !== LOGIN_PATH) {
     const currentUser = await fetchUserInfo();
+    const permissions = await jhpermissions.GetCurrentGranted();
     return {
       applicationConfiguration,
       fetchUserInfo,
       currentUser,
+      permissions,
       settings: defaultSettings,
     };
   }

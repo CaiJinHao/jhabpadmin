@@ -30,3 +30,8 @@ export const GetTrees = async (
     },
   );
 };
+export const GetCurrentGranted = async (): Promise<API.ListResultDto<API.JhIdentity.PermissionGrantedDto>> => {
+  return await request<API.ListResultDto<API.JhIdentity.PermissionGrantedDto>>(`${Identity_API}api/v1/JhPermissions/CurrentGranted`, {
+    method: 'Get',
+  });
+};
