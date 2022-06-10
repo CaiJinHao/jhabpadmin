@@ -86,12 +86,6 @@ export const Get = async (id: string): Promise<API.JhIdentity.IdentityRoleDto> =
     method: 'Get',
   });
 };
-export const GetTree = async (name: string): Promise<any> => {
-  return await request<any>(`${Identity_API}api/v1/IdentityRole/tree`, {
-    method: 'Get',
-    params: { name },
-  });
-};
 export const GetOptions = async (
   name: string,
 ): Promise<API.ListResultDto<API.OptionDto<string>>> => {

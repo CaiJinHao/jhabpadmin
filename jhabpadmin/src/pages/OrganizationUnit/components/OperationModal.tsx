@@ -5,8 +5,8 @@ import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
-import * as identityUserService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 import IdentityRoleSelect from '@/pages/components/IdentityRoleSelect';
+import IdentityUserSelect from '@/pages/components/IdentityUserSelect';
 
 type OperationModalProps = {
   operator: ViewOperator;
@@ -46,12 +46,6 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
     return items;
   };
 
-  const requestIdentityUserOptions = async () => {
-    const data = await identityUserService.GetOptions();
-    const items = data.items as API.OptionDto<string>[];
-    return items;
-  };
-
   const initTitle = useCallback(() => {
     let _t = intl.formatMessage({ id: 'DisplayName:JhOrganizationUnit', defaultMessage: '组织' });
     switch (operator) {
@@ -85,7 +79,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
     setTitle(_t);
   }, [intl, operator]);
 
-  const leaderSelectedChange = (value: any, option: any) => {
+  const onChangeLeader = (value: any, option: any) => {
     setExtraProperties({
       ...extraProperties,
       LeaderId: value ?? null,
@@ -156,7 +150,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
                 defaultMessage: '为组织分配可用角色',
               })}
             />
-            <ProFormSelect<API.OptionDto<string>>
+            <IdentityUserSelect
               width="md"
               name="LeaderId"
               initialValue={
@@ -168,10 +162,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
                 id: 'DisplayName:JhOrganizationUnit:LeaderId',
                 defaultMessage: '负责人',
               })}
-              request={requestIdentityUserOptions}
-              fieldProps={{
-                onChange: leaderSelectedChange,
-              }}
+              onChange={onChangeLeader}
             />
           </ProForm.Group>
         </>

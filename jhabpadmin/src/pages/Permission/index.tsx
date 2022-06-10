@@ -5,9 +5,9 @@ import { useIntl } from 'umi';
 
 import IdentityRoleTree from '@/pages/components/IdentityRoleTree';
 import PermissionTree from '@/pages/components/PermissionTree';
-import * as jhpermissions from '@/services/jhabp/identity/JhPermissions/jhpermissions.service';
+import * as defaultService from '@/services/jhabp/identity/JhPermissions/jhpermissions.service';
 
-const MenuPermission = () => {
+const Permission = () => {
   const intl = useIntl();
 
   const [permissionCheckedKeys, setPermissionCheckedKeys] = useState<string[]>([]);
@@ -17,7 +17,7 @@ const MenuPermission = () => {
     if (selectedKeys.length > 0) {
       setRoleSelected(info.node.title);
       //触发获取当前选中角色的权限
-      const grantedPermissions = await jhpermissions.GetPermissionGrantedByRole({
+      const grantedPermissions = await defaultService.GetPermissionGrantedByRole({
         roleName: info.node.title,
       });
       setPermissionCheckedKeys(grantedPermissions.items as string[]);
@@ -29,7 +29,7 @@ const MenuPermission = () => {
   };
 
   const onSavePermission = async () => {
-    await jhpermissions.Update({
+    await defaultService.Update({
       permissionNames: permissionCheckedKeys,
       roleName: roleSelected,
     });
@@ -65,4 +65,4 @@ const MenuPermission = () => {
   );
 };
 
-export default MenuPermission;
+export default Permission;
