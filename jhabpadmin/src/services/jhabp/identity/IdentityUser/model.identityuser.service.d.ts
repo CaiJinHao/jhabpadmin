@@ -30,6 +30,7 @@ declare namespace API.JhIdentity {
     creatorId?: string;
     id: string;
     extraProperties: any;
+    avatar?: string;
   }
 
   export interface IdentityUserCreateInputDto {

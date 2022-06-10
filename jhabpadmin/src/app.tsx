@@ -7,13 +7,13 @@ import Footer from '@/components/Footer';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
 import type { RequestInterceptor, RequestOptionsInit, ResponseError } from 'umi-request';
-import { currentUser as queryCurrentUser } from '@/services/jhabp/identity/identityuser.service';
 import { getApplicationConfiguration } from './services/jhabp/abp.service';
 import Cookies from 'universal-cookie';
 import type { InitialStateType } from './model';
 import type { ApplicationConfigurationDto } from '@/lib/abp/asp-net-core/mvc/application-configurations/models';
 import { message } from 'antd';
 import * as jhpermissions from '@/services/jhabp/identity/JhPermissions/jhpermissions.service';
+import * as identityuserService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 
 // import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 const isDev = process.env.NODE_ENV === 'development';
@@ -62,7 +62,10 @@ export async function getInitialState(): Promise<InitialStateType> {
   const fetchUserInfo = async () => {
     //同源方式
     try {
-      return await queryCurrentUser();
+      const userInfo = await identityuserService.GetCurrent();
+      userInfo.avatar =
+        'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png';
+      return userInfo;
     } catch (error) {
       window.location.href = Authorize_Login_Path;
       return undefined;
