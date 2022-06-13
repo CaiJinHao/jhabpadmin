@@ -7,7 +7,7 @@ import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-de
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
-import * as defaultService from '@/services/jhabp/identity/Auditlogging/auditlogging.service';
+import * as defaultService from '@/services/jhabp/identity/AuditLogging/auditlogging.service';
 
 import OperationModalAuditLog from './components/OperationModal';
 const AuditLogList = () => {
