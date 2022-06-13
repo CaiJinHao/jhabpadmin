@@ -134,10 +134,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
                   message: `${intl.formatMessage({
                     id: 'Form.rules.message',
                     defaultMessage: '请输入',
-                  })} ${intl.formatMessage({
-                    id: 'DisplayName:JhOrganizationUnit:DisplayName',
-                    defaultMessage: '组织名称',
-                  })}`,
+                  })}\${label}`,
                 },
               ]}
             />

@@ -119,10 +119,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
                   message: `${intl.formatMessage({
                     id: 'Form.rules.message',
                     defaultMessage: '请输入',
-                  })} ${intl.formatMessage({
-                    id: 'DisplayName:IdentityUser:UserName',
-                    defaultMessage: '用户账号',
-                  })}`,
+                  })}\${label}`,
                 },
               ]}
             />
@@ -147,10 +144,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
                   message: `${intl.formatMessage({
                     id: 'Form.rules.message',
                     defaultMessage: '请输入',
-                  })} ${intl.formatMessage({
-                    id: 'DisplayName:IdentityUser:PhoneNumber',
-                    defaultMessage: '手机号',
-                  })}`,
+                  })}\${label}`,
                 },
               ]}
             />
@@ -167,15 +161,24 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
                   message: `${intl.formatMessage({
                     id: 'Form.rules.message',
                     defaultMessage: '请输入',
-                  })} ${intl.formatMessage({
-                    id: 'DisplayName:IdentityUser:Email',
-                    defaultMessage: '邮箱',
-                  })}`,
+                  })}\${label}`,
                 },
               ]}
             />
 
-            <OrganizationUnitRoleSelect width="md" onChange={onChangeRole} />
+            <OrganizationUnitRoleSelect
+              width="md"
+              onChange={onChangeRole}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'Form.rules.message',
+                    defaultMessage: '请输入',
+                  })}\${label}`,
+                },
+              ]}
+            />
 
             <ProFormText
               width="md"
@@ -190,10 +193,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
                   message: `${intl.formatMessage({
                     id: 'Form.rules.message',
                     defaultMessage: '请输入',
-                  })} ${intl.formatMessage({
-                    id: 'DisplayName:IdentityUser:Name',
-                    defaultMessage: '用户名称',
-                  })}`,
+                  })}\${label}`,
                 },
               ]}
             />

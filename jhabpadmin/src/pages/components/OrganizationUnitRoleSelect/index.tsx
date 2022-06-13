@@ -3,11 +3,13 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import { useIntl } from 'umi';
+import type { Rule } from 'rc-field-form/lib/interface';
 
 type OrganizationUnitRoleSelectProps = {
   onChange?: (values: any, option: any) => void;
   roleSelectName?: string;
   width?: number | 'sm' | 'md' | 'xl' | 'xs' | 'lg';
+  rules?: Rule[];
 };
 const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
   onChange,

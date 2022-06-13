@@ -111,10 +111,7 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
                   message: `${intl.formatMessage({
                     id: 'Form.rules.message',
                     defaultMessage: '请输入',
-                  })} ${intl.formatMessage({
-                    id: 'DisplayName:IdentityRole:DisplayName',
-                    defaultMessage: '角色名称',
-                  })}`,
+                  })}\${label}`,
                 },
               ]}
             />
