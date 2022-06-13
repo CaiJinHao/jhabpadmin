@@ -57,7 +57,6 @@ const OperationModalAuditLog: FC<OperationModalProps> = (props) => {
   if (!current && operator != ViewOperator.Add) {
     return <></>;
   }
-  console.log(current);
   return (
     <>
       <ModalForm<API.JhIdentity.AuditLog>
@@ -169,21 +168,49 @@ const OperationModalAuditLog: FC<OperationModalProps> = (props) => {
                 defaultMessage: 'Http状态码',
               })}
             />
-            <ProFormText
-              width="lg"
+            <ProFormTextArea
+              width="md"
               name="browserInfo"
               label={intl.formatMessage({
                 id: 'DisplayName:AuditLog:BrowserInfo',
                 defaultMessage: '浏览器信息',
               })}
+              fieldProps={{
+                rows: 4,
+              }}
             />
             <ProFormTextArea
-              width="lg"
+              width="md"
               name="url"
               label={intl.formatMessage({ id: 'DisplayName:AuditLog:Url', defaultMessage: 'Url' })}
+              fieldProps={{
+                rows: 4,
+              }}
             />
             <ProFormTextArea
-              width="lg"
+              width="md"
+              label={intl.formatMessage({
+                id: 'DisplayName:AuditLog:Actions',
+                defaultMessage: '执行过程',
+              })}
+              fieldProps={{
+                value: JSON.stringify(current?.actions),
+                rows: 4,
+              }}
+            />
+            <ProFormTextArea
+              width="md"
+              label={intl.formatMessage({
+                id: 'DisplayName:AuditLog:EntityChanges',
+                defaultMessage: '更改实体',
+              })}
+              fieldProps={{
+                value: JSON.stringify(current?.entityChanges),
+                rows: 4,
+              }}
+            />
+            <ProFormTextArea
+              width="md"
               name="comments"
               label={intl.formatMessage({
                 id: 'DisplayName:AuditLog:Comments',
@@ -191,7 +218,7 @@ const OperationModalAuditLog: FC<OperationModalProps> = (props) => {
               })}
             />
             <ProFormTextArea
-              width="lg"
+              width="md"
               name="exceptions"
               label={intl.formatMessage({
                 id: 'DisplayName:AuditLog:Exceptions',
