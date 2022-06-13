@@ -56,4 +56,5 @@ export default {
   'menu.systemConfig.IdentityRole': 'Role management',
   'menu.systemConfig.IdentityUser': 'User management',
   'menu.systemConfig.Permission': 'Permission management',
+  'menu.systemConfig.AuditLogging': 'Audit Logging',
 };

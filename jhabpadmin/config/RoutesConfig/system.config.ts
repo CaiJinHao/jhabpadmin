@@ -27,4 +27,11 @@ export default [
     access: 'JhIdentity.JhPermissions',
     component: './Permission',
   },
+  {
+    path: 'AuditLogging',
+    name: 'AuditLogging',
+    icon: 'table',
+    access: 'JhAuditLogging.AuditLoggings',
+    component: './AuditLogging',
+  },
 ];
