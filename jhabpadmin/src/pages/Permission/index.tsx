@@ -29,11 +29,22 @@ const Permission = () => {
   };
 
   const onSavePermission = async () => {
-    await defaultService.Update({
-      permissionNames: permissionCheckedKeys,
-      roleName: roleSelected,
-    });
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
+    //判断是否选中角色
+    if (roleSelected.length > 0) {
+      await defaultService.Update({
+        permissionNames: permissionCheckedKeys,
+        roleName: roleSelected,
+      });
+      message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
+    } else {
+      const _t = intl.formatMessage({ id: 'DisplayName:IdentityRole', defaultMessage: '角色' });
+      message.warning(
+        `${intl.formatMessage({
+          id: 'message.select.required',
+          defaultMessage: '请选择操作项',
+        })}${_t}`,
+      );
+    }
   };
 
   return (
