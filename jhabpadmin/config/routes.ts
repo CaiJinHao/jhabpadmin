@@ -1,11 +1,6 @@
 ﻿import systemConfig from './RoutesConfig/system.config';
 export default [
   {
-    path: '/test',
-    layout: false,
-    component: './Test',
-  },
-  {
     path: '/user',
     layout: false,
     routes: [
@@ -35,36 +30,6 @@ export default [
     name: 'systemConfig',
     icon: 'table',
     routes: systemConfig,
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    component: './Admin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
-  {
-    path: '/menu',
-    name: 'menu',
-    icon: 'table',
-    component: './menu',
   },
   {
     path: '/',

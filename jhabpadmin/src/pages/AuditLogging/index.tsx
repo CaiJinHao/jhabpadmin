@@ -161,8 +161,8 @@ const AuditLogList = () => {
     },
     {
       title: intl.formatMessage({
-        id: 'DisplayName:AuditLog.HasException',
-        defaultMessage: '数据过滤',
+        id: 'DisplayName:AuditLog:HasException',
+        defaultMessage: '数据异常过滤',
       }),
       dataIndex: 'hasException',
       valueType: 'radio',
@@ -175,7 +175,7 @@ const AuditLogList = () => {
     },
     {
       title: intl.formatMessage({
-        id: 'DisplayName:AuditLog.DateTimeRange',
+        id: 'DisplayName:AuditLog:DateTimeRange',
         defaultMessage: '执行时间区间',
       }),
       key: 'dateTimeRange',

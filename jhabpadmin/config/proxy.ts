@@ -25,15 +25,6 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^/identity': '' },
     },
-    '/menu': {
-      // 要代理的地址
-      target: 'https://localhost:6201',
-      // 配置了这个可以从 http 代理到 https
-      secure: false, //https时设置
-      // 依赖 origin 的功能可能需要这个，比如 cookie
-      changeOrigin: true,
-      pathRewrite: { '^/menu': '' },
-    },
   },
   test: {
     '/api/': {
