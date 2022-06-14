@@ -159,6 +159,33 @@ const AuditLogList = () => {
         </a>,
       ],
     },
+    {
+      title: intl.formatMessage({
+        id: 'DisplayName:AuditLog.HasException',
+        defaultMessage: '数据过滤',
+      }),
+      dataIndex: 'hasException',
+      valueType: 'radio',
+      hideInTable: true,
+      initialValue: '',
+      valueEnum: {
+        '': { text: '全部' },
+        true: { text: '异常' },
+      },
+    },
+    {
+      title: intl.formatMessage({
+        id: 'DisplayName:AuditLog.DateTimeRange',
+        defaultMessage: '执行时间区间',
+      }),
+      key: 'dateTimeRange',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      colSize: 2,
+      search: {
+        transform: (value: any) => ({ startTime: value[0], endTime: value[1] }),
+      },
+    },
   ];
 
   //table functions
@@ -172,6 +199,7 @@ const AuditLogList = () => {
       }
     }
     const inputParams = { ...params, sorting: sortings.join(',') };
+    console.log(inputParams);
     const responseData = await defaultService.GetList(inputParams);
     setTotalPage(responseData.totalCount);
     return {
