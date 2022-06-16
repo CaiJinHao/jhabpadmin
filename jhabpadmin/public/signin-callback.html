@@ -1,13 +1,24 @@
 <script src="oidc-client.min.js"></script>
 <script>
-  var mgr = new Oidc.UserManager();
-  mgr.signinRedirectCallback().then(() => {
-    console.log(window.location.origin);
-    // window.history.replaceState({},
-    //   window.document.title,
-    //   window.location.origin);
+  //antd
+  // var mgr = new Oidc.UserManager();
+  // mgr.signinRedirectCallback().then(() => {
+  //   console.log(window.location.origin);
+  //   // window.history.replaceState({},
+  //   //   window.document.title,
+  //   //   window.location.origin);
+  //   window.location = "/";
+  // }, error => {
+  //   console.error(error);
+  // });
+
+  //app code
+  Oidc.Log.logger = console;
+  Oidc.Log.level = Oidc.Log.DEBUG;
+  new Oidc.UserManager({ response_mode: 'query' }).signinCallback().then(function (user) {
     window.location = "/";
-  }, error => {
+  }).catch(function (error) {
     console.error(error);
   });
+
 </script>
