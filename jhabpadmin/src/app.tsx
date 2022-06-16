@@ -15,7 +15,7 @@ import { message } from 'antd';
 import * as jhpermissions from '@/services/jhabp/identity/JhPermissions/jhpermissions.service';
 import * as identityuserService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 
-// import { getUser, login, getToken } from '@/services/jhabp/auth.service';
+import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 const isDev = process.env.NODE_ENV === 'development';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -73,10 +73,13 @@ export async function getInitialState(): Promise<InitialStateType> {
     //非同源方式、需要携带accesstoken
     // const authorizationInfo = await getUser();
     // if (authorizationInfo) {
-    //   return await queryCurrentUser();
+    //   const userInfo = await identityuserService.GetCurrent();
+    //   userInfo.avatar =
+    //     'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png';
+    //   return userInfo;
     // } else {
     //   await login();
-    //   return;
+    //   return undefined;
     // }
   };
   // 如果不是登录页面，执行
@@ -180,14 +183,23 @@ const proTableRequestInterceptor: RequestInterceptor = (
     //@ts-ignore
     delete options.params.pageSize;
   }
-  // const authorizationInfo = getToken();
+  const authorizationInfo = getToken();
+  if (authorizationInfo) {
+    return {
+      url: url,
+      options: {
+        ...options,
+        headers: {
+          ...options.headers,
+          Authorization: `${authorizationInfo.token_type} ${authorizationInfo.access_token}`,
+        },
+      },
+    };
+  }
   return {
     url: url,
     options: {
       ...options,
-      // headers: {
-      //   Authorization: `${authorizationInfo.token_type} ${authorizationInfo.access_token}`,
-      // },
     },
   };
 };
@@ -216,6 +228,7 @@ const xsrfAppendRequestInterceptor: RequestInterceptor = (
         }
       },
       headers: {
+        ...options.headers,
         RequestVerificationToken: cookie.get('XSRF-TOKEN'),
       },
     },

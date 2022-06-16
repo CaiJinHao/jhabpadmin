@@ -59,6 +59,6 @@ export const getToken = () => {
     const authorizationInfo = JSON.parse(authorizationInfoJson);
     return authorizationInfo;
   } else {
-    throw new Error('Token undefiend');
+    return undefined;
   }
 };
