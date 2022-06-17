@@ -23,63 +23,65 @@ export const initialStateConfig = {
   loading: <PageLoading />,
 };
 
+/** 获取用户信息 */
+const fetchUserInfo = async () => {
+  const authorizationInfo = await getUser();
+  if (authorizationInfo) {
+    const userInfo = await identityuserService.GetCurrent();
+    userInfo.avatar =
+      'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png';
+    return userInfo;
+  } else {
+    return await login();
+  }
+};
+
+/**设置 本地化语言 */
+const setMyLocale = () => {
+  const _currentLocale = getLocale() as string;
+  //设置匹配不上的区域语言
+  switch (_currentLocale) {
+    case 'zh':
+    case 'zh-CN':
+      {
+        setLocale('zh-CN', false);
+      }
+      break;
+    case 'zh-TW':
+    case 'zh-HK':
+      {
+        setLocale('zh-CN', false);
+      }
+      break;
+  }
+  return _currentLocale;
+};
+
+/** 添加后台本地化语言
+ * 添加后端本地化文本 ，本地化文本对应需要和后台对应
+ * 语言的设置，取决于浏览器设置=>语言=》第一顺序位=》中文(简体)：如：Accept-Language: zh-CN,zh;q=0.9
+ */
+const appendLocalization = async (
+  currentLocale: string,
+  applicationConfiguration: ApplicationConfigurationDto,
+) => {
+  console.log(applicationConfiguration.localization);
+  for (const key in new Object(applicationConfiguration.localization.values)) {
+    addLocale(currentLocale, applicationConfiguration.localization.values[key], {
+      momentLocale: currentLocale.toLowerCase(),
+      antd: currentLocale.replace('-', ''),
+    });
+  }
+};
+
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<InitialStateType> {
-  /**
- 语言的设置，取决于浏览器设置=>语言=》第一顺序位=》中文(简体)
- Accept-Language: zh-CN,zh;q=0.9
- */
-  /* TODO:添加后端本地化文本 ，本地化文本对应需要和后台对应*/
-  const appendLocalization = async (
-    currentLocale: string,
-    applicationConfiguration: ApplicationConfigurationDto,
-  ) => {
-    console.log(applicationConfiguration.localization);
-    for (const key in new Object(applicationConfiguration.localization.values)) {
-      addLocale(currentLocale, applicationConfiguration.localization.values[key], {
-        momentLocale: currentLocale.toLowerCase(),
-        antd: currentLocale.replace('-', ''),
-      });
-    }
-  };
-
-  const setMyLocale = () => {
-    const _currentLocale = getLocale() as string;
-    //设置匹配不上的区域语言
-    switch (_currentLocale) {
-      case 'zh':
-      case 'zh-CN':
-        {
-          setLocale('zh-CN', false);
-        }
-        break;
-      case 'zh-TW':
-      case 'zh-HK':
-        {
-          setLocale('zh-CN', false);
-        }
-        break;
-    }
-    return _currentLocale;
-  };
   const applicationConfiguration = await getApplicationConfiguration();
   const currentLocale = setMyLocale();
   await appendLocalization(currentLocale, applicationConfiguration);
 
-  const fetchUserInfo = async () => {
-    const authorizationInfo = await getUser();
-    if (authorizationInfo) {
-      const userInfo = await identityuserService.GetCurrent();
-      userInfo.avatar =
-        'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png';
-      return userInfo;
-    } else {
-      await login();
-      return undefined;
-    }
-  };
   // 如果不是登录页面，执行
   if (history.location.pathname !== LOGIN_PATH) {
     const currentUser = await fetchUserInfo();

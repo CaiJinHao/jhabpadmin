@@ -35,7 +35,8 @@ export const getToken = () => {
 };
 
 export const login = async () => {
-  return await userManager.signinRedirect();
+  await userManager.signinRedirect();
+  return undefined;
 };
 
 export const logout = async () => {
@@ -54,14 +55,16 @@ export const logout = async () => {
 /**使用登录回调的方式获取授权信息 */
 export const getUser = async () => {
   try {
+    //可以先使用正常的获取，在使用回调获取
     const authorizationInfo = await userManager.signinRedirectCallback();
     if (authorizationInfo) {
       sessionStorage.setItem(AuthorizationInfoStorageKey, JSON.stringify(authorizationInfo));
       return authorizationInfo;
     }
+    return undefined;
   } catch (error) {
-    console.log(error);
-    return await login();
+    // return await login();
+    return undefined;
   }
 };
 
