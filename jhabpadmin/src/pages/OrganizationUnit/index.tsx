@@ -30,7 +30,6 @@ const OrganizationUnitList = () => {
   const [reloadTree, setReloadTree] = useState<boolean>(false);
 
   const reloadProTable = () => {
-    setReloadTree(!reloadTree);
     proTableActionRef.current?.reload();
   };
 
@@ -96,6 +95,7 @@ const OrganizationUnitList = () => {
     setVisibleOperation(false);
     message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     reloadProTable();
+    setReloadTree(!reloadTree);
   };
 
   const create = () => {
