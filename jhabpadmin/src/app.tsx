@@ -32,10 +32,23 @@ export async function getInitialState(): Promise<InitialStateType> {
  Accept-Language: zh-CN,zh;q=0.9
  */
   /* TODO:添加后端本地化文本 ，本地化文本对应需要和后台对应*/
-  const appendLocalization = async (applicationConfiguration: ApplicationConfigurationDto) => {
-    const currentLocale = getLocale() as string;
+  const appendLocalization = async (
+    currentLocale: string,
+    applicationConfiguration: ApplicationConfigurationDto,
+  ) => {
+    console.log(applicationConfiguration.localization);
+    for (const key in new Object(applicationConfiguration.localization.values)) {
+      addLocale(currentLocale, applicationConfiguration.localization.values[key], {
+        momentLocale: currentLocale.toLowerCase(),
+        antd: currentLocale.replace('-', ''),
+      });
+    }
+  };
+
+  const setMyLocale = () => {
+    const _currentLocale = getLocale() as string;
     //设置匹配不上的区域语言
-    switch (currentLocale) {
+    switch (_currentLocale) {
       case 'zh':
       case 'zh-CN':
         {
@@ -49,38 +62,23 @@ export async function getInitialState(): Promise<InitialStateType> {
         }
         break;
     }
-    console.log(applicationConfiguration.localization);
-    for (const key in new Object(applicationConfiguration.localization.values)) {
-      addLocale(currentLocale, applicationConfiguration.localization.values[key], {
-        momentLocale: currentLocale.toLowerCase(),
-        antd: currentLocale.replace('-', ''),
-      });
-    }
+    return _currentLocale;
   };
   const applicationConfiguration = await getApplicationConfiguration();
-  await appendLocalization(applicationConfiguration);
+  const currentLocale = setMyLocale();
+  await appendLocalization(currentLocale, applicationConfiguration);
+
   const fetchUserInfo = async () => {
-    //同源方式
-    try {
+    const authorizationInfo = await getUser();
+    if (authorizationInfo) {
       const userInfo = await identityuserService.GetCurrent();
       userInfo.avatar =
         'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png';
       return userInfo;
-    } catch (error) {
-      window.location.href = Authorize_Login_Path;
+    } else {
+      await login();
       return undefined;
     }
-    //非同源方式、需要携带accesstoken
-    // const authorizationInfo = await getUser();
-    // if (authorizationInfo) {
-    //   const userInfo = await identityuserService.GetCurrent();
-    //   userInfo.avatar =
-    //     'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png';
-    //   return userInfo;
-    // } else {
-    //   await login();
-    //   return undefined;
-    // }
   };
   // 如果不是登录页面，执行
   if (history.location.pathname !== LOGIN_PATH) {
@@ -112,13 +110,13 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      const { location } = history;
+      console.log('onPageChange');
+      // const { location } = history;
       // console.log(location);
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== LOGIN_PATH) {
-        // history.push(LOGIN_PATH);
-        // window.location.href = Authorize_Login_Path;
-      }
+      // if (!initialState?.currentUser && location.pathname !== LOGIN_PATH) {
+      // history.push(LOGIN_PATH);
+      // }
     },
     links: isDev
       ? [
@@ -136,7 +134,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
-    childrenRender: (children, props) => {
+    childrenRender: (children: any, props: any) => {
       // if (initialState?.loading) return <PageLoading />;
       return (
         <>
@@ -157,13 +155,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         </>
       );
     },
-    //todo:远程菜单
-    // menu: {
-    //   locale: false,
-    //   request: async () => {
-    //     return await queryCurrentUserNavMenus();
-    //   },
-    // },
     ...initialState?.settings,
   };
 };
@@ -196,6 +187,7 @@ const proTableRequestInterceptor: RequestInterceptor = (
       },
     };
   }
+
   return {
     url: url,
     options: {
@@ -229,22 +221,30 @@ const xsrfAppendRequestInterceptor: RequestInterceptor = (
       },
       headers: {
         ...options.headers,
-        RequestVerificationToken: cookie.get('XSRF-TOKEN'),
+        // RequestVerificationToken: cookie.get('XSRF-TOKEN'),
       },
     },
   };
 };
 
-// const requestMiddleware: OnionMiddleware = async (ctx: Context, next: () => void) => {
-//   const { req } = ctx;
-//   console.log(req);
-//   await next();
-//   const { res } = ctx;
-//   console.log(res);
-// };
+const requestMiddleware = async (ctx: any, next: () => void) => {
+  const { req } = ctx;
+  console.log(req);
+  // if (!(req.url.indexOf('/Swashbuckle/SetCsrfCookie') > -1)) {
+  //   console.log('zl');
+  //   if (req.url.indexOf(EquipmentManagement_API) > -1) {
+  //     await setCsrfCookieByHostApi();
+  //   } else {
+  //     await setCsrfCookieByIdentityApi();
+  //   }
+  // }
+  await next();
+  const { res } = ctx;
+  console.log(res);
+};
 
 //先走拦截器、后走中间件
 export const request: RequestConfig = {
-  requestInterceptors: [proTableRequestInterceptor, xsrfAppendRequestInterceptor],
+  requestInterceptors: [proTableRequestInterceptor], //xsrfAppendRequestInterceptor
   // middlewares: [requestMiddleware],
 };

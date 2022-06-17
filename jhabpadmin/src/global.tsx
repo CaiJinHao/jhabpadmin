@@ -90,12 +90,8 @@ if (pwa) {
   clearCache();
 }
 
-//全局变量定义
-window['HOST_API'] = '/host/';
-window['Identity_API'] = '/identity/';
-window['LOGIN_PATH'] = '/user/login';
-window[
-  'Authorize_Login_Path'
-] = `https://localhost:6201/Account/Login?returnUrl=${window.origin}&ReturnUrlHash=/`;
-
+//全局变量定义，注意后面要加/
+window['Identity_API'] = 'https://localhost:6201/'; //'/identity/';
+window['LOGIN_PATH'] = '/user/login'; //原生登录地址
+//授权用户信息
 window['AuthorizationInfoStorageKey'] = 'AUTHORIZATIONINFO';

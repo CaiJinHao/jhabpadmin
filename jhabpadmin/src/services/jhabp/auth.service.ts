@@ -2,7 +2,7 @@ import { Log, UserManager } from 'oidc-client';
 
 Log.logger = console;
 
-const clientRoot = 'http://localhost:4200/';
+const clientRoot = window.origin;
 
 // const userManager = new UserManager({
 //   authority: 'https://localhost:6201/',
@@ -17,9 +17,9 @@ const clientRoot = 'http://localhost:4200/';
 const userManager = new UserManager({
   authority: 'https://localhost:6201/',
   client_id: 'WebAppYourName_App',
-  redirect_uri: `http://localhost:4200/signin-callback.html`, //
+  redirect_uri: clientRoot, //
   // silent_redirect_uri: `${clientRoot}/silent-callback.html`,
-  post_logout_redirect_uri: `http://localhost:4200`,
+  post_logout_redirect_uri: clientRoot,
   response_type: 'code',
   scope: 'email openid profile role phone address WebAppYourName offline_access',
   accessTokenExpiringNotificationTime: 300,
@@ -38,7 +38,6 @@ export const renewToken = async () => {
 
 export const getToken = () => {
   const authorizationInfoJson = sessionStorage.getItem(AuthorizationInfoStorageKey);
-  console.log(authorizationInfoJson);
   if (authorizationInfoJson) {
     const authorizationInfo = JSON.parse(authorizationInfoJson);
     return authorizationInfo;
@@ -55,13 +54,27 @@ export const logout = async () => {
   return await userManager.signoutRedirect();
 };
 
+// export const getUser = async () => {
+//   const authorizationInfo = await userManager.getUser();
+//   if (authorizationInfo) {
+//     sessionStorage.setItem(AuthorizationInfoStorageKey, JSON.stringify(authorizationInfo));
+//     return authorizationInfo;
+//   }
+//   return await login();
+// };
+
+/**使用登录回调的方式获取token */
 export const getUser = async () => {
-  const authorizationInfo = await userManager.getUser();
-  if (authorizationInfo) {
-    sessionStorage.setItem(AuthorizationInfoStorageKey, JSON.stringify(authorizationInfo));
-    return authorizationInfo;
+  try {
+    const authorizationInfo = await userManager.signinCallback();
+    if (authorizationInfo) {
+      sessionStorage.setItem(AuthorizationInfoStorageKey, JSON.stringify(authorizationInfo));
+      return authorizationInfo;
+    }
+  } catch (error) {
+    console.log(error);
+    return await login();
   }
-  return await login();
 };
 
 userManager.events.addAccessTokenExpiring(async () => {

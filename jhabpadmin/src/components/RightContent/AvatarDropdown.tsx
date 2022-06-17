@@ -6,7 +6,9 @@ import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 // import { outLogin } from '@/services/ant-design-pro/api';
-import { logout } from '@/services/jhabp/account/login.service';
+// import { logout } from '@/services/jhabp/account/login.service';
+import { logout } from '@/services/jhabp/auth.service';
+
 import type { MenuInfo } from 'rc-menu/lib/interface';
 
 export type GlobalHeaderRightProps = {
@@ -18,18 +20,18 @@ export type GlobalHeaderRightProps = {
  */
 const loginOut = async () => {
   await logout();
-  const { query = {} } = history.location;
-  const { redirect } = query;
+  // const { query = {} } = history.location;
+  // const { redirect } = query;
   // Note: There may be security issues, please note
-  if (window.location.pathname !== LOGIN_PATH && !redirect) {
-    window.location.href = Authorize_Login_Path;
-    // history.replace({
-    //   pathname: LOGIN_PATH,
-    //   search: stringify({
-    //     redirect: pathname + search,
-    //   }),
-    // });
-  }
+  // if (window.location.pathname !== LOGIN_PATH && !redirect) {
+  // window.location.href = LOGIN_PATH;
+  // history.replace({
+  //   pathname: LOGIN_PATH,
+  //   search: stringify({
+  //     redirect: pathname + search,
+  //   }),
+  // });
+  // }
 };
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
