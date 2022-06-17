@@ -17,6 +17,5 @@ export const environment = {
     clientId: 'WebAppYourName_App',
     responseType: 'code',
     scope: 'offline_access WebAppYourName', //'email openid profile role phone address WebAppYourName offline_access'
-    requireHttps: true,
   },
 };
