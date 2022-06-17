@@ -14,7 +14,7 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: 'JH Abp Admin',
   pwa: false,
-  logo: 'logo.png',
+  logo: '/logo.png',
   iconfontUrl: '',
 };
 
