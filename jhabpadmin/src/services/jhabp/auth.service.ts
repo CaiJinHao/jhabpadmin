@@ -1,8 +1,7 @@
 import { Log, UserManager } from 'oidc-client';
+import { environment } from '@/environments/environment';
 
 Log.logger = console;
-
-const clientRoot = window.origin;
 
 // const userManager = new UserManager({
 //   authority: 'https://localhost:6201/',
@@ -14,15 +13,14 @@ const clientRoot = window.origin;
 //   scope: 'email openid profile role phone address WebAppYourName offline_access',
 //   accessTokenExpiringNotificationTime: 300,
 // });
+
 const userManager = new UserManager({
-  authority: Identity_API,
-  client_id: 'WebAppYourName_App',
-  redirect_uri: clientRoot, //
-  // silent_redirect_uri: `${clientRoot}/silent-callback.html`,
-  post_logout_redirect_uri: clientRoot,
-  response_type: 'code',
-  scope: 'email openid profile role phone address WebAppYourName offline_access',
-  accessTokenExpiringNotificationTime: 300,
+  authority: environment.oAuthConfig.authority,
+  client_id: environment.oAuthConfig.clientId,
+  redirect_uri: environment.oAuthConfig.redirectUri,
+  post_logout_redirect_uri: environment.oAuthConfig.postLogoutRedirectUri,
+  response_type: environment.oAuthConfig.responseType,
+  scope: environment.oAuthConfig.scope,
 });
 
 export const renewToken = async () => {

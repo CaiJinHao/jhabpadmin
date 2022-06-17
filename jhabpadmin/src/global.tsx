@@ -89,9 +89,3 @@ if (pwa) {
 
   clearCache();
 }
-
-//全局变量定义，注意后面要加/
-window['Identity_API'] = 'https://localhost:6201/'; //'/identity/';
-window['LOGIN_PATH'] = '/user/login'; //原生登录地址
-//授权用户信息
-window['AuthorizationInfoStorageKey'] = 'AUTHORIZATIONINFO';
