@@ -43,29 +43,21 @@ export const logout = async () => {
   return await userManager.signoutRedirect();
 };
 
-// export const getUser = async () => {
-//   const authorizationInfo = await userManager.getUser();
-//   if (authorizationInfo) {
-//     sessionStorage.setItem(AuthorizationInfoStorageKey, JSON.stringify(authorizationInfo));
-//     return authorizationInfo;
-//   }
-//   return await login();
-// };
-
-/**使用登录回调的方式获取授权信息 */
+/**使用登录回调的方式+普通获取授权信息 */
 export const getUser = async () => {
-  try {
-    //可以先使用正常的获取，在使用回调获取
-    const authorizationInfo = await userManager.signinRedirectCallback();
-    if (authorizationInfo) {
-      sessionStorage.setItem(AuthorizationInfoStorageKey, JSON.stringify(authorizationInfo));
-      return authorizationInfo;
+  let authorizationInfo = await userManager.getUser(); //刷新获取用户信息
+  if (!authorizationInfo) {
+    try {
+      //获取不到用户的时候，使用回调获取用户信息
+      authorizationInfo = await userManager.signinRedirectCallback();
+    } catch (error) {
+      //获取不到用户时，返回undefined
+      return undefined;
     }
-    return undefined;
-  } catch (error) {
-    // return await login();
-    return undefined;
   }
+  //到这里肯定有用户信息
+  sessionStorage.setItem(AuthorizationInfoStorageKey, JSON.stringify(authorizationInfo));
+  return authorizationInfo;
 };
 
 export const removeUser = async () => {
