@@ -1,7 +1,7 @@
 import { Log, UserManager } from 'oidc-client';
 import { environment } from '@/environments/environment';
 
-Log.logger = console;
+// Log.logger = console;
 
 const userManager = new UserManager({
   authority: environment.oAuthConfig.authority,
