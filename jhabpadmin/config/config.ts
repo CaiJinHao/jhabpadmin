@@ -1,12 +1,12 @@
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
-import { join } from 'path';
+// import { join } from 'path';
 
 import defaultSettings from './defaultSettings';
-import proxy from './proxy';
+// import proxy from './proxy';
 import routes from './routes';
 
-const { REACT_APP_ENV } = process.env;
+// const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   devServer: {
@@ -52,27 +52,27 @@ export default defineConfig({
   esbuild: {},
   title: false,
   ignoreMomentLocale: true,
-  proxy: proxy[REACT_APP_ENV || 'dev'],
+  // proxy: proxy[REACT_APP_ENV || 'dev'],//没有使用代理
   manifest: {
     basePath: '/',
   },
   // Fast Refresh 热更新
   fastRefresh: {},
-  openAPI: [
-    // {
-    //   requestLibPath: "import { request } from 'umi'",
-    //   // 或者使用在线的版本
-    //   // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
-    //   schemaPath: join(__dirname, 'oneapi.json'),
-    //   mock: false,
-    // },
-    // {
-    //   requestLibPath: "import { request } from 'umi'",
-    //   schemaPath: 'https://localhost:6201/swagger/v1/swagger.json',
-    //   projectName: 'jhIdentity',
-    //   mock: false,
-    // },
-  ],
+  // openAPI: [
+  // {
+  //   requestLibPath: "import { request } from 'umi'",
+  //   // 或者使用在线的版本
+  //   // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
+  //   schemaPath: join(__dirname, 'oneapi.json'),
+  //   mock: false,
+  // },
+  // {
+  //   requestLibPath: "import { request } from 'umi'",
+  //   schemaPath: 'https://localhost:6201/swagger/v1/swagger.json',
+  //   projectName: 'jhIdentity',
+  //   mock: false,
+  // },
+  // ],
   nodeModulesTransform: { type: 'none' },
   mfsu: {},
   webpack5: {},

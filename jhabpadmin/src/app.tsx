@@ -8,7 +8,7 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
 import type { RequestInterceptor, RequestOptionsInit, ResponseError } from 'umi-request';
 import { getApplicationConfiguration } from './services/jhabp/abp.service';
-import Cookies from 'universal-cookie';
+// import Cookies from 'universal-cookie';
 import type { InitialStateType } from './model';
 import type { ApplicationConfigurationDto } from '@/lib/abp/asp-net-core/mvc/application-configurations/models';
 import { message } from 'antd';
@@ -174,6 +174,21 @@ const proTableRequestInterceptor: RequestInterceptor = (
     //@ts-ignore
     delete options.params.pageSize;
   }
+  options.errorHandler = (error: ResponseError<API.RemoteServiceErrorResponse>) => {
+    if (error.response) {
+      //http状态判断
+      console.log(error.response);
+      console.log(error.data);
+      if (error.data.error) {
+        message.error(error.data.error.message, 6);
+      } else {
+        message.error(error.response.statusText, 6);
+      }
+    } else {
+      console.log('error not response');
+      console.log(error);
+    }
+  };
   const authorizationInfo = getToken();
   if (authorizationInfo) {
     return {
@@ -196,6 +211,7 @@ const proTableRequestInterceptor: RequestInterceptor = (
   };
 };
 
+/* 不再使用
 const xsrfAppendRequestInterceptor: RequestInterceptor = (
   url: string,
   options: RequestOptionsInit,
@@ -242,6 +258,8 @@ const requestMiddleware = async (ctx: any, next: () => void) => {
   const { res } = ctx;
   console.log(res);
 };
+
+*/
 
 //先走拦截器、后走中间件
 export const request: RequestConfig = {

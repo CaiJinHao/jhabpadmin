@@ -15,7 +15,7 @@ const clientRoot = window.origin;
 //   accessTokenExpiringNotificationTime: 300,
 // });
 const userManager = new UserManager({
-  authority: 'https://localhost:6201/',
+  authority: Identity_API,
   client_id: 'WebAppYourName_App',
   redirect_uri: clientRoot, //
   // silent_redirect_uri: `${clientRoot}/silent-callback.html`,
