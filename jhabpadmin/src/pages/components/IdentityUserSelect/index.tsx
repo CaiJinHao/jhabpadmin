@@ -11,16 +11,16 @@ type IdentityUserSelectProps = {
   initialValue?: any;
 };
 const IdentityUserSelect: FC<IdentityUserSelectProps> = ({ onChange, name, ...props }) => {
-  const [identityUserOptions, setIdentityUserOptions] = useState<API.OptionDto<string>[]>([]);
+  const [selectOptions, setSelectOptions] = useState<API.OptionDto<string>[]>([]);
 
-  const requestIdentityUserOptions = async () => {
-    if (identityUserOptions.length == 0) {
+  const requestSelectOptions = async () => {
+    if (selectOptions.length == 0) {
       const data = await identityuserService.GetOptions();
       const items = data.items as API.OptionDto<string>[];
-      setIdentityUserOptions(items);
+      setSelectOptions(items);
       return items;
     }
-    return identityUserOptions;
+    return selectOptions;
   };
 
   return (
@@ -29,7 +29,7 @@ const IdentityUserSelect: FC<IdentityUserSelectProps> = ({ onChange, name, ...pr
         {...props}
         allowClear
         name={name ?? 'userId'}
-        request={requestIdentityUserOptions}
+        request={requestSelectOptions}
         fieldProps={{
           onChange: onChange,
         }}

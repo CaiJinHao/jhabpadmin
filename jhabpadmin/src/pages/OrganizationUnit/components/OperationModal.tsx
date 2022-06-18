@@ -7,6 +7,7 @@ import { useIntl } from 'umi';
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import IdentityRoleSelect from '@/pages/components/IdentityRoleSelect';
 import IdentityUserSelect from '@/pages/components/IdentityUserSelect';
+import OrganizationUnitSelect from '@/pages/components/OrganizationUnitSelect';
 
 type OperationModalProps = {
   operator: ViewOperator;
@@ -112,14 +113,13 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
       >
         <>
           <ProForm.Group>
-            <ProFormSelect<API.OptionDto<string>>
+            <OrganizationUnitSelect
               width="md"
               name="parentId"
               label={intl.formatMessage({
                 id: 'DisplayName:JhOrganizationUnit:ParentId',
                 defaultMessage: '上级组织',
               })}
-              request={requestOrganizationUnitOptions}
             />
             <ProFormText
               width="md"

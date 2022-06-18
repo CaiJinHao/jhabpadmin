@@ -1,20 +1,25 @@
 import { ProFormSelect } from '@ant-design/pro-form';
 import type { FC } from 'react';
 import { useState } from 'react';
-import * as identityroleService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
 
-type IdentityRoleSelectProps = {
+import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
+
+type OrganizationUnitSelectSelectProps = {
   onChange?: (values: any, option: any) => void;
   name?: string;
   label?: React.ReactNode;
   width?: number | 'sm' | 'md' | 'xl' | 'xs' | 'lg';
 };
-const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({ onChange, name, ...props }) => {
+const OrganizationUnitSelectSelect: FC<OrganizationUnitSelectSelectProps> = ({
+  onChange,
+  name,
+  ...props
+}) => {
   const [selectOptions, setSelectOptions] = useState<API.OptionDto<string>[]>([]);
 
   const requestSelectOptions = async () => {
     if (selectOptions.length == 0) {
-      const data = await identityroleService.GetOptions('');
+      const data = await defaultService.GetOptions('');
       const items = data.items as API.OptionDto<string>[];
       setSelectOptions(items);
       return items;
@@ -26,9 +31,8 @@ const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({ onChange, name, ...pr
     <>
       <ProFormSelect<API.OptionDto<string>>
         {...props}
-        mode="multiple"
         allowClear
-        name={name ?? 'roleIds'}
+        name={name ?? 'OrganizationUnitId'}
         request={requestSelectOptions}
         fieldProps={{
           onChange: onChange,
@@ -38,4 +42,4 @@ const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({ onChange, name, ...pr
   );
 };
 
-export default IdentityRoleSelect;
+export default OrganizationUnitSelectSelect;
