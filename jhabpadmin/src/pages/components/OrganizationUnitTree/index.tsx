@@ -9,15 +9,15 @@ type OrganizationUnitTreeProps = {
   onSelect?: (selectedKeys: any[], info: any) => void;
 };
 const OrganizationUnitTree: FC<OrganizationUnitTreeProps> = ({ reload, ...props }) => {
-  const [treeData, setOrgTreeData] = useState<any>();
+  const [treeData, setTreeData] = useState<any>();
 
-  const loadOrgTreeData = async () => {
+  const loadTreeData = async () => {
     const _treeDto = await defaultService.GetOrganizationTree();
-    setOrgTreeData(_treeDto.items);
+    setTreeData(_treeDto.items);
   };
 
   useEffect(() => {
-    loadOrgTreeData();
+    loadTreeData();
   }, [reload]);
 
   return (
