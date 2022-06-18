@@ -108,7 +108,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: `金浩出品 ${initialState?.currentUser?.name}`,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -199,6 +199,7 @@ const proTableRequestInterceptor: RequestInterceptor = (
         ...options,
         headers: {
           ...options.headers,
+          'Accept-Language': getLocale(),
           Authorization: `${authorizationInfo.token_type} ${authorizationInfo.access_token}`,
         },
       },

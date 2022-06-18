@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
   //TODO:本地化示例
   const defaultMessage = intl.formatMessage({
     id: 'app.copyright.produced',
-    defaultMessage: '金浩出品必属精品',
+    defaultMessage: '金浩出品',
   });
 
   const currentYear = new Date().getFullYear();
@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
         {
           key: 'JH Abp Admin',
           title: 'JH Abp Admin',
-          href: 'https://jh.6mv6.com',
+          href: 'https://jinhao.6mv6.com',
           blankTarget: true,
         },
         {

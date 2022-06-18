@@ -17,7 +17,6 @@ const Welcome: React.FC = () => {
   console.log(intl);
   return (
     <PageContainer>
-      <h1>{intl.formatMessage({ id: 'AccessDenied', defaultMessage: '啥也不是' })}</h1>
       <Card>
         <Alert
           message={intl.formatMessage({
