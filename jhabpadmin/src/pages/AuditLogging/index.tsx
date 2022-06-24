@@ -199,7 +199,6 @@ const AuditLogList = () => {
       }
     }
     const inputParams = { ...params, sorting: sortings.join(',') };
-    console.log(inputParams);
     const responseData = await defaultService.GetList(inputParams);
     setTotalPage(responseData.totalCount);
     return {
