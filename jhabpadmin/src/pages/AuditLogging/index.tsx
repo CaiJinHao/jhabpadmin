@@ -227,10 +227,6 @@ const AuditLogList = () => {
           }}
           dateFormatter="string"
           toolBarRender={() => [
-            <Button type="primary" key="create" shape="round" onClick={create}>
-              <PlusOutlined />
-              {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-            </Button>,
             <Button
               type="default"
               key="delete_keys"
@@ -239,7 +235,7 @@ const AuditLogList = () => {
               onClick={deleteByKeys}
             >
               <DeleteOutlined />
-              {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量禁用' })}
+              {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量删除' })}
             </Button>,
           ]}
           search={{
