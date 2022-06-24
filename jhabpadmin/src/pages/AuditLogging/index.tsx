@@ -50,7 +50,7 @@ const AuditLogList = () => {
           <>
             {intl.formatMessage({
               id: 'ProTable.delete.BatchDelete',
-              defaultMessage: '确定要禁用选中项吗?',
+              defaultMessage: '确定要删除选中项吗?',
             })}
           </>
         ),

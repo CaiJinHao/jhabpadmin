@@ -284,7 +284,7 @@
         "tags": [
           "rule"
         ],
-        "description": "禁用规则",
+        "description": "删除规则",
         "operationId": "removeRule",
         "responses": {
           "200": {

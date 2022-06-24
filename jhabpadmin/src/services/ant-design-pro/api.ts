@@ -76,7 +76,7 @@ export async function addRule(options?: { [key: string]: any }) {
   });
 }
 
-/** 禁用规则 DELETE /api/rule */
+/** 删除规则 DELETE /api/rule */
 export async function removeRule(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/api/rule', {
     method: 'DELETE',
