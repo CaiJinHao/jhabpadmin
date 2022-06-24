@@ -151,6 +151,11 @@ const OrganizationUnitList = () => {
     setCurrentOperation(undefined);
   }, [visibleOperation]);
 
+  console.log(
+    access['AbpIdentity.OrganizationUnits.Recover'] &&
+      access['AbpIdentity.OrganizationUnits.Delete'],
+  );
+
   //需要展示得字段、需要搜索得字段
   const columns: ProColumns<API.JhIdentity.OrganizationUnitDto>[] = [
     {
@@ -176,7 +181,12 @@ const OrganizationUnitList = () => {
       render: (text, record) => {
         return (
           <Switch
-            disabled={access['AbpIdentity.OrganizationUnits.Recover']}
+            disabled={
+              !(
+                access['AbpIdentity.OrganizationUnits.Recover'] &&
+                access['AbpIdentity.OrganizationUnits.Delete']
+              )
+            }
             checked={record.isDeleted}
             onChange={() => handlerIsDeleted(record)}
           />
