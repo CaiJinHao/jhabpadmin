@@ -5,13 +5,14 @@ import { Button, Switch, message, Modal, Col, Row } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
-import { useIntl } from 'umi';
+import { useAccess, useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 import OperationModalIdentityUser from './components/OperationModal';
 import OrganizationUnitTree from '@/pages/components/OrganizationUnitTree';
 
 const IdentityUserList = () => {
+  const access = useAccess();
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
   const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
   const { confirm } = Modal;
@@ -236,7 +237,11 @@ const IdentityUserList = () => {
       search: false,
       render: (text, record, index, action) => {
         return (
-          <Switch checked={record.isDeleted} onChange={() => handlerIsDeleted(record, action)} />
+          <Switch
+            disabled={access['AbpIdentity.Users.Recover']}
+            checked={record.isDeleted}
+            onChange={() => handlerIsDeleted(record, action)}
+          />
         );
       },
     },
@@ -253,9 +258,11 @@ const IdentityUserList = () => {
       valueType: 'option',
       render: (_, record) =>
         !record.isDeleted && [
-          <a key="edit" onClick={() => edit(record)}>
-            {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
-          </a>,
+          access['AbpIdentity.Users.Update'] && (
+            <a key="edit" onClick={() => edit(record)}>
+              {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
+            </a>
+          ),
           <a key="detail" onClick={() => detail(record)}>
             {intl.formatMessage({ id: 'Permission:Detail', defaultMessage: '详情' })}
           </a>,
@@ -327,20 +334,27 @@ const IdentityUserList = () => {
               }}
               dateFormatter="string"
               toolBarRender={() => [
-                <Button type="primary" key="create" shape="round" onClick={create}>
-                  <PlusOutlined />
-                  {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-                </Button>,
-                <Button
-                  type="default"
-                  key="delete_keys"
-                  shape="round"
-                  danger={true}
-                  onClick={deleteByKeys}
-                >
-                  <DeleteOutlined />
-                  {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量禁用' })}
-                </Button>,
+                access['AbpIdentity.Users.Create'] && (
+                  <Button type="primary" key="create" shape="round" onClick={create}>
+                    <PlusOutlined />
+                    {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+                  </Button>
+                ),
+                access['AbpIdentity.Users.BatchDelete'] && (
+                  <Button
+                    type="default"
+                    key="delete_keys"
+                    shape="round"
+                    danger={true}
+                    onClick={deleteByKeys}
+                  >
+                    <DeleteOutlined />
+                    {intl.formatMessage({
+                      id: 'Permission:BatchDelete',
+                      defaultMessage: '批量禁用',
+                    })}
+                  </Button>
+                ),
               ]}
               search={{
                 labelWidth: 100,

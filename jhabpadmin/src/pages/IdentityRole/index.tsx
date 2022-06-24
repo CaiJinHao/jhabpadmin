@@ -6,10 +6,12 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
+import { useAccess } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
 import OperationModalIdentityRole from './components/OperationModal';
 const IdentityRoleList = () => {
+  const access = useAccess();
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
   const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
   const intl = useIntl();
@@ -67,9 +69,11 @@ const IdentityRoleList = () => {
       key: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a key="edit" onClick={() => edit(record)}>
-          {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
-        </a>,
+        access['AbpIdentity.Roles.Update'] && (
+          <a key="edit" onClick={() => edit(record)}>
+            {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
+          </a>
+        ),
         <a key="detail" onClick={() => detail(record)}>
           {intl.formatMessage({ id: 'Permission:Detail', defaultMessage: '详情' })}
         </a>,
@@ -115,10 +119,12 @@ const IdentityRoleList = () => {
           }}
           dateFormatter="string"
           toolBarRender={() => [
-            <Button type="primary" key="create" shape="round" onClick={create}>
-              <PlusOutlined />
-              {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-            </Button>,
+            access['AbpIdentity.Roles.Create'] && (
+              <Button type="primary" key="create" shape="round" onClick={create}>
+                <PlusOutlined />
+                {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+              </Button>
+            ),
           ]}
           search={{
             labelWidth: 100,

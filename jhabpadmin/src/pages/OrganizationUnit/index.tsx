@@ -5,7 +5,7 @@ import { Button, Switch, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { getYesOrNo, ViewOperator } from '@/services/jhabp/app.enums';
-import { useIntl } from 'umi';
+import { useAccess, useIntl } from 'umi';
 import { Row, Col } from 'antd';
 
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
@@ -13,6 +13,7 @@ import OperationModalOrganizationUnit from './components/OperationModal';
 import OrganizationUnitTree from '@/pages/components/OrganizationUnitTree';
 
 const OrganizationUnitList = () => {
+  const access = useAccess();
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
   const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
   const { confirm } = Modal;
@@ -173,7 +174,13 @@ const OrganizationUnitList = () => {
       dataIndex: 'isDeleted',
       search: false,
       render: (text, record) => {
-        return <Switch checked={record.isDeleted} onChange={() => handlerIsDeleted(record)} />;
+        return (
+          <Switch
+            disabled={access['AbpIdentity.OrganizationUnits.Recover']}
+            checked={record.isDeleted}
+            onChange={() => handlerIsDeleted(record)}
+          />
+        );
       },
     },
     {
@@ -189,9 +196,11 @@ const OrganizationUnitList = () => {
       valueType: 'option',
       render: (_, record) =>
         !record.isDeleted && [
-          <a key="edit" onClick={() => edit(record)}>
-            {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
-          </a>,
+          access['AbpIdentity.OrganizationUnits.Update'] && (
+            <a key="edit" onClick={() => edit(record)}>
+              {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
+            </a>
+          ),
           <a key="detail" onClick={() => detail(record)}>
             {intl.formatMessage({ id: 'Permission:Detail', defaultMessage: '详情' })}
           </a>,
@@ -262,20 +271,27 @@ const OrganizationUnitList = () => {
               }}
               dateFormatter="string"
               toolBarRender={() => [
-                <Button type="primary" key="create" shape="round" onClick={create}>
-                  <PlusOutlined />
-                  {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-                </Button>,
-                <Button
-                  type="default"
-                  key="delete_keys"
-                  shape="round"
-                  danger={true}
-                  onClick={deleteByKeys}
-                >
-                  <DeleteOutlined />
-                  {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量禁用' })}
-                </Button>,
+                access['AbpIdentity.OrganizationUnits.Create'] && (
+                  <Button type="primary" key="create" shape="round" onClick={create}>
+                    <PlusOutlined />
+                    {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+                  </Button>
+                ),
+                access['AbpIdentity.OrganizationUnits.BatchDelete'] && (
+                  <Button
+                    type="default"
+                    key="delete_keys"
+                    shape="round"
+                    danger={true}
+                    onClick={deleteByKeys}
+                  >
+                    <DeleteOutlined />
+                    {intl.formatMessage({
+                      id: 'Permission:BatchDelete',
+                      defaultMessage: '批量禁用',
+                    })}
+                  </Button>
+                ),
               ]}
               search={{
                 labelWidth: 100,
