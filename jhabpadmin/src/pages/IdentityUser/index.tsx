@@ -238,7 +238,7 @@ const IdentityUserList = () => {
       render: (text, record, index, action) => {
         return (
           <Switch
-            disabled={access['AbpIdentity.Users.Recover']}
+            disabled={!(access['AbpIdentity.Users.Recover'] && access['AbpIdentity.Users.Delete'])}
             checked={record.isDeleted}
             onChange={() => handlerIsDeleted(record, action)}
           />
