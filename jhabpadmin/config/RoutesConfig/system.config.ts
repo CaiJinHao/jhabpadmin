@@ -34,4 +34,7 @@ export default [
     access: 'JhAuditLogging.AuditLoggings',
     component: './AuditLogging',
   },
+  {
+    component: './404',
+  },
 ];

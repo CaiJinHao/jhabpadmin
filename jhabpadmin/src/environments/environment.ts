@@ -10,8 +10,7 @@ const configEnv = {
 // configEnv.clientId = 'WebAppYourName_AppDebug';
 
 /**全局变量定义 */
-//@ts-ignore
-window.EquipmentManagement_API = configEnv.api;
+// window.EquipmentManagement_API = configEnv.api;
 //@ts-ignore
 window.Identity_API = configEnv.identityApi; //'/identity/';
 //@ts-ignore
