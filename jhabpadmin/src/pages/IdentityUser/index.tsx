@@ -316,10 +316,10 @@ const IdentityUserList = () => {
     <>
       <PageContainer>
         <Row gutter={{ md: 16 }}>
-          <Col md={6}>
+          <Col xs={24} sm={6}>
             <OrganizationUnitTree onSelect={onSelectOrgTree} />
           </Col>
-          <Col md={18}>
+          <Col xs={24} sm={18}>
             <ProTable<API.JhIdentity.IdentityUserDto>
               actionRef={proTableActionRef}
               columns={columns}

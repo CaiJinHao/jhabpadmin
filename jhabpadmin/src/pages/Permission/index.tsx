@@ -63,10 +63,10 @@ const Permission = () => {
         ]}
       >
         <Row gutter={{ md: 16 }}>
-          <Col md={6}>
+          <Col sm={6} xs={6}>
             <IdentityRoleTree onSelect={onSelectTreeRole} />
           </Col>
-          <Col md={18}>
+          <Col sm={18} xs={18}>
             <PermissionTree
               checkable
               checkedKeys={permissionCheckedKeys}
