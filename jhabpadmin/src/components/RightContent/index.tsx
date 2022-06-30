@@ -4,7 +4,7 @@ import React from 'react';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
-import { getLocale, setLocale, useModel, SelectLang } from 'umi';
+import { setLocale, useModel, SelectLang } from 'umi';
 import { switchLanguage } from '@/services/jhabp/abp.service';
 
 export type SiderTheme = 'light' | 'dark';
