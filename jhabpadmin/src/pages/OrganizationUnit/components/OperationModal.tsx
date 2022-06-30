@@ -1,4 +1,4 @@
-import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
@@ -26,9 +26,11 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   const modalFormFinish = async (values: any) => {
     values.extraProperties = extraProperties;
     if (current) {
-      const _data = values as API.JhIdentity.OrganizationUnitUpdateInputDto;
-      _data.concurrencyStamp = current.concurrencyStamp;
-      const updateDto = await defaultService.Update(current.id, _data);
+      const _data = Object.assign(current, values);
+      const updateDto = await defaultService.Update(
+        current.id,
+        _data as API.JhIdentity.OrganizationUnitUpdateInputDto,
+      );
       if (updateDto) {
         onSubmit(updateDto);
       }
@@ -39,12 +41,6 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
         onSubmit(createDto);
       }
     }
-  };
-
-  const requestOrganizationUnitOptions = async () => {
-    const data = await defaultService.GetOptions('');
-    const items = data.items as API.OptionDto<string>[];
-    return items;
   };
 
   const initTitle = useCallback(() => {

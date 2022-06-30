@@ -3,7 +3,7 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
@@ -34,12 +34,6 @@ const AuditLogList = () => {
     setVisibleOperation(false);
     message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     reloadProTable();
-  };
-
-  const create = () => {
-    setDetailOperation(ViewOperator.Add);
-    setVisibleOperation(true);
-    setCurrentOperation(undefined);
   };
 
   const deleteByKeys = async () => {

@@ -22,9 +22,11 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
   const modalFormFinish = async (values: any) => {
     values.extraProperties = extraProperties;
     if (current) {
-      const _data = values as API.JhIdentity.IdentityRoleUpdateInputDto;
-      _data.concurrencyStamp = current.concurrencyStamp;
-      const updateDto = await defaultService.UpdateByRoles(current.id, _data);
+      const _data = Object.assign(current, values);
+      const updateDto = await defaultService.UpdateByRoles(
+        current.id,
+        _data as API.JhIdentity.IdentityRoleUpdateInputDto,
+      );
       if (updateDto) {
         onSubmit(updateDto);
       }

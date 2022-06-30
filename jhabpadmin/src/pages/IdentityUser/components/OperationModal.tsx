@@ -18,15 +18,17 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
   const { operator, visible, current, onCancel, onSubmit, children } = props;
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
+  const [extraProperties, setExtraProperties] = useState<any>();
 
   const [roleNames, setRoleNames] = useState<string[]>([]);
 
   const modalFormFinish = async (values: any) => {
+    values.extraProperties = extraProperties;
     values.roleNames = roleNames;
     if (current) {
       const _data = Object.assign(current, values);
       const updateDto = await defaultService.Update(
-        current.id as string,
+        current.id,
         _data as API.JhIdentity.IdentityUserUpdateInputDto,
       );
       if (updateDto) {
@@ -83,6 +85,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
 
   useEffect(() => {
     initTitle();
+    setExtraProperties(current?.extraProperties);
   }, [current, initTitle]);
 
   if (!current && operator != ViewOperator.Add) {
