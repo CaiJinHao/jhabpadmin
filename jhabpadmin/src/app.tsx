@@ -50,7 +50,7 @@ const setMyLocale = () => {
     case 'zh-TW':
     case 'zh-HK':
       {
-        setLocale('zh-CN', false);
+        setLocale('zh-TW', false);
       }
       break;
   }

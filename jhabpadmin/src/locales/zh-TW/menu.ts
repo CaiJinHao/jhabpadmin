@@ -49,4 +49,13 @@ export default {
   'menu.editor.flow': '流程編輯器',
   'menu.editor.mind': '腦圖編輯器',
   'menu.editor.koni': '拓撲編輯器',
+
+  'menu.menu': '菜單管理',
+  'menu.personal': '個人信息',
+  'menu.systemConfig': '系統配置',
+  'menu.systemConfig.OrganizationUnit': '組織管理',
+  'menu.systemConfig.IdentityRole': '角色管理',
+  'menu.systemConfig.IdentityUser': '用戶管理',
+  'menu.systemConfig.Permission': '權限管理',
+  'menu.systemConfig.AuditLogging': '審計日志',
 };
