@@ -20,10 +20,10 @@ export default [
   //   ],
   // },
   {
-    path: '/user/profile',
-    name: 'profile',
+    path: '/user/personal',
+    name: 'personal',
     icon: 'smile',
-    component: './Profile',
+    component: './Personal',
     hideInMenu: true,
   },
   {

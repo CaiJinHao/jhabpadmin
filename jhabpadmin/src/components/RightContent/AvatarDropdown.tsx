@@ -76,7 +76,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   const menuHeaderDropdown = (
     <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      <Menu.Item key="profile">
+      <Menu.Item key="personal">
         <UserOutlined />
         {intl.formatMessage({
           id: 'PersonalInfo',

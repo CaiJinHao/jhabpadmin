@@ -51,6 +51,7 @@ export default {
   'menu.editor.koni': 'Koni Editor',
 
   'menu.menu': 'Menu management',
+  'menu.personal': 'Personal Info',
   'menu.systemConfig': 'System configuration',
   'menu.systemConfig.OrganizationUnit': 'Organization management',
   'menu.systemConfig.IdentityRole': 'Role management',
