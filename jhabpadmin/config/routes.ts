@@ -24,6 +24,7 @@ export default [
     name: 'profile',
     icon: 'smile',
     component: './Profile',
+    hideInMenu: true,
   },
   {
     path: '/welcome',

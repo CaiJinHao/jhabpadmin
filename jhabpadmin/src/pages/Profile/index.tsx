@@ -11,6 +11,7 @@ const { TabPane } = Tabs;
 
 const Profile: React.FC = () => {
   const intl = useIntl();
+  console.log(intl);
   const { initialState, setInitialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
 

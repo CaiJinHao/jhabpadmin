@@ -65,7 +65,6 @@ const appendLocalization = async (
   currentLocale: string,
   applicationConfiguration: ApplicationConfigurationDto,
 ) => {
-  console.log(applicationConfiguration.localization);
   for (const key in new Object(applicationConfiguration.localization.values)) {
     addLocale(currentLocale, applicationConfiguration.localization.values[key], {
       momentLocale: currentLocale.toLowerCase(),
