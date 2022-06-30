@@ -129,11 +129,11 @@ const IdentityRoleList = () => {
           search={{
             labelWidth: 100,
             searchText: intl.formatMessage({
-              id: 'ProTable.search.searchText',
+              id: 'proTable.search.searchText',
               defaultMessage: '查询',
             }),
             resetText: intl.formatMessage({
-              id: 'ProTable.search.resetText',
+              id: 'proTable.search.resetText',
               defaultMessage: '重置',
             }),
           }}

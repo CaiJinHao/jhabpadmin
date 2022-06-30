@@ -43,7 +43,7 @@ const AuditLogList = () => {
         content: (
           <>
             {intl.formatMessage({
-              id: 'ProTable.delete.BatchDelete',
+              id: 'proTable.delete.BatchDelete',
               defaultMessage: '确定要删除选中项吗?',
             })}
           </>
@@ -234,11 +234,11 @@ const AuditLogList = () => {
           search={{
             labelWidth: 100,
             searchText: intl.formatMessage({
-              id: 'ProTable.search.searchText',
+              id: 'proTable.search.searchText',
               defaultMessage: '查询',
             }),
             resetText: intl.formatMessage({
-              id: 'ProTable.search.resetText',
+              id: 'proTable.search.resetText',
               defaultMessage: '重置',
             }),
           }}

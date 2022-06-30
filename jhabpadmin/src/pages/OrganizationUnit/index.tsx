@@ -51,7 +51,7 @@ const OrganizationUnitList = () => {
         content: (
           <>
             {intl.formatMessage({
-              id: 'ProTable.delete.Recover',
+              id: 'proTable.delete.Recover',
               defaultMessage: '确定要恢复吗?',
             })}
           </>
@@ -71,7 +71,7 @@ const OrganizationUnitList = () => {
         content: (
           <>
             {intl.formatMessage({
-              id: 'ProTable.delete.Delete',
+              id: 'proTable.delete.Delete',
               defaultMessage: '确定要删除吗?',
             })}
           </>
@@ -112,7 +112,7 @@ const OrganizationUnitList = () => {
         content: (
           <>
             {intl.formatMessage({
-              id: 'ProTable.delete.BatchDelete',
+              id: 'proTable.delete.BatchDelete',
               defaultMessage: '确定要删除选中项吗?',
             })}
           </>
@@ -301,11 +301,11 @@ const OrganizationUnitList = () => {
               search={{
                 labelWidth: 100,
                 searchText: intl.formatMessage({
-                  id: 'ProTable.search.searchText',
+                  id: 'proTable.search.searchText',
                   defaultMessage: '查询',
                 }),
                 resetText: intl.formatMessage({
-                  id: 'ProTable.search.resetText',
+                  id: 'proTable.search.resetText',
                   defaultMessage: '重置',
                 }),
               }}

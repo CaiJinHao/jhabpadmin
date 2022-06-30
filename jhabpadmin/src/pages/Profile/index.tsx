@@ -89,7 +89,7 @@ const Profile: React.FC = () => {
                 </Descriptions.Item>
                 <Descriptions.Item
                   label={intl.formatMessage({
-                    id: 'DisplayName:IdentityUser:CreationTime',
+                    id: 'DisplayName:IdentityUser:RegisterTime',
                     defaultMessage: '注册时间',
                   })}
                 >
@@ -138,7 +138,7 @@ const Profile: React.FC = () => {
                       {
                         required: true,
                         message: `${intl.formatMessage({
-                          id: 'Form.rules.message',
+                          id: 'form.rules.message',
                           defaultMessage: '请输入',
                         })}\${label}`,
                       },
@@ -157,7 +157,7 @@ const Profile: React.FC = () => {
                       {
                         required: true,
                         message: `${intl.formatMessage({
-                          id: 'Form.rules.message',
+                          id: 'form.rules.message',
                           defaultMessage: '请输入',
                         })}\${label}`,
                       },
@@ -186,7 +186,7 @@ const Profile: React.FC = () => {
                       {
                         required: true,
                         message: `${intl.formatMessage({
-                          id: 'Form.rules.message',
+                          id: 'form.rules.message',
                           defaultMessage: '请输入',
                         })}\${label}`,
                       },
@@ -205,7 +205,7 @@ const Profile: React.FC = () => {
                       {
                         required: true,
                         message: `${intl.formatMessage({
-                          id: 'Form.rules.message',
+                          id: 'form.rules.message',
                           defaultMessage: '请输入',
                         })}\${label}`,
                       },
