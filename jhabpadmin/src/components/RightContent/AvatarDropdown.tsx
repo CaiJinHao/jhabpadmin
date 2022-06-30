@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
-import { history, useModel } from 'umi';
+import { useIntl, history, useModel } from 'umi';
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+
 // import { outLogin } from '@/services/ant-design-pro/api';
 // import { logout } from '@/services/jhabp/account/login.service';
 import { logout } from '@/services/jhabp/auth.service';
@@ -36,6 +37,7 @@ const loginOut = async () => {
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   const { initialState, setInitialState } = useModel('@@initialState');
+  const intl = useIntl();
 
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
@@ -76,7 +78,10 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
       <Menu.Item key="profile">
         <UserOutlined />
-        个人中心
+        {intl.formatMessage({
+          id: 'PersonalInfo',
+          defaultMessage: '个人信息',
+        })}
       </Menu.Item>
       {/* {menu && (
         <Menu.Item key="settings">
@@ -87,7 +92,10 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
       <Menu.Divider />
       <Menu.Item key="logout">
         <LogoutOutlined />
-        退出登录
+        {intl.formatMessage({
+          id: 'Logout',
+          defaultMessage: '注销',
+        })}
       </Menu.Item>
     </Menu>
   );

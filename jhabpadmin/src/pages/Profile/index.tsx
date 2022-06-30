@@ -46,27 +46,76 @@ const Profile: React.FC = () => {
             </Col>
             <Col sm={12} xs={24}>
               <Descriptions title={currentUser?.name}>
-                <Descriptions.Item label="账号">{currentUser?.userName}</Descriptions.Item>
-                <Descriptions.Item label="手机号">{currentUser?.phoneNumber}</Descriptions.Item>
-                <Descriptions.Item label="邮箱">{currentUser?.email}</Descriptions.Item>
-                <Descriptions.Item label="角色">{currentUser?.roles?.join(',')}</Descriptions.Item>
-                <Descriptions.Item label="组织">
+                <Descriptions.Item
+                  label={intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:UserName',
+                    defaultMessage: '用户账号',
+                  })}
+                >
+                  {currentUser?.userName}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:PhoneNumber',
+                    defaultMessage: '手机号',
+                  })}
+                >
+                  {currentUser?.phoneNumber}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:Email',
+                    defaultMessage: '邮箱',
+                  })}
+                >
+                  {currentUser?.email}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={intl.formatMessage({
+                    id: 'DisplayName:IdentityRole',
+                    defaultMessage: '角色',
+                  })}
+                >
+                  {currentUser?.roles?.join(',')}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={intl.formatMessage({
+                    id: 'DisplayName:JhOrganizationUnit',
+                    defaultMessage: '组织',
+                  })}
+                >
                   {currentUser?.organizationUnits?.join(',')}
                 </Descriptions.Item>
-                <Descriptions.Item label="注册时间">{currentUser?.creationTime}</Descriptions.Item>
+                <Descriptions.Item
+                  label={intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:CreationTime',
+                    defaultMessage: '注册时间',
+                  })}
+                >
+                  {currentUser?.creationTime}
+                </Descriptions.Item>
               </Descriptions>
             </Col>
           </Row>
         </ProCard>
         <ProCard bordered className={styles.profileForm}>
-          <Tabs defaultActiveKey="basicinfo">
-            <TabPane tab="基本信息" key="basicinfo">
+          <Tabs defaultActiveKey="personalInfo">
+            <TabPane
+              tab={intl.formatMessage({
+                id: 'PersonalInfo',
+                defaultMessage: '个人信息',
+              })}
+              key="personalInfo"
+            >
               <ProForm
                 onFinish={modalFormFinish}
                 initialValues={currentUser}
                 submitter={{
                   searchConfig: {
-                    submitText: '保存',
+                    submitText: intl.formatMessage({
+                      id: 'Save',
+                      defaultMessage: '保存',
+                    }),
                   },
                   resetButtonProps: {
                     style: {
