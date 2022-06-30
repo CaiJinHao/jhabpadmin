@@ -1,16 +1,35 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
-import React, { useState } from 'react';
-import { Col, Row, Avatar, Descriptions, Tabs } from 'antd';
+import React from 'react';
+import { Col, Row, Avatar, Descriptions, Tabs, message } from 'antd';
 import styles from './index.less';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
-import { useIntl } from 'umi';
+import { useIntl, useModel } from 'umi';
+import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 
 const { TabPane } = Tabs;
 
 const Profile: React.FC = () => {
   const intl = useIntl();
-  const [extraProperties, setExtraProperties] = useState<any>();
+  const { initialState, setInitialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
+
+  const modalFormFinish = async (values: any) => {
+    if (currentUser) {
+      const _data = Object.assign(currentUser, values);
+      const updateDto = await defaultService.Update(
+        currentUser.id,
+        _data as API.JhIdentity.IdentityUserUpdateInputDto,
+      );
+      if (updateDto) {
+        setInitialState((s: any) => ({
+          ...s,
+          currentUser: _data as API.JhIdentity.IdentityUserDto,
+        }));
+        message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
+      }
+    }
+  };
 
   return (
     <>
@@ -23,31 +42,39 @@ const Profile: React.FC = () => {
             ]}
           >
             <Col sm={3} xs={24} style={{ textAlign: 'center' }}>
-              <Avatar size={128} src="/logo.png" />
+              <Avatar size={128} src={currentUser?.avatar} />
             </Col>
             <Col sm={12} xs={24}>
-              <Descriptions title="User Info">
-                <Descriptions.Item label="UserName">Zhou Maomao</Descriptions.Item>
-                <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
-                <Descriptions.Item label="Live">Hangzhou, Zhejiang</Descriptions.Item>
-                <Descriptions.Item label="Remark">empty</Descriptions.Item>
-                <Descriptions.Item label="Address">
-                  No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+              <Descriptions title={currentUser?.name}>
+                <Descriptions.Item label="账号">{currentUser?.userName}</Descriptions.Item>
+                <Descriptions.Item label="手机号">{currentUser?.phoneNumber}</Descriptions.Item>
+                <Descriptions.Item label="邮箱">{currentUser?.email}</Descriptions.Item>
+                <Descriptions.Item label="角色">{currentUser?.roles?.join(',')}</Descriptions.Item>
+                <Descriptions.Item label="组织">
+                  {currentUser?.organizationUnits?.join(',')}
                 </Descriptions.Item>
+                <Descriptions.Item label="注册时间">{currentUser?.creationTime}</Descriptions.Item>
               </Descriptions>
             </Col>
           </Row>
         </ProCard>
         <ProCard bordered className={styles.profileForm}>
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="基本信息" key="1">
+          <Tabs defaultActiveKey="basicinfo">
+            <TabPane tab="基本信息" key="basicinfo">
               <ProForm
-                // onFinish={modalFormFinish}
-                // initialValues={operator == ViewOperator.Add ? {} : current}
-                submitter={{}}
-                layout="horizontal"
+                onFinish={modalFormFinish}
+                initialValues={currentUser}
+                submitter={{
+                  searchConfig: {
+                    submitText: '保存',
+                  },
+                  resetButtonProps: {
+                    style: {
+                      display: 'none',
+                    },
+                  },
+                }}
                 labelAlign="right"
-                labelCol={{ span: 10 }}
               >
                 <ProForm.Group>
                   <ProFormText
@@ -67,6 +94,8 @@ const Profile: React.FC = () => {
                       },
                     ]}
                   />
+                </ProForm.Group>
+                <ProForm.Group>
                   <ProFormText
                     width="md"
                     name="userName"
@@ -113,6 +142,8 @@ const Profile: React.FC = () => {
                       },
                     ]}
                   />
+                </ProForm.Group>
+                <ProForm.Group>
                   <ProFormText
                     width="md"
                     name="email"
