@@ -14,5 +14,12 @@ export default function access(initialState: InitialStateType) {
       }
     }
   }
+
+  accessObj['systemConfig'] =
+  accessObj['AbpIdentity.Roles'] ||
+  accessObj['AbpIdentity.OrganizationUnits'] ||
+  accessObj['AbpIdentity.Users'] ||
+  accessObj['AbpIdentity.JhPermissions'] ||
+  accessObj['JhAuditLogging.AuditLoggings'];
   return accessObj;
 }
