@@ -1,6 +1,7 @@
 import { useIntl } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-layout';
+import { Avatar, Space } from 'antd';
 
 const Footer: React.FC = () => {
   const intl = useIntl();
@@ -18,7 +19,12 @@ const Footer: React.FC = () => {
       links={[
         {
           key: 'JH Abp Admin',
-          title: 'JH Abp Admin',
+          title: (
+            <Space>
+              <Avatar size="small" src="/logo.png" />
+              JH Abp Admin
+            </Space>
+          ),
           href: 'https://jinhao.6mv6.com',
           blankTarget: true,
         },
