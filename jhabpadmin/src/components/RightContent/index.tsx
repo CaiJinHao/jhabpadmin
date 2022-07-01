@@ -30,7 +30,26 @@ const GlobalHeaderRight: React.FC = () => {
 
   const getLocalData = (defaultLangUConfig: any[]): any[] => {
     //TODO:需要添加新的需要的时候，在locales文件夹中添加文件，并在这里添加语言列表
-    return defaultLangUConfig;
+    return [
+      {
+        lang: 'zh-CN',
+        label: '简体中文',
+        icon: '🇨🇳',
+        title: '语言',
+      },
+      {
+        lang: 'zh-TW',
+        label: '繁體中文',
+        icon: '🇭🇰',
+        title: '語言',
+      },
+      {
+        lang: 'en-US',
+        label: 'English',
+        icon: '🇺🇸',
+        title: 'Language',
+      },
+    ];
   };
 
   return (
