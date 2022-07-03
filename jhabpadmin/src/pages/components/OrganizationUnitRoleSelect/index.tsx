@@ -1,5 +1,5 @@
 import { ProFormSelect } from '@ant-design/pro-form';
-import type { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { useState } from 'react';
 import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import { useIntl } from 'umi';
@@ -21,7 +21,7 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
   );
   const intl = useIntl();
 
-  const requestOrganizationUnitOptions = async () => {
+  const requestOrganizationUnitOptions = useCallback(async () => {
     if (organizationUnitOptions.length == 0) {
       const data = await organizationunitService.GetOptions('');
       const items = data.items as API.OptionDto<string>[];
@@ -29,9 +29,9 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
       return items;
     }
     return organizationUnitOptions;
-  };
+  }, []);
 
-  const requestIdentityRoleOptions = async (value: any) => {
+  const requestIdentityRoleOptions = useCallback(async (value: any) => {
     const organizationUnitIds = value.organizationUnitIds as string[];
     if (organizationUnitIds.length > 0) {
       const data = await organizationunitService.GetRoleOptions(organizationUnitIds);
@@ -39,29 +39,7 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
       return items;
     }
     return [];
-  };
-
-  /*
-  已使用简单的方式实现
-  const loadIdentityRoleOptions = async (values: string[]) => {
-    if (values.length > 0) {
-      const data = await organizationunitService.GetRoleOptions(values);
-      setIdentityRoleOptions(data.items as any[]);
-    } else {
-      setIdentityRoleOptions([]);
-    }
-  };
-
-  useEffect(() => {
-    if (organizationUnitDefalutValue) {
-      loadIdentityRoleOptions(organizationUnitDefalutValue);
-    }
-  }, [organizationUnitDefalutValue]);
-
-  const onOrganizationUnitSelectedChange = async (values: any) => {
-    await loadIdentityRoleOptions(values);
-  };
-  */
+  }, []);
 
   return (
     <>
@@ -85,7 +63,6 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
           id: 'DisplayName:IdentityRole',
           defaultMessage: '角色',
         })}
-        // options={identityRoleOptions}
         dependencies={['organizationUnitIds']}
         request={requestIdentityRoleOptions}
         fieldProps={{

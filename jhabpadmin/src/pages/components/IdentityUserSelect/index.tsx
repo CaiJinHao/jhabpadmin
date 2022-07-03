@@ -1,5 +1,5 @@
 import { ProFormSelect } from '@ant-design/pro-form';
-import type { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { useState } from 'react';
 import * as identityuserService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 
@@ -13,7 +13,7 @@ type IdentityUserSelectProps = {
 const IdentityUserSelect: FC<IdentityUserSelectProps> = ({ onChange, name, ...props }) => {
   const [selectOptions, setSelectOptions] = useState<API.OptionDto<string>[]>([]);
 
-  const requestSelectOptions = async () => {
+  const requestSelectOptions = useCallback(async () => {
     if (selectOptions.length == 0) {
       const data = await identityuserService.GetOptions();
       const items = data.items as API.OptionDto<string>[];
@@ -21,7 +21,7 @@ const IdentityUserSelect: FC<IdentityUserSelectProps> = ({ onChange, name, ...pr
       return items;
     }
     return selectOptions;
-  };
+  }, []);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { ProFormSelect } from '@ant-design/pro-form';
-import type { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { useState } from 'react';
 import * as identityroleService from '@/services/jhabp/identity/IdentityRole/identityrole.service';
 
@@ -12,7 +12,7 @@ type IdentityRoleSelectProps = {
 const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({ onChange, name, ...props }) => {
   const [selectOptions, setSelectOptions] = useState<API.OptionDto<string>[]>([]);
 
-  const requestSelectOptions = async () => {
+  const requestSelectOptions = useCallback(async () => {
     if (selectOptions.length == 0) {
       const data = await identityroleService.GetOptions('');
       const items = data.items as API.OptionDto<string>[];
@@ -20,7 +20,7 @@ const IdentityRoleSelect: FC<IdentityRoleSelectProps> = ({ onChange, name, ...pr
       return items;
     }
     return selectOptions;
-  };
+  }, []);
 
   return (
     <>

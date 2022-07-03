@@ -1,5 +1,5 @@
 import { ProFormSelect } from '@ant-design/pro-form';
-import type { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { useState } from 'react';
 
 import * as defaultService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
@@ -17,7 +17,7 @@ const OrganizationUnitSelectSelect: FC<OrganizationUnitSelectSelectProps> = ({
 }) => {
   const [selectOptions, setSelectOptions] = useState<API.OptionDto<string>[]>([]);
 
-  const requestSelectOptions = async () => {
+  const requestSelectOptions = useCallback(async () => {
     if (selectOptions.length == 0) {
       const data = await defaultService.GetOptions('');
       const items = data.items as API.OptionDto<string>[];
@@ -25,7 +25,7 @@ const OrganizationUnitSelectSelect: FC<OrganizationUnitSelectSelectProps> = ({
       return items;
     }
     return selectOptions;
-  };
+  }, []);
 
   return (
     <>
