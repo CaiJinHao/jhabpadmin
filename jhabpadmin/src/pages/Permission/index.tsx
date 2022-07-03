@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Row, Col, Button, message } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useAccess, useIntl } from 'umi';
@@ -14,7 +14,7 @@ const Permission = () => {
   const [permissionCheckedKeys, setPermissionCheckedKeys] = useState<string[]>([]);
   const [roleSelected, setRoleSelected] = useState<string>('');
 
-  const onSelectTreeRole = async (selectedKeys: any[], info: any) => {
+  const onSelectTreeRole = useCallback(async (selectedKeys: any[], info: any) => {
     if (selectedKeys.length > 0) {
       setRoleSelected(info.node.title);
       //触发获取当前选中角色的权限
@@ -23,29 +23,18 @@ const Permission = () => {
       });
       setPermissionCheckedKeys(grantedPermissions.items as string[]);
     }
-  };
+  }, []);
 
-  const onCheckPermissionTree = (checkedKeys: string[]) => {
+  const onCheckPermissionTree = useCallback((checkedKeys: string[]) => {
     setPermissionCheckedKeys(checkedKeys);
-  };
+  }, []);
 
   const onSavePermission = async () => {
-    //判断是否选中角色
-    if (roleSelected.length > 0) {
-      await defaultService.Update({
-        permissionNames: permissionCheckedKeys,
-        roleName: roleSelected,
-      });
-      message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
-    } else {
-      const _t = intl.formatMessage({ id: 'DisplayName:IdentityRole', defaultMessage: '角色' });
-      message.warning(
-        `${intl.formatMessage({
-          id: 'message.select.required',
-          defaultMessage: '请选择操作项',
-        })}${_t}`,
-      );
-    }
+    await defaultService.Update({
+      permissionNames: permissionCheckedKeys,
+      roleName: roleSelected,
+    });
+    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
   };
 
   return (
