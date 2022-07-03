@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Row, Col, Button, message } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useAccess, useIntl } from 'umi';
@@ -14,7 +14,7 @@ const Permission = () => {
   const [permissionCheckedKeys, setPermissionCheckedKeys] = useState<string[]>([]);
   const [roleSelected, setRoleSelected] = useState<string>('');
 
-  const onSelectTreeRole = useCallback(async (selectedKeys: any[], info: any) => {
+  const onSelectTreeRole = async (selectedKeys: any[], info: any) => {
     if (selectedKeys.length > 0) {
       setRoleSelected(info.node.title);
       //触发获取当前选中角色的权限
@@ -23,11 +23,11 @@ const Permission = () => {
       });
       setPermissionCheckedKeys(grantedPermissions.items as string[]);
     }
-  }, []);
+  };
 
-  const onCheckPermissionTree = useCallback((checkedKeys: string[]) => {
+  const onCheckPermissionTree = (checkedKeys: string[]) => {
     setPermissionCheckedKeys(checkedKeys);
-  }, []);
+  };
 
   const onSavePermission = async () => {
     await defaultService.Update({
