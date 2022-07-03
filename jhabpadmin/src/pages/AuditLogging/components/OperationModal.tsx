@@ -1,6 +1,6 @@
 import ProForm, { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import type { FC } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { FC, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 
@@ -16,9 +16,8 @@ const OperationModalAuditLog: FC<OperationModalProps> = (props) => {
   const [title, setTitle] = useState<string>();
   const intl = useIntl();
 
-  const initTitle = useCallback(() => {
+  const operatorTitle = useMemo(() => {
     let _t = intl.formatMessage({ id: 'DisplayName:AuditLog', defaultMessage: '' });
-
     switch (operator) {
       case ViewOperator.Add:
         {
@@ -47,12 +46,12 @@ const OperationModalAuditLog: FC<OperationModalProps> = (props) => {
       default:
         break;
     }
-    setTitle(_t);
-  }, [intl, operator]);
+    return _t;
+  }, [operator]);
 
   useEffect(() => {
-    initTitle();
-  }, [current, initTitle]);
+    setTitle(operatorTitle);
+  }, [current, operator]);
 
   if (!current && operator != ViewOperator.Add) {
     return <></>;

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Switch, message, Modal } from 'antd';
@@ -256,6 +256,40 @@ const OrganizationUnitList = () => {
     reloadProTable();
   };
 
+  const toolBarRender = useMemo(() => {
+    return [
+      access['AbpIdentity.OrganizationUnits.Create'] && (
+        <Button type="primary" key="create" shape="round" onClick={create}>
+          <PlusOutlined />
+          {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+        </Button>
+      ),
+      access['AbpIdentity.OrganizationUnits.BatchDelete'] && (
+        <Button type="default" key="delete_keys" shape="round" danger={true} onClick={deleteByKeys}>
+          <DeleteOutlined />
+          {intl.formatMessage({
+            id: 'Permission:BatchDelete',
+            defaultMessage: '批量删除',
+          })}
+        </Button>
+      ),
+    ];
+  }, []);
+
+  const tableSearch = useMemo(() => {
+    return {
+      labelWidth: 100,
+      searchText: intl.formatMessage({
+        id: 'proTable.search.searchText',
+        defaultMessage: '查询',
+      }),
+      resetText: intl.formatMessage({
+        id: 'proTable.search.resetText',
+        defaultMessage: '重置',
+      }),
+    };
+  }, []);
+
   return (
     <>
       <PageContainer>
@@ -275,40 +309,8 @@ const OrganizationUnitList = () => {
                 total: totalPage,
               }}
               dateFormatter="string"
-              toolBarRender={() => [
-                access['AbpIdentity.OrganizationUnits.Create'] && (
-                  <Button type="primary" key="create" shape="round" onClick={create}>
-                    <PlusOutlined />
-                    {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-                  </Button>
-                ),
-                access['AbpIdentity.OrganizationUnits.BatchDelete'] && (
-                  <Button
-                    type="default"
-                    key="delete_keys"
-                    shape="round"
-                    danger={true}
-                    onClick={deleteByKeys}
-                  >
-                    <DeleteOutlined />
-                    {intl.formatMessage({
-                      id: 'Permission:BatchDelete',
-                      defaultMessage: '批量删除',
-                    })}
-                  </Button>
-                ),
-              ]}
-              search={{
-                labelWidth: 100,
-                searchText: intl.formatMessage({
-                  id: 'proTable.search.searchText',
-                  defaultMessage: '查询',
-                }),
-                resetText: intl.formatMessage({
-                  id: 'proTable.search.resetText',
-                  defaultMessage: '重置',
-                }),
-              }}
+              toolBarRender={() => toolBarRender}
+              search={tableSearch}
             />
           </Col>
         </Row>

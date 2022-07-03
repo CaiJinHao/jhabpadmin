@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, message, Modal } from 'antd';
@@ -205,6 +205,29 @@ const AuditLogList = () => {
     onChange: (srk: any) => setSelectedRowKeys(srk),
   };
 
+  const toolBarRender = useMemo(() => {
+    return [
+      <Button type="default" key="delete_keys" shape="round" danger={true} onClick={deleteByKeys}>
+        <DeleteOutlined />
+        {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量删除' })}
+      </Button>,
+    ];
+  }, []);
+
+  const tableSearch = useMemo(() => {
+    return {
+      labelWidth: 100,
+      searchText: intl.formatMessage({
+        id: 'proTable.search.searchText',
+        defaultMessage: '查询',
+      }),
+      resetText: intl.formatMessage({
+        id: 'proTable.search.resetText',
+        defaultMessage: '重置',
+      }),
+    };
+  }, []);
+
   return (
     <>
       <PageContainer>
@@ -219,29 +242,8 @@ const AuditLogList = () => {
             total: totalPage,
           }}
           dateFormatter="string"
-          toolBarRender={() => [
-            <Button
-              type="default"
-              key="delete_keys"
-              shape="round"
-              danger={true}
-              onClick={deleteByKeys}
-            >
-              <DeleteOutlined />
-              {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量删除' })}
-            </Button>,
-          ]}
-          search={{
-            labelWidth: 100,
-            searchText: intl.formatMessage({
-              id: 'proTable.search.searchText',
-              defaultMessage: '查询',
-            }),
-            resetText: intl.formatMessage({
-              id: 'proTable.search.resetText',
-              defaultMessage: '重置',
-            }),
-          }}
+          toolBarRender={() => toolBarRender}
+          search={tableSearch}
         />
       </PageContainer>
       <OperationModalAuditLog

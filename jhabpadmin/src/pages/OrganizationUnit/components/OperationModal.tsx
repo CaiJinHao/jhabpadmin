@@ -1,5 +1,5 @@
 import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
-import type { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
@@ -43,7 +43,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
     }
   };
 
-  const initTitle = useCallback(() => {
+  const operatorTitle = useMemo(() => {
     let _t = intl.formatMessage({ id: 'DisplayName:JhOrganizationUnit', defaultMessage: '组织' });
     switch (operator) {
       case ViewOperator.Add:
@@ -73,8 +73,8 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
       default:
         break;
     }
-    setTitle(_t);
-  }, [intl, operator]);
+    return _t;
+  }, [operator]);
 
   const onChangeLeader = (value: any, option: any) => {
     setExtraProperties({
@@ -85,9 +85,9 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
   };
 
   useEffect(() => {
-    initTitle();
+    setTitle(operatorTitle);
     setExtraProperties(current?.extraProperties);
-  }, [current, initTitle]);
+  }, [current]);
 
   if (!current && operator != ViewOperator.Add) {
     return <></>;

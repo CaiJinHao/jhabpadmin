@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, message } from 'antd';
@@ -55,6 +55,7 @@ const IdentityRoleList = () => {
   useEffect(() => {
     setCurrentOperation(undefined);
   }, [visibleOperation]);
+
   const columns: ProColumns<API.JhIdentity.IdentityRoleDto>[] = [
     {
       title: intl.formatMessage({
@@ -99,10 +100,36 @@ const IdentityRoleList = () => {
       success: true,
     };
   };
+
   const rowSelection = {
     selectedRowKeys,
     onChange: (srk: any) => setSelectedRowKeys(srk),
   };
+
+  const toolBarRender = useMemo(() => {
+    return [
+      access['AbpIdentity.Roles.Create'] && (
+        <Button type="primary" key="create" shape="round" onClick={create}>
+          <PlusOutlined />
+          {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+        </Button>
+      ),
+    ];
+  }, []);
+
+  const tableSearch = useMemo(() => {
+    return {
+      labelWidth: 100,
+      searchText: intl.formatMessage({
+        id: 'proTable.search.searchText',
+        defaultMessage: '查询',
+      }),
+      resetText: intl.formatMessage({
+        id: 'proTable.search.resetText',
+        defaultMessage: '重置',
+      }),
+    };
+  }, []);
 
   return (
     <>
@@ -118,25 +145,8 @@ const IdentityRoleList = () => {
             total: totalPage,
           }}
           dateFormatter="string"
-          toolBarRender={() => [
-            access['AbpIdentity.Roles.Create'] && (
-              <Button type="primary" key="create" shape="round" onClick={create}>
-                <PlusOutlined />
-                {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-              </Button>
-            ),
-          ]}
-          search={{
-            labelWidth: 100,
-            searchText: intl.formatMessage({
-              id: 'proTable.search.searchText',
-              defaultMessage: '查询',
-            }),
-            resetText: intl.formatMessage({
-              id: 'proTable.search.resetText',
-              defaultMessage: '重置',
-            }),
-          }}
+          toolBarRender={() => toolBarRender}
+          search={tableSearch}
         />
       </PageContainer>
 
