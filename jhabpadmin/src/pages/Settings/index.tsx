@@ -62,69 +62,87 @@ const SettingDefinitionDtoList = () => {
   const columns: ProColumns<API.JhIdentity.SettingDefinitionDto>[] = [
     {
       title: intl.formatMessage({
+        id: 'DisplayName:SettingDefinitionDto:ProviderName',
+        defaultMessage: '提供者名称',
+      }),
+      dataIndex: 'providerName',
+    },
+    {
+      title: intl.formatMessage({
+        id: 'DisplayName:SettingDefinitionDto:ProviderKey',
+        defaultMessage: '提供者Key',
+      }),
+      dataIndex: 'providerKey',
+    },
+    {
+      title: intl.formatMessage({
         id: 'DisplayName:SettingDefinitionDto:Name',
-        defaultMessage: '',
+        defaultMessage: '名称',
       }),
       dataIndex: 'name',
     },
     {
       title: intl.formatMessage({
         id: 'DisplayName:SettingDefinitionDto:DisplayName',
-        defaultMessage: '',
+        defaultMessage: '显示名称',
       }),
       dataIndex: 'displayName',
     },
     {
       title: intl.formatMessage({
         id: 'DisplayName:SettingDefinitionDto:Description',
-        defaultMessage: '',
+        defaultMessage: '描述',
       }),
       dataIndex: 'description',
     },
     {
       title: intl.formatMessage({
         id: 'DisplayName:SettingDefinitionDto:DefaultValue',
-        defaultMessage: '',
+        defaultMessage: '值',
       }),
       width: 100,
       dataIndex: 'defaultValue',
+      search: false,
     },
     {
       title: intl.formatMessage({
         id: 'DisplayName:SettingDefinitionDto:IsInherited',
-        defaultMessage: '',
+        defaultMessage: '是否继承',
       }),
       dataIndex: 'isInherited',
       renderText: (text: any) => {
         return <>{text.toString()}</>;
       },
+      search: false,
     },
     {
       title: intl.formatMessage({
         id: 'DisplayName:SettingDefinitionDto:Properties',
-        defaultMessage: '',
+        defaultMessage: '属性',
       }),
       dataIndex: 'properties',
       renderText: (text: any) => {
         return <>{JSON.stringify(text)}</>;
       },
+      search: false,
     },
     {
       title: intl.formatMessage({
         id: 'DisplayName:SettingDefinitionDto:IsEncrypted',
-        defaultMessage: '',
+        defaultMessage: '是否加密',
       }),
       dataIndex: 'isEncrypted',
       renderText: (text: any) => {
         return <>{text.toString()}</>;
       },
+      search: false,
     },
     {
       title: intl.formatMessage({ id: 'JhAbp:Operation', defaultMessage: '操作' }),
       key: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access['$API.JhIdentity.SettingDefinitionDtos.Update'] && (
+        access['SettingManagement.Settings.Update'] && (
           <a key="edit" onClick={() => edit(record)}>
             {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
           </a>
@@ -162,7 +180,7 @@ const SettingDefinitionDtoList = () => {
 
   const toolBarRender = useMemo(() => {
     return [
-      access['$API.JhIdentity.SettingDefinitionDtos.Create'] && (
+      access['SettingManagement.Settings.Update'] && (
         <Button type="primary" key="create" shape="round" onClick={create}>
           <PlusOutlined />
           {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}

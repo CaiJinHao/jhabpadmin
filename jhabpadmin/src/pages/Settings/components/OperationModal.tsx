@@ -91,10 +91,26 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
           <ProForm.Group>
             <ProFormText
               width="md"
+              name="providerName"
+              label={intl.formatMessage({
+                id: 'DisplayName:SettingDefinitionDto:ProviderName',
+                defaultMessage: '提供者名称',
+              })}
+            />
+            <ProFormText
+              width="md"
+              name="providerKey"
+              label={intl.formatMessage({
+                id: 'DisplayName:SettingDefinitionDto:ProviderKey',
+                defaultMessage: '提供者Key',
+              })}
+            />
+            <ProFormText
+              width="md"
               name="name"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:Name',
-                defaultMessage: '',
+                defaultMessage: '名称',
               })}
             />
             <ProFormText
@@ -102,7 +118,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
               name="displayName"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:DisplayName',
-                defaultMessage: '',
+                defaultMessage: '显示名称',
               })}
             />
             <ProFormText
@@ -110,7 +126,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
               name="description"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:Description',
-                defaultMessage: '',
+                defaultMessage: '描述',
               })}
             />
             <ProFormText
@@ -118,15 +134,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
               name="defaultValue"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:DefaultValue',
-                defaultMessage: '',
-              })}
-            />
-            <ProFormText
-              width="md"
-              name="isVisibleToClients"
-              label={intl.formatMessage({
-                id: 'DisplayName:SettingDefinitionDto:IsVisibleToClients',
-                defaultMessage: '',
+                defaultMessage: '值',
               })}
             />
             <ProFormText
@@ -134,7 +142,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
               name="isInherited"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:IsInherited',
-                defaultMessage: '',
+                defaultMessage: '是否继承',
               })}
             />
             <ProFormText
@@ -142,7 +150,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
               name="properties"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:Properties',
-                defaultMessage: '',
+                defaultMessage: '属性',
               })}
             />
             <ProFormText
@@ -150,7 +158,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
               name="isEncrypted"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:IsEncrypted',
-                defaultMessage: '',
+                defaultMessage: '是否加密',
               })}
             />
           </ProForm.Group>
