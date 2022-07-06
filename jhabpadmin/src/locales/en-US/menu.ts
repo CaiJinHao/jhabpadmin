@@ -58,4 +58,5 @@ export default {
   'menu.systemConfig.IdentityUser': 'User management',
   'menu.systemConfig.Permission': 'Permission management',
   'menu.systemConfig.AuditLogging': 'Audit Logging',
+  'menu.systemConfig.Settings': 'Settings',
 };

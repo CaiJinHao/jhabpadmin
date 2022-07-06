@@ -58,4 +58,5 @@ export default {
   'menu.systemConfig.IdentityUser': '用戶管理',
   'menu.systemConfig.Permission': '權限管理',
   'menu.systemConfig.AuditLogging': '審計日志',
+  'menu.systemConfig.Settings': '設置管理',
 };

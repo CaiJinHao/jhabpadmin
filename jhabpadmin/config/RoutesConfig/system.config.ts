@@ -28,6 +28,13 @@ export default [
     component: './Permission',
   },
   {
+    path: 'Settings',
+    name: 'Settings',
+    icon: 'table',
+    access: 'SettingManagement.Settings',
+    component: './Settings',
+  },
+  {
     path: 'AuditLogging',
     name: 'AuditLogging',
     icon: 'table',
