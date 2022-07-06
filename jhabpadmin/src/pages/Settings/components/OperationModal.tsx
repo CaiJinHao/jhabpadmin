@@ -89,7 +89,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
       >
         <>
           <ProForm.Group>
-            {operator != ViewOperator.Add && (
+            {/* {operator != ViewOperator.Add && (
               <>
                 <ProFormText
                   width="md"
@@ -119,7 +119,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
                   })}
                 />
               </>
-            )}
+            )} */}
             <ProFormText
               width="md"
               name="providerName"

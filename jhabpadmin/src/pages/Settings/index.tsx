@@ -106,6 +106,7 @@ const SettingDefinitionDtoList = () => {
         defaultMessage: '描述',
       }),
       dataIndex: 'description',
+      search: false,
     },
     {
       title: intl.formatMessage({
@@ -190,17 +191,6 @@ const SettingDefinitionDtoList = () => {
     onChange: (srk: any) => setSelectedRowKeys(srk),
   };
 
-  const toolBarRender = useMemo(() => {
-    return [
-      access['SettingManagement.Settings.Update'] && (
-        <Button type="primary" key="create" shape="round" onClick={create}>
-          <PlusOutlined />
-          {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-        </Button>
-      ),
-    ];
-  }, [access, intl]);
-
   const tableSearch = useMemo(() => {
     return {
       labelWidth: 100,
@@ -229,7 +219,6 @@ const SettingDefinitionDtoList = () => {
             total: totalPage,
           }}
           dateFormatter="string"
-          toolBarRender={() => toolBarRender}
           search={tableSearch}
         />
       </PageContainer>
