@@ -85,6 +85,7 @@ const SettingDefinitionDtoList = () => {
         defaultMessage: '提供者Key',
       }),
       dataIndex: 'providerKey',
+      tooltip: '当提供者名称为T和U时可查询，其他值查询无效',
     },
     {
       title: intl.formatMessage({
@@ -160,9 +161,6 @@ const SettingDefinitionDtoList = () => {
             {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
           </a>
         ),
-        <a key="detail" onClick={() => detail(record)}>
-          {intl.formatMessage({ id: 'Permission:Detail', defaultMessage: '详情' })}
-        </a>,
       ],
     },
   ];

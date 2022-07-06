@@ -123,6 +123,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
             <ProFormText
               width="md"
               name="providerName"
+              tooltip="D和C为硬编码配置，不可修改，可使用G进行覆盖配置项"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:ProviderName',
                 defaultMessage: '提供者名称',
@@ -140,7 +141,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
             <ProFormText
               width="md"
               name="providerKey"
-              tooltip="为空时设置为当前登录相关属性，全局设置无需填写"
+              tooltip="当提供者名称为T和U时有效，为空时设置为当前登录相关属性，全局设置无需填写"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:ProviderKey',
                 defaultMessage: '提供者Key',
