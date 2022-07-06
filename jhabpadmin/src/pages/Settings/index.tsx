@@ -41,18 +41,30 @@ const SettingDefinitionDtoList = () => {
     setCurrentOperation(undefined);
   };
 
-  const loadDetail = async (record: API.JhIdentity.SettingDefinitionDto) => {
+  const loadDetail = async (
+    operation: ViewOperator,
+    record: API.JhIdentity.SettingDefinitionDto,
+  ) => {
+    setDetailOperation(operation);
     setVisibleOperation(true);
-    const detailDto = await defaultService.Get(record.id); //如果有额外得字段才会需要重新获取,否则可以直接使用record传递
+    const detailDto = await defaultService.Get({
+      providerName: record.providerName,
+      providerKey: record.providerKey,
+      name: record.name,
+    }); //如果有额外得字段才会需要重新获取,否则可以直接使用record传递
+    if (
+      operation == ViewOperator.Edit &&
+      (detailDto.providerName == 'D' || detailDto.providerName == 'C')
+    ) {
+      detailDto.providerName = 'G'; //需要修改为全局
+    }
     setCurrentOperation(detailDto);
   };
   const edit = async (record: API.JhIdentity.SettingDefinitionDto) => {
-    setDetailOperation(ViewOperator.Edit);
-    await loadDetail(record);
+    await loadDetail(ViewOperator.Edit, record);
   };
   const detail = async (record: API.JhIdentity.SettingDefinitionDto) => {
-    setDetailOperation(ViewOperator.Detail);
-    await loadDetail(record);
+    await loadDetail(ViewOperator.Detail, record);
   };
 
   useEffect(() => {
@@ -97,11 +109,11 @@ const SettingDefinitionDtoList = () => {
     },
     {
       title: intl.formatMessage({
-        id: 'DisplayName:SettingDefinitionDto:DefaultValue',
+        id: 'DisplayName:SettingDefinitionDto:Value',
         defaultMessage: '值',
       }),
       width: 100,
-      dataIndex: 'defaultValue',
+      dataIndex: 'value',
       search: false,
     },
     {

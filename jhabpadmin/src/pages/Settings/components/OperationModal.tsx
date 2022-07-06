@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import { useEffect, useState, useMemo } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
+import { Switch } from 'antd';
 
 import * as defaultService from '@/services/jhabp/identity/Settings/settings.service';
 
@@ -66,7 +67,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
 
   useEffect(() => {
     setTitle(operatorTitle);
-  }, [current, operatorTitle]);
+  }, [current, operator, operatorTitle]);
 
   if (!current && operator != ViewOperator.Add) {
     return <></>;
@@ -75,7 +76,6 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
   return (
     <>
       <ModalForm<API.JhIdentity.SettingDefinitionDto>
-        width={378}
         visible={visible}
         title={title}
         onFinish={modalFormFinish}
@@ -89,6 +89,37 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
       >
         <>
           <ProForm.Group>
+            {operator != ViewOperator.Add && (
+              <>
+                <ProFormText
+                  width="md"
+                  readonly
+                  name="displayName"
+                  label={intl.formatMessage({
+                    id: 'DisplayName:SettingDefinitionDto:DisplayName',
+                    defaultMessage: '显示名称',
+                  })}
+                />
+                <ProFormText
+                  width="md"
+                  name="description"
+                  readonly
+                  label={intl.formatMessage({
+                    id: 'DisplayName:SettingDefinitionDto:Description',
+                    defaultMessage: '描述',
+                  })}
+                />
+                <ProFormText
+                  readonly
+                  width="md"
+                  name="isInherited"
+                  label={intl.formatMessage({
+                    id: 'DisplayName:SettingDefinitionDto:IsInherited',
+                    defaultMessage: '是否继承',
+                  })}
+                />
+              </>
+            )}
             <ProFormText
               width="md"
               name="providerName"
@@ -96,10 +127,20 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
                 id: 'DisplayName:SettingDefinitionDto:ProviderName',
                 defaultMessage: '提供者名称',
               })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'form.rules.message',
+                    defaultMessage: '请输入',
+                  })}\${label}`,
+                },
+              ]}
             />
             <ProFormText
               width="md"
               name="providerKey"
+              tooltip="为空时设置为当前登录相关属性，全局设置无需填写"
               label={intl.formatMessage({
                 id: 'DisplayName:SettingDefinitionDto:ProviderKey',
                 defaultMessage: '提供者Key',
@@ -112,55 +153,42 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
                 id: 'DisplayName:SettingDefinitionDto:Name',
                 defaultMessage: '名称',
               })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'form.rules.message',
+                    defaultMessage: '请输入',
+                  })}\${label}`,
+                },
+              ]}
             />
             <ProFormText
               width="md"
-              name="displayName"
+              name="value"
               label={intl.formatMessage({
-                id: 'DisplayName:SettingDefinitionDto:DisplayName',
-                defaultMessage: '显示名称',
-              })}
-            />
-            <ProFormText
-              width="md"
-              name="description"
-              label={intl.formatMessage({
-                id: 'DisplayName:SettingDefinitionDto:Description',
-                defaultMessage: '描述',
-              })}
-            />
-            <ProFormText
-              width="md"
-              name="defaultValue"
-              label={intl.formatMessage({
-                id: 'DisplayName:SettingDefinitionDto:DefaultValue',
+                id: 'DisplayName:SettingDefinitionDto:Value',
                 defaultMessage: '值',
               })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'form.rules.message',
+                    defaultMessage: '请输入',
+                  })}\${label}`,
+                },
+              ]}
             />
-            <ProFormText
-              width="md"
-              name="isInherited"
+            <ProForm.Item
+              name="forceToSet"
               label={intl.formatMessage({
-                id: 'DisplayName:SettingDefinitionDto:IsInherited',
-                defaultMessage: '是否继承',
+                id: 'DisplayName:SettingDefinitionDto:ForceToSet',
+                defaultMessage: '强制更新',
               })}
-            />
-            <ProFormText
-              width="md"
-              name="properties"
-              label={intl.formatMessage({
-                id: 'DisplayName:SettingDefinitionDto:Properties',
-                defaultMessage: '属性',
-              })}
-            />
-            <ProFormText
-              width="md"
-              name="isEncrypted"
-              label={intl.formatMessage({
-                id: 'DisplayName:SettingDefinitionDto:IsEncrypted',
-                defaultMessage: '是否加密',
-              })}
-            />
+            >
+              <Switch checkedChildren="开启" unCheckedChildren="关闭" />
+            </ProForm.Item>
           </ProForm.Group>
         </>
       </ModalForm>

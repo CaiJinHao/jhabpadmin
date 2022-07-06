@@ -3,26 +3,25 @@ declare namespace API.JhIdentity {
     name: string;
     displayName: string;
     description: string;
-    defaultValue: string;
+    value: string;
     isInherited: boolean;
     properties: string;
     isEncrypted: boolean;
     providerName: string;
-    providerKey: string;
+    providerKey?: string;
   }
 
   export interface SettingRetrieveInputDto {
     providerName: providerNameEnum;
-    providerKey: string;
+    providerKey?: string;
     name: string;
-    fallback: boolean;
   }
 
   export interface SettingCreateOrUpdateInputDto {
     providerName: providerNameEnum;
-    providerKey: string;
+    providerKey?: string;
     name: string;
     value: string;
-    forceToSet: boolean;
+    forceToSet?: boolean;
   }
 }
