@@ -1,6 +1,6 @@
 import { ProFormSelect } from '@ant-design/pro-form';
-import { FC, useCallback } from 'react';
-import { useState } from 'react';
+import type { FC } from 'react';
+import { useCallback } from 'react';
 import * as organizationunitService from '@/services/jhabp/identity/OrganizationUnit/organizationunit.service';
 import { useIntl } from 'umi';
 import type { Rule } from 'rc-field-form/lib/interface';
@@ -16,19 +16,12 @@ const OrganizationUnitRoleSelect: FC<OrganizationUnitRoleSelectProps> = ({
   roleSelectName,
   ...props
 }) => {
-  const [organizationUnitOptions, setOrganizationUnitOptions] = useState<API.OptionDto<string>[]>(
-    [],
-  );
   const intl = useIntl();
 
   const requestOrganizationUnitOptions = useCallback(async () => {
-    if (organizationUnitOptions.length == 0) {
-      const data = await organizationunitService.GetOptions('');
-      const items = data.items as API.OptionDto<string>[];
-      setOrganizationUnitOptions(items);
-      return items;
-    }
-    return organizationUnitOptions;
+    const data = await organizationunitService.GetOptions('');
+    const items = data.items as API.OptionDto<string>[];
+    return items;
   }, []);
 
   const requestIdentityRoleOptions = useCallback(async (value: any) => {
