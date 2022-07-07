@@ -32,7 +32,6 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
   };
 
   const requestProviderOptions = useCallback(async () => {
-    console.log('getProvider');
     return await getProvider();
   }, []);
 
@@ -146,24 +145,6 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
               allowClear
               request={requestProviderOptions}
             />
-            {/* <ProFormText
-              width="md"
-              name="providerName"
-              tooltip="D和C为硬编码配置，不可修改，可使用G进行覆盖配置项"
-              label={intl.formatMessage({
-                id: 'DisplayName:SettingDefinitionDto:ProviderName',
-                defaultMessage: '提供者名称',
-              })}
-              rules={[
-                {
-                  required: true,
-                  message: `${intl.formatMessage({
-                    id: 'form.rules.message',
-                    defaultMessage: '请输入',
-                  })}\${label}`,
-                },
-              ]}
-            /> */}
             <ProFormText
               width="md"
               name="providerKey"
