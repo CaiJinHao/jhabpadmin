@@ -313,7 +313,7 @@ const IdentityUserList = () => {
         defaultMessage: '重置',
       }),
     };
-  }, []);
+  }, [intl]);
 
   return (
     <>

@@ -1,5 +1,6 @@
 import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
@@ -73,7 +74,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
         break;
     }
     return _t;
-  }, [operator]);
+  }, [intl, operator]);
 
   const onChangeRole = (value: any, option: any) => {
     const _rns: string[] = [];
@@ -86,7 +87,7 @@ const OperationModalIdentityUser: FC<OperationModalProps> = (props) => {
   useEffect(() => {
     setTitle(operatorTitle);
     setExtraProperties(current?.extraProperties);
-  }, [current]);
+  }, [current, operatorTitle]);
 
   if (!current && operator != ViewOperator.Add) {
     return <></>;

@@ -1,5 +1,6 @@
 import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { useEffect, useState } from 'react';
 import { ViewOperator } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';

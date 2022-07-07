@@ -259,7 +259,7 @@ const OrganizationUnitList = () => {
         defaultMessage: '重置',
       }),
     };
-  }, []);
+  }, [intl]);
 
   return (
     <>

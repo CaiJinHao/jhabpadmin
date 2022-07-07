@@ -117,7 +117,7 @@ const IdentityRoleList = () => {
         defaultMessage: '重置',
       }),
     };
-  }, []);
+  }, [intl]);
 
   return (
     <>
