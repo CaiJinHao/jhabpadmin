@@ -29,7 +29,7 @@ const TreePermissionTree: FC<TreePermissionTreeProps> = ({ ...props }) => {
             {...props}
             selectable={false}
             showLine={{ showLeafIcon: false }}
-            defaultExpandAll
+            // defaultExpandAll
             showIcon={false}
             switcherIcon={<DownOutlined />}
             treeData={treeData}
