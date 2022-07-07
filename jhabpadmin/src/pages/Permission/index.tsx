@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Row, Col, Button, message } from 'antd';
+import { Row, Col, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useAccess, useIntl } from 'umi';
 

@@ -1,7 +1,7 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
 import React from 'react';
-import { Col, Row, Avatar, Descriptions, Tabs, message } from 'antd';
+import { Col, Row, Avatar, Descriptions, Tabs } from 'antd';
 import styles from './index.less';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { useIntl, useModel } from 'umi';
@@ -11,7 +11,6 @@ const { TabPane } = Tabs;
 
 const Profile: React.FC = () => {
   const intl = useIntl();
-  console.log(intl);
   const { initialState, setInitialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
 
