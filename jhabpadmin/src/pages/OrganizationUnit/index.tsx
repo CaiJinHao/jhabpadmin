@@ -32,6 +32,7 @@ const OrganizationUnitList = () => {
 
   const reloadProTable = () => {
     proTableActionRef.current?.reload();
+    setSelectedRowKeys([]);
   };
 
   const requestYesOrNoOptions = async () => {
@@ -256,26 +257,6 @@ const OrganizationUnitList = () => {
     reloadProTable();
   };
 
-  const toolBarRender = useMemo(() => {
-    return [
-      access['AbpIdentity.OrganizationUnits.Create'] && (
-        <Button type="primary" key="create" shape="round" onClick={create}>
-          <PlusOutlined />
-          {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-        </Button>
-      ),
-      access['AbpIdentity.OrganizationUnits.BatchDelete'] && (
-        <Button type="default" key="delete_keys" shape="round" danger={true} onClick={deleteByKeys}>
-          <DeleteOutlined />
-          {intl.formatMessage({
-            id: 'Permission:BatchDelete',
-            defaultMessage: '批量删除',
-          })}
-        </Button>
-      ),
-    ];
-  }, []);
-
   const tableSearch = useMemo(() => {
     return {
       labelWidth: 100,
@@ -309,7 +290,29 @@ const OrganizationUnitList = () => {
                 total: totalPage,
               }}
               dateFormatter="string"
-              toolBarRender={() => toolBarRender}
+              toolBarRender={() => [
+                access['AbpIdentity.OrganizationUnits.Create'] && (
+                  <Button type="primary" key="create" shape="round" onClick={create}>
+                    <PlusOutlined />
+                    {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+                  </Button>
+                ),
+                access['AbpIdentity.OrganizationUnits.BatchDelete'] && (
+                  <Button
+                    type="default"
+                    key="delete_keys"
+                    shape="round"
+                    danger={true}
+                    onClick={deleteByKeys}
+                  >
+                    <DeleteOutlined />
+                    {intl.formatMessage({
+                      id: 'Permission:BatchDelete',
+                      defaultMessage: '批量删除',
+                    })}
+                  </Button>
+                ),
+              ]}
               search={tableSearch}
             />
           </Col>

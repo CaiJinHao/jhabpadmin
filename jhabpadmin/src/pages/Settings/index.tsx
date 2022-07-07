@@ -21,6 +21,7 @@ const SettingDefinitionDtoList = () => {
   >(undefined);
   const reloadProTable = () => {
     proTableActionRef.current?.reload();
+    setSelectedRowKeys([]);
   };
 
   const requestProviderOptions = useCallback(async () => {

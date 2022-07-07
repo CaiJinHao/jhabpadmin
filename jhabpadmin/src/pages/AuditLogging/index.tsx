@@ -5,7 +5,7 @@ import { Button, message, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { ViewOperator } from '@/services/jhabp/app.enums';
-import { useIntl } from 'umi';
+import { useIntl, useAccess } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/AuditLogging/auditlogging.service';
 
@@ -14,6 +14,7 @@ const AuditLogList = () => {
   const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
   const [detailOperation, setDetailOperation] = useState<ViewOperator>(ViewOperator.Detail);
   const { confirm } = Modal;
+  const access = useAccess();
   const intl = useIntl();
   const proTableActionRef = useRef<ActionType>();
   const [totalPage, setTotalPage] = useState(0);
@@ -24,6 +25,7 @@ const AuditLogList = () => {
   );
   const reloadProTable = () => {
     proTableActionRef.current?.reload();
+    setSelectedRowKeys([]);
   };
 
   const onCancelOperation = () => {
@@ -32,7 +34,6 @@ const AuditLogList = () => {
 
   const onSubmitOperation = () => {
     setVisibleOperation(false);
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     reloadProTable();
   };
 
@@ -50,9 +51,6 @@ const AuditLogList = () => {
         ),
         onOk: async () => {
           await defaultService.DeleteByKeys(selectedRowKeys);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           reloadProTable();
         },
         onCancel() {},
@@ -202,17 +200,8 @@ const AuditLogList = () => {
   };
   const rowSelection = {
     selectedRowKeys,
-    onChange: (srk: any) => setSelectedRowKeys(srk),
+    onChange: (srk: any) => setSelectedRowKeys(srk as []),
   };
-
-  const toolBarRender = useMemo(() => {
-    return [
-      <Button type="default" key="delete_keys" shape="round" danger={true} onClick={deleteByKeys}>
-        <DeleteOutlined />
-        {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量删除' })}
-      </Button>,
-    ];
-  }, []);
 
   const tableSearch = useMemo(() => {
     return {
@@ -226,7 +215,7 @@ const AuditLogList = () => {
         defaultMessage: '重置',
       }),
     };
-  }, []);
+  }, [intl]);
 
   return (
     <>
@@ -242,7 +231,20 @@ const AuditLogList = () => {
             total: totalPage,
           }}
           dateFormatter="string"
-          toolBarRender={() => toolBarRender}
+          toolBarRender={() => [
+            access['JhAuditLogging.AuditLoggings.BatchDelete'] && (
+              <Button
+                type="default"
+                key="delete_keys"
+                shape="round"
+                danger={true}
+                onClick={deleteByKeys}
+              >
+                <DeleteOutlined />
+                {intl.formatMessage({ id: 'Permission:BatchDelete', defaultMessage: '批量删除' })}
+              </Button>
+            ),
+          ]}
           search={tableSearch}
         />
       </PageContainer>

@@ -106,17 +106,6 @@ const IdentityRoleList = () => {
     onChange: (srk: any) => setSelectedRowKeys(srk),
   };
 
-  const toolBarRender = useMemo(() => {
-    return [
-      access['AbpIdentity.Roles.Create'] && (
-        <Button type="primary" key="create" shape="round" onClick={create}>
-          <PlusOutlined />
-          {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
-        </Button>
-      ),
-    ];
-  }, []);
-
   const tableSearch = useMemo(() => {
     return {
       labelWidth: 100,
@@ -145,7 +134,14 @@ const IdentityRoleList = () => {
             total: totalPage,
           }}
           dateFormatter="string"
-          toolBarRender={() => toolBarRender}
+          toolBarRender={() => [
+            access['AbpIdentity.Roles.Create'] && (
+              <Button type="primary" key="create" shape="round" onClick={create}>
+                <PlusOutlined />
+                {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
+              </Button>
+            ),
+          ]}
           search={tableSearch}
         />
       </PageContainer>
