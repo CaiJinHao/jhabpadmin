@@ -59,9 +59,6 @@ const OrganizationUnitList = () => {
         ),
         onOk: async () => {
           await defaultService.Recover(record.id);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           reloadProTable();
         },
         onCancel() {},
@@ -79,9 +76,6 @@ const OrganizationUnitList = () => {
         ),
         onOk: async () => {
           await defaultService.DeleteById(record.id);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           reloadProTable();
         },
         onCancel() {},
@@ -95,7 +89,6 @@ const OrganizationUnitList = () => {
 
   const onSubmitOperation = () => {
     setVisibleOperation(false);
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     reloadProTable();
     setReloadTree(!reloadTree);
   };
@@ -120,9 +113,6 @@ const OrganizationUnitList = () => {
         ),
         onOk: async () => {
           await defaultService.DeleteByKeys(selectedRowKeys);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           reloadProTable();
         },
         onCancel() {},

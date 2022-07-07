@@ -27,7 +27,6 @@ const Profile: React.FC = () => {
           ...s,
           currentUser: _data as API.JhIdentity.IdentityUserDto,
         }));
-        message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
       }
     }
   };

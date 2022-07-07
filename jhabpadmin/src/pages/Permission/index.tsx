@@ -34,7 +34,6 @@ const Permission = () => {
       permissionNames: permissionCheckedKeys,
       roleName: roleSelected,
     });
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
   };
 
   return (

@@ -51,9 +51,6 @@ const IdentityUserList = () => {
         ),
         onOk: async () => {
           await defaultService.Recover(record.id);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           action?.reload();
         },
         onCancel() {},
@@ -71,9 +68,6 @@ const IdentityUserList = () => {
         ),
         onOk: async () => {
           await defaultService.DeleteById(record.id);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           action?.reload();
         },
         onCancel() {},
@@ -99,7 +93,6 @@ const IdentityUserList = () => {
       onOk: async () => {
         const _v = !record.lockoutEnabled;
         await defaultService.UpdateLockoutEnabled(record.id, _v);
-        message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
         action?.reload();
       },
       onCancel() {},
@@ -111,7 +104,6 @@ const IdentityUserList = () => {
 
   const onSubmitOperation = () => {
     setVisibleOperation(false);
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     proTableActionRef.current?.reload();
   };
 
@@ -135,9 +127,6 @@ const IdentityUserList = () => {
         ),
         onOk: async () => {
           await defaultService.DeleteByKeys(selectedRowKeys);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           proTableActionRef.current?.reload();
         },
         onCancel() {},

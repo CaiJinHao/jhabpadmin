@@ -29,7 +29,6 @@ const IdentityRoleList = () => {
 
   const onSubmitOperation = () => {
     setVisibleOperation(false);
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     proTableActionRef.current?.reload();
   };
 
