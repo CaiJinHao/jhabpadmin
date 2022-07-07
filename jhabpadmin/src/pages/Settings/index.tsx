@@ -125,28 +125,28 @@ const SettingDefinitionDtoList = () => {
       dataIndex: 'value',
       search: false,
     },
-    {
-      title: intl.formatMessage({
-        id: 'DisplayName:SettingDefinitionDto:IsInherited',
-        defaultMessage: '是否继承',
-      }),
-      dataIndex: 'isInherited',
-      renderText: (text: any) => {
-        return <>{text.toString()}</>;
-      },
-      search: false,
-    },
-    {
-      title: intl.formatMessage({
-        id: 'DisplayName:SettingDefinitionDto:Properties',
-        defaultMessage: '属性',
-      }),
-      dataIndex: 'properties',
-      renderText: (text: any) => {
-        return <>{JSON.stringify(text)}</>;
-      },
-      search: false,
-    },
+    // {
+    //   title: intl.formatMessage({
+    //     id: 'DisplayName:SettingDefinitionDto:IsInherited',
+    //     defaultMessage: '是否继承',
+    //   }),
+    //   dataIndex: 'isInherited',
+    //   renderText: (text: any) => {
+    //     return <>{text.toString()}</>;
+    //   },
+    //   search: false,
+    // },
+    // {
+    //   title: intl.formatMessage({
+    //     id: 'DisplayName:SettingDefinitionDto:Properties',
+    //     defaultMessage: '属性',
+    //   }),
+    //   dataIndex: 'properties',
+    //   renderText: (text: any) => {
+    //     return <>{JSON.stringify(text)}</>;
+    //   },
+    //   search: false,
+    // },
     {
       title: intl.formatMessage({
         id: 'DisplayName:SettingDefinitionDto:IsEncrypted',

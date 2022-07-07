@@ -93,12 +93,12 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
       >
         <>
           <ProForm.Group>
-            {/* {operator != ViewOperator.Add && (
+            {operator != ViewOperator.Add && (
               <>
                 <ProFormText
                   width="md"
-                  readonly
                   name="displayName"
+                  disabled
                   label={intl.formatMessage({
                     id: 'DisplayName:SettingDefinitionDto:DisplayName',
                     defaultMessage: '显示名称',
@@ -107,23 +107,23 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
                 <ProFormText
                   width="md"
                   name="description"
-                  readonly
+                  disabled
                   label={intl.formatMessage({
                     id: 'DisplayName:SettingDefinitionDto:Description',
                     defaultMessage: '描述',
                   })}
                 />
-                <ProFormText
-                  readonly
+                {/* <ProFormText
                   width="md"
                   name="isInherited"
+                  disabled
                   label={intl.formatMessage({
                     id: 'DisplayName:SettingDefinitionDto:IsInherited',
                     defaultMessage: '是否继承',
                   })}
-                />
+                /> */}
               </>
-            )} */}
+            )}
             <ProFormSelect<API.OptionDto<number>>
               width="md"
               name="providerName"
