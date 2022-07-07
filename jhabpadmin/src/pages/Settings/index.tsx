@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { ViewOperator } from '@/services/jhabp/app.enums';
+import { ViewOperator, getProvider } from '@/services/jhabp/app.enums';
 import { useAccess, useIntl } from 'umi';
 
 import * as defaultService from '@/services/jhabp/identity/Settings/settings.service';
@@ -24,6 +24,11 @@ const SettingDefinitionDtoList = () => {
   const reloadProTable = () => {
     proTableActionRef.current?.reload();
   };
+
+  const requestProviderOptions = useCallback(async () => {
+    console.log('requestProviderOptions');
+    return await getProvider();
+  }, []);
 
   const onCancelOperation = () => {
     setVisibleOperation(false);
@@ -48,16 +53,17 @@ const SettingDefinitionDtoList = () => {
     setDetailOperation(operation);
     setVisibleOperation(true);
     const detailDto = await defaultService.Get({
-      providerName: record.providerName,
+      providerName: record.providerNameEnum,
       providerKey: record.providerKey,
       name: record.name,
     }); //如果有额外得字段才会需要重新获取,否则可以直接使用record传递
     if (
       operation == ViewOperator.Edit &&
-      (detailDto.providerName == 'D' || detailDto.providerName == 'C')
+      (detailDto.providerNameEnum == 0 || detailDto.providerNameEnum == 1)
     ) {
-      detailDto.providerName = 'G'; //需要修改为全局
+      detailDto.providerNameEnum = 2; //需要修改为全局
     }
+    delete detailDto.providerName; //由于表单名称包含此字段所以要删除，否则枚举字段赋值不上
     setCurrentOperation(detailDto);
   };
   const edit = async (record: API.JhIdentity.SettingDefinitionDto) => {
@@ -78,6 +84,7 @@ const SettingDefinitionDtoList = () => {
         defaultMessage: '提供者名称',
       }),
       dataIndex: 'providerName',
+      request: requestProviderOptions,
     },
     {
       title: intl.formatMessage({

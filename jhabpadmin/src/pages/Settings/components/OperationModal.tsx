@@ -1,7 +1,7 @@
-import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
-import type { FC } from 'react';
+import ProForm, { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
+import { FC, useCallback } from 'react';
 import { useEffect, useState, useMemo } from 'react';
-import { ViewOperator } from '@/services/jhabp/app.enums';
+import { ViewOperator, getProvider } from '@/services/jhabp/app.enums';
 import { useIntl } from 'umi';
 import { Switch } from 'antd';
 
@@ -30,6 +30,11 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
       onSubmit(values as API.JhIdentity.SettingDefinitionDto);
     }
   };
+
+  const requestProviderOptions = useCallback(async () => {
+    console.log('getProvider');
+    return await getProvider();
+  }, []);
 
   const operatorTitle = useMemo(() => {
     let _t = intl.formatMessage({ id: 'DisplayName:SettingDefinitionDto', defaultMessage: '' });
@@ -120,7 +125,28 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
                 />
               </>
             )} */}
-            <ProFormText
+            <ProFormSelect<API.OptionDto<number>>
+              width="md"
+              name="providerName"
+              initialValue={current?.providerNameEnum}
+              tooltip="D和C为硬编码配置，不可修改，可使用G进行覆盖配置项"
+              label={intl.formatMessage({
+                id: 'DisplayName:SettingDefinitionDto:ProviderName',
+                defaultMessage: '提供者名称',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'form.rules.message',
+                    defaultMessage: '请输入',
+                  })}\${label}`,
+                },
+              ]}
+              allowClear
+              request={requestProviderOptions}
+            />
+            {/* <ProFormText
               width="md"
               name="providerName"
               tooltip="D和C为硬编码配置，不可修改，可使用G进行覆盖配置项"
@@ -137,7 +163,7 @@ const OperationModalSettingDefinitionDto: FC<OperationModalProps> = (props) => {
                   })}\${label}`,
                 },
               ]}
-            />
+            /> */}
             <ProFormText
               width="md"
               name="providerKey"

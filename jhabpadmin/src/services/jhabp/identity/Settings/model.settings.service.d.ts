@@ -7,18 +7,19 @@ declare namespace API.JhIdentity {
     isInherited: boolean;
     properties: string;
     isEncrypted: boolean;
-    providerName: string;
+    providerName?: string;
     providerKey?: string;
+    providerNameEnum: number;
   }
 
   export interface SettingRetrieveInputDto {
-    providerName: providerNameEnum;
+    providerName: number;
     providerKey?: string;
     name: string;
   }
 
   export interface SettingCreateOrUpdateInputDto {
-    providerName: providerNameEnum;
+    providerName: number;
     providerKey?: string;
     name: string;
     value: string;
