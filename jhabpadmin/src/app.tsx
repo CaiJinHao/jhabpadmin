@@ -217,7 +217,8 @@ const proTableRequestInterceptor: RequestInterceptor = (
 /**只有操作弹出成功 */
 const OperatorMethods = ['POST', 'PUT', 'DELETE'];
 const operatorResponseInterceptor = (response: Response, options: RequestOptionsInit) => {
-  if (options.method && OperatorMethods.includes(options.method)) {
+  console.log(response);
+  if (response.ok && options.method && OperatorMethods.includes(options.method)) {
     message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
   }
   return response;

@@ -39,7 +39,7 @@ const OperationModalTenantDto: FC<OperationModalProps> = (props) => {
     }
   };
   const operatorTitle = useMemo(() => {
-    let _t = intl.formatMessage({ id: 'DisplayName:TenantDto', defaultMessage: '' });
+    let _t = intl.formatMessage({ id: 'DisplayName:Tenant', defaultMessage: '' });
 
     switch (operator) {
       case ViewOperator.Add:
@@ -101,16 +101,56 @@ const OperationModalTenantDto: FC<OperationModalProps> = (props) => {
             <ProFormText
               width="md"
               name="name"
-              label={intl.formatMessage({ id: 'DisplayName:TenantDto:Name', defaultMessage: '' })}
+              label={intl.formatMessage({ id: 'DisplayName:Tenant:Name', defaultMessage: '名称' })}
+              rules={[
+                {
+                  required: true,
+                  message: `${intl.formatMessage({
+                    id: 'form.rules.message',
+                    defaultMessage: '请输入',
+                  })}\${label}`,
+                },
+              ]}
             />
-            <ProFormText
-              width="md"
-              name="concurrencyStamp"
-              label={intl.formatMessage({
-                id: 'DisplayName:TenantDto:ConcurrencyStamp',
-                defaultMessage: '',
-              })}
-            />
+            {operator == ViewOperator.Add && (
+              <>
+                <ProFormText
+                  width="md"
+                  name="adminEmailAddress"
+                  label={intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:Email',
+                    defaultMessage: '邮箱',
+                  })}
+                  rules={[
+                    {
+                      required: true,
+                      message: `${intl.formatMessage({
+                        id: 'form.rules.message',
+                        defaultMessage: '请输入',
+                      })}\${label}`,
+                    },
+                  ]}
+                />
+
+                <ProFormText
+                  width="md"
+                  name="adminPassword"
+                  label={intl.formatMessage({
+                    id: 'DisplayName:IdentityUser:Password',
+                    defaultMessage: 'Admin密码',
+                  })}
+                  rules={[
+                    {
+                      required: true,
+                      message: `${intl.formatMessage({
+                        id: 'form.rules.message',
+                        defaultMessage: '请输入',
+                      })}\${label}`,
+                    },
+                  ]}
+                />
+              </>
+            )}
           </ProForm.Group>
         </>
       </ModalForm>

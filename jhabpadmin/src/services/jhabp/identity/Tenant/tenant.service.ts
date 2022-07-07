@@ -5,13 +5,13 @@ export const Create = async (
   if (!input.extraProperties) {
     input.extraProperties = {};
   }
-  return await request<API.JhIdentity.TenantDto>(`${Identity_API}api/v1/Tenant`, {
+  return await request<API.JhIdentity.TenantDto>(`${Identity_API}api/multi-tenancy/tenants`, {
     method: 'Post',
     data: input,
   });
 };
 export const DeleteById = async (id: string): Promise<void> => {
-  return await request<void>(`${Identity_API}api/v1/Tenant/${id}`, {
+  return await request<void>(`${Identity_API}api/multi-tenancy/tenants/${id}`, {
     method: 'Delete',
   });
 };
@@ -30,7 +30,7 @@ export const Update = async (
   id: string,
   input: API.JhIdentity.TenantUpdateDto,
 ): Promise<API.JhIdentity.TenantDto> => {
-  return await request<API.JhIdentity.TenantDto>(`${Identity_API}api/v1/Tenant/${id}`, {
+  return await request<API.JhIdentity.TenantDto>(`${Identity_API}api/multi-tenancy/tenants/${id}`, {
     method: 'Put',
     data: input,
   });
@@ -47,7 +47,7 @@ export const GetList = async (
   );
 };
 export const Get = async (id: string): Promise<API.JhIdentity.TenantDto> => {
-  return await request<API.JhIdentity.TenantDto>(`${Identity_API}api/v1/Tenant/${id}`, {
+  return await request<API.JhIdentity.TenantDto>(`${Identity_API}api/multi-tenancy/tenants/${id}`, {
     method: 'Get',
   });
 };

@@ -46,9 +46,6 @@ const TenantDtoList = () => {
         ),
         onOk: async () => {
           await defaultService.Recover(record.id);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           reloadProTable();
         },
         onCancel() {},
@@ -66,9 +63,6 @@ const TenantDtoList = () => {
         ),
         onOk: async () => {
           await defaultService.DeleteById(record.id);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           reloadProTable();
         },
         onCancel() {},
@@ -82,7 +76,6 @@ const TenantDtoList = () => {
 
   const onSubmitOperation = () => {
     setVisibleOperation(false);
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     reloadProTable();
   };
 
@@ -106,9 +99,6 @@ const TenantDtoList = () => {
         ),
         onOk: async () => {
           await defaultService.DeleteByKeys(selectedRowKeys);
-          message.success(
-            intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }),
-          );
           reloadProTable();
         },
         onCancel() {},
@@ -139,15 +129,8 @@ const TenantDtoList = () => {
 
   const columns: ProColumns<API.JhIdentity.TenantDto>[] = [
     {
-      title: intl.formatMessage({ id: 'DisplayName:TenantDto:Name', defaultMessage: '' }),
+      title: intl.formatMessage({ id: 'DisplayName:Tenant:Name', defaultMessage: '' }),
       dataIndex: 'name',
-    },
-    {
-      title: intl.formatMessage({
-        id: 'DisplayName:TenantDto:ConcurrencyStamp',
-        defaultMessage: '',
-      }),
-      dataIndex: 'concurrencyStamp',
     },
     {
       title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否删除' }),
@@ -157,7 +140,10 @@ const TenantDtoList = () => {
         return (
           <Switch
             disabled={
-              !(access['JhIdentity.TenantDtos.Recover'] && access['JhIdentity.TenantDtos.Delete'])
+              !(
+                access['AbpTenantManagement.Tenants.Recover'] &&
+                access['AbpTenantManagement.Tenants.Delete']
+              )
             }
             checked={record.isDeleted}
             onChange={() => handlerIsDeleted(record, action)}
@@ -178,7 +164,7 @@ const TenantDtoList = () => {
       valueType: 'option',
       render: (_, record) =>
         !record.isDeleted && [
-          access['JhIdentity.TenantDtos.Update'] && (
+          access['AbpTenantManagement.Tenants.Update'] && (
             <a key="edit" onClick={() => edit(record)}>
               {intl.formatMessage({ id: 'Permission:Edit', defaultMessage: '编辑' })}
             </a>
@@ -250,13 +236,13 @@ const TenantDtoList = () => {
           }}
           dateFormatter="string"
           toolBarRender={() => [
-            access['JhIdentity.TenantDtos.Create'] && (
+            access['AbpTenantManagement.Tenants.Create'] && (
               <Button type="primary" key="create" shape="round" onClick={create}>
                 <PlusOutlined />
                 {intl.formatMessage({ id: 'Permission:Create', defaultMessage: '创建' })}
               </Button>
             ),
-            access['JhIdentity.TenantDtos.BatchDelete'] && (
+            access['AbpTenantManagement.Tenants.BatchDelete'] && (
               <Button
                 type="default"
                 key="delete_keys"
@@ -286,8 +272,3 @@ const TenantDtoList = () => {
   );
 };
 export default TenantDtoList;
-/* 后台本地化显示配置
-"DisplayName:TenantDto:Name": "",
-"DisplayName:TenantDto:ConcurrencyStamp": "",
-
-*/
