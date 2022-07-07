@@ -1,7 +1,7 @@
 import { SettingDrawer } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
-import { getLocale, addLocale, setLocale, history, Link } from 'umi';
+import { getLocale, addLocale, setLocale, history, Link, getIntl } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
@@ -17,6 +17,7 @@ import * as identityuserService from '@/services/jhabp/identity/IdentityUser/ide
 
 import { getUser, login, getToken } from '@/services/jhabp/auth.service';
 const isDev = process.env.NODE_ENV === 'development';
+const intl = getIntl();
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -213,6 +214,15 @@ const proTableRequestInterceptor: RequestInterceptor = (
   };
 };
 
+/**只有操作弹出成功 */
+const OperatorMethods = ['POST', 'PUT', 'DELETE'];
+const operatorResponseInterceptor = (response: Response, options: RequestOptionsInit) => {
+  if (options.method && OperatorMethods.includes(options.method)) {
+    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
+  }
+  return response;
+};
+
 /* 不再使用
 const xsrfAppendRequestInterceptor: RequestInterceptor = (
   url: string,
@@ -265,6 +275,7 @@ const requestMiddleware = async (ctx: any, next: () => void) => {
 
 //先走拦截器、后走中间件
 export const request: RequestConfig = {
+  responseInterceptors: [operatorResponseInterceptor],
   requestInterceptors: [proTableRequestInterceptor], //xsrfAppendRequestInterceptor
   // middlewares: [requestMiddleware],
 };

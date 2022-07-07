@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ViewOperator, getProvider } from '@/services/jhabp/app.enums';
 import { useAccess, useIntl } from 'umi';
 
@@ -26,7 +24,6 @@ const SettingDefinitionDtoList = () => {
   };
 
   const requestProviderOptions = useCallback(async () => {
-    console.log('requestProviderOptions');
     return await getProvider();
   }, []);
 
@@ -36,14 +33,7 @@ const SettingDefinitionDtoList = () => {
 
   const onSubmitOperation = () => {
     setVisibleOperation(false);
-    message.success(intl.formatMessage({ id: 'message.success', defaultMessage: '操作成功' }));
     reloadProTable();
-  };
-
-  const create = () => {
-    setDetailOperation(ViewOperator.Add);
-    setVisibleOperation(true);
-    setCurrentOperation(undefined);
   };
 
   const loadDetail = async (
@@ -66,11 +56,9 @@ const SettingDefinitionDtoList = () => {
     delete detailDto.providerName; //由于表单名称包含此字段所以要删除，否则枚举字段赋值不上
     setCurrentOperation(detailDto);
   };
+
   const edit = async (record: API.JhIdentity.SettingDefinitionDto) => {
     await loadDetail(ViewOperator.Edit, record);
-  };
-  const detail = async (record: API.JhIdentity.SettingDefinitionDto) => {
-    await loadDetail(ViewOperator.Detail, record);
   };
 
   useEffect(() => {
