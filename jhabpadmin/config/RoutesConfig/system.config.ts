@@ -42,6 +42,13 @@ export default [
     component: './AuditLogging',
   },
   {
+    path: 'Tenant',
+    name: 'Tenant',
+    icon: 'table',
+    access: 'AbpTenantManagement.Tenants',
+    component: './Tenant',
+  },
+  {
     component: './404',
   },
 ];

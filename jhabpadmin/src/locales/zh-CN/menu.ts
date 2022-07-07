@@ -59,4 +59,5 @@ export default {
   'menu.systemConfig.Permission': '权限管理',
   'menu.systemConfig.AuditLogging': '审计日志',
   'menu.systemConfig.Settings': '设置管理',
+  'menu.systemConfig.Tenant': '租户管理',
 };

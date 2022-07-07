@@ -59,4 +59,5 @@ export default {
   'menu.systemConfig.Permission': 'Permission management',
   'menu.systemConfig.AuditLogging': 'Audit Logging',
   'menu.systemConfig.Settings': 'Settings',
+  'menu.systemConfig.Tenant': 'Tenant',
 };
