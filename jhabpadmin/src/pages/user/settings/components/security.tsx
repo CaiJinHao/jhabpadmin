@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { List } from 'antd';
 import { useModel } from 'umi';
-import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
 import PasswordModify from './PasswordModify';
 import { logout } from '@/services/jhabp/auth.service';
 type Unpacked<T> = T extends (infer U)[] ? U : T;
@@ -13,9 +12,9 @@ const passwordStrength = {
 };
 
 const SecurityView: React.FC = () => {
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
-  const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
+  const [visibleModifyPwd, setVisibleModifyPwd] = useState<boolean>(false);
 
   const getData = () => [
     {
@@ -30,7 +29,7 @@ const SecurityView: React.FC = () => {
         <a
           key="ModifyPwd"
           onClick={() => {
-            setVisibleOperation(true);
+            setVisibleModifyPwd(true);
           }}
         >
           修改
@@ -40,7 +39,6 @@ const SecurityView: React.FC = () => {
     {
       title: '密保邮箱',
       description: `已绑定邮箱：${currentUser?.email}`,
-      actions: [<a key="Modify">修改</a>],
     },
     // {
     //   title: 'MFA 设备',
@@ -62,13 +60,13 @@ const SecurityView: React.FC = () => {
         )}
       />
       <PasswordModify
-        visible={visibleOperation}
+        visible={visibleModifyPwd}
         onCancel={() => {
-          setVisibleOperation(false);
+          setVisibleModifyPwd(false);
         }}
         onSubmit={() => {
-          setVisibleOperation(false);
-          // logout();
+          setVisibleModifyPwd(false);
+          logout();
         }}
       />
     </>
