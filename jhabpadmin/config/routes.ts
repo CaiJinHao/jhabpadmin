@@ -20,9 +20,14 @@ export default [
   //   ],
   // },
   {
+    path: '/user/settings',
+    name: 'settings',
+    component: './user/settings',
+    hideInMenu: true,
+  },
+  {
     path: '/user/personal',
     name: 'personal',
-    icon: 'smile',
     component: './Personal',
     hideInMenu: true,
   },

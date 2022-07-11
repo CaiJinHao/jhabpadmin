@@ -83,12 +83,10 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
           defaultMessage: '个人信息',
         })}
       </Menu.Item>
-      {/* {menu && (
-        <Menu.Item key="settings">
-          <SettingOutlined />
-          个人设置
-        </Menu.Item>
-      )} */}
+      <Menu.Item key="settings">
+        <SettingOutlined />
+        个人设置
+      </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="logout">
         <LogoutOutlined />

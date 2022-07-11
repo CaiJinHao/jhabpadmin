@@ -49,6 +49,10 @@ export default [
     component: './Tenant',
   },
   {
+    path: '/systemConfig',
+    redirect: '/systemConfig/IdentityRole',
+  },
+  {
     component: './404',
   },
 ];
