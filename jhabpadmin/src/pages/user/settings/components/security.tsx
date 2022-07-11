@@ -27,7 +27,7 @@ const SecurityView: React.FC = () => {
     },
     {
       title: '密保邮箱',
-      description: `已绑定手机：${currentUser?.phoneNumber}`,
+      description: `已绑定邮箱：${currentUser?.email}`,
       actions: [<a key="Modify">修改</a>],
     },
     // {

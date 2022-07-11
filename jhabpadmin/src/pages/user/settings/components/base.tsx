@@ -1,16 +1,9 @@
 import React from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Input, Upload, message } from 'antd';
-import ProForm, {
-  ProFormDependency,
-  ProFormFieldSet,
-  ProFormSelect,
-  ProFormText,
-  ProFormTextArea,
-} from '@ant-design/pro-form';
-import { useModel, useRequest } from 'umi';
-import { queryCurrent } from '../service';
-import { queryProvince, queryCity } from '../service';
+import { Button, Upload } from 'antd';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
+import { useIntl, useModel } from 'umi';
+import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 
 import styles from './BaseView.less';
 
@@ -35,6 +28,7 @@ const AvatarView = ({ avatar }: { avatar: string }) => (
 const BaseView: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
+  const intl = useIntl();
 
   const getAvatarURL = () => {
     if (currentUser) {
@@ -47,8 +41,20 @@ const BaseView: React.FC = () => {
     return '';
   };
 
-  const handleFinish = async () => {
-    message.success('更新基本信息成功');
+  const onFinish = async (values: any) => {
+    if (currentUser) {
+      const _data = Object.assign(currentUser, values);
+      const updateDto = await defaultService.Update(
+        currentUser.id,
+        _data as API.JhIdentity.IdentityUserUpdateInputDto,
+      );
+      if (updateDto) {
+        setInitialState((s: any) => ({
+          ...s,
+          currentUser: _data as API.JhIdentity.IdentityUserDto,
+        }));
+      }
+    }
   };
   return (
     <div className={styles.baseView}>
@@ -57,10 +63,13 @@ const BaseView: React.FC = () => {
           <div className={styles.left}>
             <ProForm
               layout="vertical"
-              onFinish={handleFinish}
+              onFinish={onFinish}
               submitter={{
                 searchConfig: {
-                  submitText: '更新基本信息',
+                  submitText: intl.formatMessage({
+                    id: 'Save',
+                    defaultMessage: '保存',
+                  }),
                 },
                 render: (_, dom) => dom[1],
               }}
@@ -70,26 +79,38 @@ const BaseView: React.FC = () => {
               <ProFormText
                 width="md"
                 name="email"
-                label="邮箱"
+                label={intl.formatMessage({
+                  id: 'DisplayName:IdentityUser:Email',
+                  defaultMessage: '邮箱',
+                })}
                 rules={[
                   {
                     required: true,
-                    message: '请输入您的邮箱!',
+                    message: `${intl.formatMessage({
+                      id: 'form.rules.message',
+                      defaultMessage: '请输入',
+                    })}\${label}`,
                   },
                 ]}
               />
               <ProFormText
                 width="md"
                 name="name"
-                label="名称"
+                label={intl.formatMessage({
+                  id: 'DisplayName:IdentityUser:Name',
+                  defaultMessage: '名称',
+                })}
                 rules={[
                   {
                     required: true,
-                    message: '请输入您的名称!',
+                    message: `${intl.formatMessage({
+                      id: 'form.rules.message',
+                      defaultMessage: '请输入',
+                    })}\${label}`,
                   },
                 ]}
               />
-              <ProFormTextArea
+              {/* <ProFormTextArea
                 name="profile"
                 label="个人简介"
                 rules={[
@@ -99,15 +120,21 @@ const BaseView: React.FC = () => {
                   },
                 ]}
                 placeholder="个人简介"
-              />
+              /> */}
               <ProFormText
                 width="md"
                 name="phoneNumber"
-                label="联系电话"
+                label={intl.formatMessage({
+                  id: 'DisplayName:IdentityUser:PhoneNumber',
+                  defaultMessage: '手机号',
+                })}
                 rules={[
                   {
                     required: true,
-                    message: '请输入您的联系电话!',
+                    message: `${intl.formatMessage({
+                      id: 'form.rules.message',
+                      defaultMessage: '请输入',
+                    })}\${label}`,
                   },
                 ]}
               />
