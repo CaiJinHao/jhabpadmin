@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { List } from 'antd';
 import { useModel } from 'umi';
-
+import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
+import PasswordModify from './PasswordModify';
+import { logout } from '@/services/jhabp/auth.service';
 type Unpacked<T> = T extends (infer U)[] ? U : T;
 
 const passwordStrength = {
@@ -13,6 +15,7 @@ const passwordStrength = {
 const SecurityView: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
+  const [visibleOperation, setVisibleOperation] = useState<boolean>(false);
 
   const getData = () => [
     {
@@ -23,7 +26,16 @@ const SecurityView: React.FC = () => {
           {passwordStrength.strong}
         </>
       ),
-      actions: [<a key="Modify">修改</a>],
+      actions: [
+        <a
+          key="ModifyPwd"
+          onClick={() => {
+            setVisibleOperation(true);
+          }}
+        >
+          修改
+        </a>,
+      ],
     },
     {
       title: '密保邮箱',
@@ -48,6 +60,16 @@ const SecurityView: React.FC = () => {
             <List.Item.Meta title={item.title} description={item.description} />
           </List.Item>
         )}
+      />
+      <PasswordModify
+        visible={visibleOperation}
+        onCancel={() => {
+          setVisibleOperation(false);
+        }}
+        onSubmit={() => {
+          setVisibleOperation(false);
+          // logout();
+        }}
       />
     </>
   );
