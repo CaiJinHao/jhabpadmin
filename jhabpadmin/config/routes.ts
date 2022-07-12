@@ -32,6 +32,11 @@ export default [
     hideInMenu: true,
   },
   {
+    path: '/flow',
+    name: 'flow',
+    component: './flow',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
