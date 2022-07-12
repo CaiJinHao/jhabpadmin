@@ -30,7 +30,7 @@ export default {
   'app.settings.security.phone-description': '已綁定手機',
   'app.settings.security.question': '密保問題',
   'app.settings.security.question-description': '未設置密保問題，密保問題可有效保護賬戶安全',
-  'app.settings.security.email': '備用郵箱',
+  'app.settings.security.email': '密保郵箱',
   'app.settings.security.email-description': '已綁定郵箱',
   'app.settings.security.mfa': 'MFA 設備',
   'app.settings.security.mfa-description': '未綁定 MFA 設備，綁定後，可以進行二次確認',
