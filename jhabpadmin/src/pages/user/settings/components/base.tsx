@@ -8,7 +8,6 @@ import * as defaultService from '@/services/jhabp/identity/IdentityUser/identity
 import styles from './BaseView.less';
 
 const intlTop = getIntl();
-console.log(intlTop);
 
 // 头像组件 方便以后独立，增加裁剪之类的功能
 const AvatarView = ({ avatar }: { avatar: string }) => (
@@ -40,7 +39,6 @@ const BaseView: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const intl = useIntl();
-  console.log(intl);
 
   const getAvatarURL = () => {
     if (currentUser) {
