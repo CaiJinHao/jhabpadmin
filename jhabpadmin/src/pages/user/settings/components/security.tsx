@@ -47,13 +47,11 @@ const SecurityView: React.FC = () => {
       }),
       description: (
         <>
-          <span>
-            {intl.formatMessage({
-              id: 'app.settings.security.password-description',
-              defaultMessage: '当前密码强度',
-            })}
-          </span>
-          {passwordStrength.strong}
+          {intl.formatMessage({
+            id: 'app.settings.security.password-description',
+            defaultMessage: '当前密码强度',
+          })}
+          ：{passwordStrength.strong}
         </>
       ),
       actions: [

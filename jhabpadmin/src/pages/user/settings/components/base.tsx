@@ -150,9 +150,9 @@ const BaseView: React.FC = () => {
               />
             </ProForm>
           </div>
-          <div className={styles.right}>
+          {/* <div className={styles.right}>
             <AvatarView avatar={getAvatarURL()} />
-          </div>
+          </div> */}
         </>
       }
     </div>
