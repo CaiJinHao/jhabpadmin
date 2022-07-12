@@ -57,4 +57,8 @@ export default {
     'The to-do list will be notified in the form of a letter from the station',
   'app.settings.open': 'Open',
   'app.settings.close': 'Close',
+
+  'app.settings.security.password-modify.title': 'Modify Password',
+  'app.settings.security.password-modify.currentPassword': 'Current Password',
+  'app.settings.security.password-modify.newPassword': 'New Password',
 };

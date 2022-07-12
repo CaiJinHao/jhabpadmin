@@ -2,15 +2,23 @@ import React from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Upload } from 'antd';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
-import { useIntl, useModel } from 'umi';
+import { getIntl, useIntl, useModel } from 'umi';
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
 
 import styles from './BaseView.less';
 
+const intlTop = getIntl();
+console.log(intlTop);
+
 // 头像组件 方便以后独立，增加裁剪之类的功能
 const AvatarView = ({ avatar }: { avatar: string }) => (
   <>
-    <div className={styles.avatar_title}>头像</div>
+    <div className={styles.avatar_title}>
+      {intlTop.formatMessage({
+        id: 'app.settings.basic.avatar',
+        defaultMessage: '头像',
+      })}
+    </div>
     <div className={styles.avatar}>
       <img src={avatar} alt="avatar" />
     </div>
@@ -18,7 +26,10 @@ const AvatarView = ({ avatar }: { avatar: string }) => (
       <div className={styles.button_view}>
         <Button>
           <UploadOutlined />
-          更换头像
+          {intlTop.formatMessage({
+            id: 'app.settings.basic.change-avatar',
+            defaultMessage: '更换头像',
+          })}
         </Button>
       </div>
     </Upload>
@@ -29,6 +40,7 @@ const BaseView: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const intl = useIntl();
+  console.log(intl);
 
   const getAvatarURL = () => {
     if (currentUser) {

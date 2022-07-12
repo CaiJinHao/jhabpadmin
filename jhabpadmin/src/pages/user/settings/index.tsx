@@ -20,13 +20,19 @@ type SettingsState = {
 };
 
 const Settings: React.FC = () => {
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const intl = useIntl();
 
   const menuMap: Record<string, React.ReactNode> = {
-    base: '基本设置',
-    security: '安全设置',
+    base: intl.formatMessage({
+      id: 'app.settings.menuMap.basic',
+      defaultMessage: '基本设置',
+    }),
+    security: intl.formatMessage({
+      id: 'app.settings.menuMap.security',
+      defaultMessage: '基本设置',
+    }),
     // binding: '账号绑定',
     // notification: '新消息通知',
   };

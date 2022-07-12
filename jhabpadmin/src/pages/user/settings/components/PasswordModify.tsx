@@ -1,7 +1,3 @@
-import { PageContainer } from '@ant-design/pro-layout';
-import ProCard from '@ant-design/pro-card';
-import React, { useState } from 'react';
-import { Col, Row, Avatar, Descriptions, Tabs } from 'antd';
 import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
 import { useIntl, useModel } from 'umi';
 import * as defaultService from '@/services/jhabp/identity/IdentityUser/identityuser.service';
@@ -19,7 +15,6 @@ const PasswordModify: FC<OperationModalProps> = (props) => {
   const { currentUser } = initialState || {};
 
   const { visible, onCancel, onSubmit } = props;
-  const [title, setTitle] = useState<string>('修改登录密码');
 
   const modalFormFinish = async (values: any) => {
     if (currentUser) {
@@ -37,7 +32,10 @@ const PasswordModify: FC<OperationModalProps> = (props) => {
       <ModalForm<API.JhIdentity.IdentityRoleDto>
         width={378}
         visible={visible}
-        title={title}
+        title={intl.formatMessage({
+          id: 'app.settings.security.password-modify.title',
+          defaultMessage: '修改登录密码',
+        })}
         onFinish={modalFormFinish}
         modalProps={{
           onCancel: () => onCancel(),
@@ -46,10 +44,42 @@ const PasswordModify: FC<OperationModalProps> = (props) => {
         submitter={{}}
       >
         <ProForm.Group>
-          <ProFormText.Password width="md" name="currentPassword" label="当前用户密码" />
+          <ProFormText.Password
+            width="md"
+            name="currentPassword"
+            label={intl.formatMessage({
+              id: 'app.settings.security.password-modify.currentPassword',
+              defaultMessage: '当前用户密码',
+            })}
+            rules={[
+              {
+                required: true,
+                message: `${intl.formatMessage({
+                  id: 'form.rules.message',
+                  defaultMessage: '请输入',
+                })}\${label}`,
+              },
+            ]}
+          />
         </ProForm.Group>
         <ProForm.Group>
-          <ProFormText.Password width="md" name="newPassword" label="新的用户密码" />
+          <ProFormText.Password
+            width="md"
+            name="newPassword"
+            label={intl.formatMessage({
+              id: 'app.settings.security.password-modify.newPassword',
+              defaultMessage: '新的用户密码',
+            })}
+            rules={[
+              {
+                required: true,
+                message: `${intl.formatMessage({
+                  id: 'form.rules.message',
+                  defaultMessage: '请输入',
+                })}\${label}`,
+              },
+            ]}
+          />
         </ProForm.Group>
       </ModalForm>
     </>

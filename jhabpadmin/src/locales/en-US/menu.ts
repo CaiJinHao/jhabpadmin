@@ -60,4 +60,5 @@ export default {
   'menu.systemConfig.AuditLogging': 'Audit Logging',
   'menu.systemConfig.Settings': 'Settings',
   'menu.systemConfig.Tenant': 'Tenant',
+  'menu.settings': 'settings',
 };

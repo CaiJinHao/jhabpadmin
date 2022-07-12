@@ -9,6 +9,7 @@ import * as defaultService from '@/services/jhabp/identity/IdentityUser/identity
 
 const { TabPane } = Tabs;
 
+/**没有使用，使用的是user/settings */
 const Profile: React.FC = () => {
   const intl = useIntl();
   const { initialState, setInitialState } = useModel('@@initialState');

@@ -73,12 +73,12 @@ const OperationModalIdentityRole: FC<OperationModalProps> = (props) => {
         break;
     }
     return _t;
-  }, [operator]);
+  }, [intl, operator]);
 
   useEffect(() => {
     setTitle(operatorTitle);
     setExtraProperties(current?.extraProperties);
-  }, [current]);
+  }, [current, operatorTitle]);
 
   if (!current && operator != ViewOperator.Add) {
     return <></>;

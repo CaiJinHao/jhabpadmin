@@ -52,4 +52,8 @@ export default {
   'app.settings.notification.todo-description': '待辦任務將以站內信的形式通知',
   'app.settings.open': '開',
   'app.settings.close': '關',
+
+  'app.settings.security.password-modify.title': '修改登錄密碼',
+  'app.settings.security.password-modify.currentPassword': '當前用戶密碼',
+  'app.settings.security.password-modify.newPassword': '新的用戶密碼',
 };

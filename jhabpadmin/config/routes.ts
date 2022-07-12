@@ -19,16 +19,16 @@ export default [
   //     },
   //   ],
   // },
+  // {
+  //   path: '/user/personal',
+  //   name: 'personal',
+  //   component: './Personal',
+  //   hideInMenu: true,
+  // },
   {
     path: '/user/settings',
     name: 'settings',
     component: './user/settings',
-    hideInMenu: true,
-  },
-  {
-    path: '/user/personal',
-    name: 'personal',
-    component: './Personal',
     hideInMenu: true,
   },
   {

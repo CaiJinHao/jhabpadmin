@@ -1,27 +1,58 @@
 import React, { useState } from 'react';
 import { List } from 'antd';
-import { useModel } from 'umi';
+import { getIntl, useIntl, useModel } from 'umi';
 import PasswordModify from './PasswordModify';
 import { logout } from '@/services/jhabp/auth.service';
 type Unpacked<T> = T extends (infer U)[] ? U : T;
 
+const intlTop = getIntl();
+
 const passwordStrength = {
-  strong: <span className="strong">强</span>,
-  medium: <span className="medium">中</span>,
-  weak: <span className="weak">弱 Weak</span>,
+  strong: (
+    <span className="strong">
+      {intlTop.formatMessage({
+        id: 'app.settings.security.strong',
+        defaultMessage: '强',
+      })}
+    </span>
+  ),
+  medium: (
+    <span className="medium">
+      {intlTop.formatMessage({
+        id: 'app.settings.security.medium',
+        defaultMessage: '中',
+      })}
+    </span>
+  ),
+  weak: (
+    <span className="weak">
+      {intlTop.formatMessage({
+        id: 'app.settings.security.weak',
+        defaultMessage: '弱',
+      })}
+    </span>
+  ),
 };
 
 const SecurityView: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const [visibleModifyPwd, setVisibleModifyPwd] = useState<boolean>(false);
-
+  const intl = useIntl();
   const getData = () => [
     {
-      title: '账户密码',
+      title: intl.formatMessage({
+        id: 'app.settings.security.password',
+        defaultMessage: '账户密码',
+      }),
       description: (
         <>
-          当前密码强度：
+          <span>
+            {intl.formatMessage({
+              id: 'app.settings.security.password-description',
+              defaultMessage: '当前密码强度',
+            })}
+          </span>
           {passwordStrength.strong}
         </>
       ),
@@ -32,13 +63,22 @@ const SecurityView: React.FC = () => {
             setVisibleModifyPwd(true);
           }}
         >
-          修改
+          {intl.formatMessage({
+            id: 'app.settings.security.modify',
+            defaultMessage: '修改',
+          })}
         </a>,
       ],
     },
     {
-      title: '密保邮箱',
-      description: `已绑定邮箱：${currentUser?.email}`,
+      title: intl.formatMessage({
+        id: 'app.settings.security.email',
+        defaultMessage: '修改',
+      }),
+      description: `${intl.formatMessage({
+        id: 'app.settings.security.email-description',
+        defaultMessage: '已绑定邮箱',
+      })}：${currentUser?.email}`,
     },
     // {
     //   title: 'MFA 设备',
