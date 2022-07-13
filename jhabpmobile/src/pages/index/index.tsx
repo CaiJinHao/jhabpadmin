@@ -1,24 +1,17 @@
-import { Component } from 'react'
-import { View, Text } from '@tarojs/components'
-import './index.less'
+import { View, Text } from "@tarojs/components";
+import "./index.less";
 
-export default class Index extends Component {
-
-  componentWillMount () { }
-
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
-  render () {
-    return (
-      <View className='index'>
-        <Text>Hello world!</Text>
+const Index = () => {
+  return (
+    <>
+      <View className='red'>
+        <Text>函数式组件测试!</Text>
       </View>
-    )
-  }
-}
+      <div className='red'>
+        <span>Test !</span>
+      </div>
+    </>
+  );
+};
+
+export default Index;
