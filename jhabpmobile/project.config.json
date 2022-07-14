@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "./dist",
   "projectname": "jhabpmobile",
-  "description": "mobile initial",
+  "description": "mobile init",
   "appid": "touristappid",
   "setting": {
     "urlCheck": true,
