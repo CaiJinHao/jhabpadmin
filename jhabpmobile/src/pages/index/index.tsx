@@ -5,7 +5,8 @@ import { Button } from "@taroify/core";
 const Index = () => {
   return (
     <View className='index'>
-      <Text>Hello world 666!</Text>
+      <Text>Hello world !</Text>
+      <Text>Hello world !</Text>
       <Button color='info'>信息按钮</Button>
     </View>
   );
