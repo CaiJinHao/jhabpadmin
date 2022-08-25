@@ -7,4 +7,5 @@ react admin 是基于jhabpmodule仓库开发的后台管理系统UI，需配合j
 ![jhabpadmin OrganizationUnit](./docs/imgs/org.png)
 ![jhabpadmin IdentityUser](./docs/imgs/user.png)
 ![jhabpadmin Permissions](./docs/imgs/permissions.png)
-![jhabpadmin AuditLogging](./docs/imgs/home.png)
+![jhabpadmin AuditLogging](./docs/imgs/aulog.png)
+![jhabpadmin Settings](./docs/imgs/settings.png)  
