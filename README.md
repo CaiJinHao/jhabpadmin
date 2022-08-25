@@ -2,7 +2,7 @@
 
 ## Login
 
-使用 Identity 统一登录，admin 使用 cookies 验证是否已经授权。未授权跳转到登录、已授权接口可正常返回数据。
+react admin 是基于jhabpmodule仓库开发的后台管理系统UI，需配合jhabpmodule仓库使用，包含角色管理、组织管理、用户管理、权限管理、设置管理、审计日志。
 
 ## 更新
 

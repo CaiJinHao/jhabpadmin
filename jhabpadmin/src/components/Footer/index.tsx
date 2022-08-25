@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   //TODO:本地化示例
   const defaultMessage = intl.formatMessage({
     id: 'app.copyright.produced',
-    defaultMessage: '金浩出品',
+    defaultMessage: 'JhAbp',
   });
 
   const currentYear = new Date().getFullYear();

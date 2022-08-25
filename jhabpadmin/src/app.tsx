@@ -108,7 +108,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: `金浩出品 ${initialState?.currentUser?.name}`,
+      content: `JhAbp ${initialState?.currentUser?.name}`,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
