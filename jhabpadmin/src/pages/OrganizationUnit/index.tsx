@@ -156,9 +156,7 @@ const OrganizationUnitList = () => {
         id: 'DisplayName:JhOrganizationUnit:LeaderId',
         defaultMessage: '组织负责人',
       }),
-      renderText: (text, record) => {
-        return record.extraProperties.LeaderName;
-      },
+      dataIndex: 'leaderName',
     },
     {
       title: intl.formatMessage({ id: 'JhAbp:IsDeleted', defaultMessage: '是否删除' }),

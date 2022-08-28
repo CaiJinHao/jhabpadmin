@@ -146,6 +146,14 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
             />
             <IdentityUserSelect
               width="md"
+              name="leaderId"
+              label={intl.formatMessage({
+                id: 'DisplayName:JhOrganizationUnit:LeaderId',
+                defaultMessage: '负责人',
+              })}
+            />
+            {/* <IdentityUserSelect
+              width="md"
               name="LeaderId"
               initialValue={
                 current?.extraProperties.LeaderId
@@ -157,7 +165,7 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
                 defaultMessage: '负责人',
               })}
               onChange={onChangeLeader}
-            />
+            /> */}
           </ProForm.Group>
         </>
       </ModalForm>

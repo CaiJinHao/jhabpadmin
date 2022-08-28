@@ -22,6 +22,8 @@ declare namespace API.JhIdentity {
     displayName: string;
     concurrencyStamp: string;
     roleIds: string;
+    leaderId?: string;
+    leaderType?: number;
   }
 
   export interface OrganizationUnitUpdateInputDto {
@@ -31,6 +33,8 @@ declare namespace API.JhIdentity {
     concurrencyStamp: string;
     roleIds: string;
     extraProperties: any;
+    leaderId?: string;
+    leaderType?: number;
   }
 
   export interface OrganizationUnitRetrieveInputDto {
