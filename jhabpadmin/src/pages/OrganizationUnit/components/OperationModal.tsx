@@ -77,14 +77,6 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
     return _t;
   }, [intl, operator]);
 
-  const onChangeLeader = (value: any, option: any) => {
-    setExtraProperties({
-      ...extraProperties,
-      LeaderId: value ?? null,
-      LeaderName: value ? option.label : null,
-    });
-  };
-
   useEffect(() => {
     setTitle(operatorTitle);
     setExtraProperties(current?.extraProperties);
@@ -152,20 +144,6 @@ const OperationModalOrganizationUnit: FC<OperationModalProps> = (props) => {
                 defaultMessage: '负责人',
               })}
             />
-            {/* <IdentityUserSelect
-              width="md"
-              name="LeaderId"
-              initialValue={
-                current?.extraProperties.LeaderId
-                  ? { value: current.extraProperties.LeaderId }
-                  : undefined
-              }
-              label={intl.formatMessage({
-                id: 'DisplayName:JhOrganizationUnit:LeaderId',
-                defaultMessage: '负责人',
-              })}
-              onChange={onChangeLeader}
-            /> */}
           </ProForm.Group>
         </>
       </ModalForm>
